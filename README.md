@@ -1,1 +1,1 @@
-# Master Thesis CEBM
+# Master Thesis
