@@ -1,4 +1,5 @@
 \documentclass[a4paper,12pt,twoside]{report}
+
 \usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry} %Margins
 \usepackage{pdfpages}
 \usepackage{hyperref}
@@ -22,7 +23,6 @@
 \usetikzlibrary{decorations.pathreplacing}
 \usetikzlibrary{fadings}
 
-
 \titlespacing{\section}{0pt}{1ex}{0ex}
 \titlespacing{\subsection}{0pt}{1ex}{0ex}
 \titlespacing{\subsubsection}{0pt}{1ex}{0ex}
@@ -37,7 +37,7 @@
 \newgeometry{left=2cm,right=2cm} %Only for the title new margins
 
 %Title parameters
-\title{Audio-based multi-level music structure analysis using deep learning}
+\title{Multi-level music structure analysis: an audio-based approach using deep learning}
 \author{\href{oriol.colome.font@epidemicsound.com}{Oriol Colomé Font}}
 \submitdate{July 2023}
 \supervisor{Carlos Lordelo and Carl Thomé}
@@ -66,9 +66,14 @@ pdfkeywords={Music Information Retrieval; Music Structure Analysis; Deep Learnin
 
 %Introduction of the project
 \input{introduction/introduction}
-\input{music analysis/music_analysis}
+%Music analysis explanation
+\input{music analysis/music analysis}
+\input{music analysis/authors}
+%Methods
 \input{methods/methods}
+%Results
 \input{results/results}
+%Discussion
 \input{discussion/discussion}
 
 \listoffigures
