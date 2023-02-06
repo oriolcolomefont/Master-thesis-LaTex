@@ -1,13 +1,16 @@
 \chapter{Music Structure Analysis (MSA)}
 
+~\cite{Nieto2020}~\cite{Chaki2021}
+
 \section{The music structure analysis problem}
+
 Audio-based Music Structural Analysis (MSA) identifies adjacent and non-overlapping musical segments in an audio signal and labels them based on similarity. Segments can occur at various time scales, from short motives to longer sections. Flat MSA focuses on non-hierarchical structures, while hierarchical MSA considers multiple time scales. However, MSA faces challenges such as boundary placement ambiguity and similarity quantification. Segments must be non-overlapping for a given hierarchical level, although some musicological approaches allow for overlap.
 
 \subsection{Problem definition}
 
 The musical structure analysis (MSA) challenges the definition due to subjectivity, ambiguity, and data scarcity. A flat structural analysis of an audio signal consists of a set of contiguous, non-overlapping, and labeled time intervals that span the entire duration of the audio signal. Given a musical recording of T audio samples, a flat segmentation is defined by a set of segment boundaries B, a set of k unique labels Y, and a mapping of segment starting points to labels S. This leads to the label assignment L, which assigns a label to each time point. The segment boundaries are usually sampled at a rate of 10 Hz to achieve a balance between resolution and computational efficiency.
 
-As an art form, music is open to interpretation and can evoke different emotions and meanings in different listeners. This subjectivity makes it difficult to objectively analyze the structure of a piece of music, as different annotators may place boundaries between segments differently based on their perception and interpretation of the music. It can also have multiple structures, including hierarchical structures that make it difficult to untangle the truth.
+As an art form, music is open to interpretation and can evoke different emotions and meanings in different listeners. This subjectivity makes it difficult to objectively analyze the structure of a piece of music, as different annotators may place boundaries between segments differently based on their perception and interpretation of the music. It can also have multiple structures, including hierarchical structures, that make it difficult to untangle the truth.
 
 \subsection{Segmentation principles}
 The principles of musical structure analysis (MSA) were initially defined as homogeneity, novelty, and repetition, with the addition of regularity later on. To analyze the structure of a musical recording, a self-similarity matrix (SSM) is often used to visualize the degree of similarity between audio frames. The SSM results in a square matrix with the highest degree of similarity on the diagonal.
@@ -22,6 +25,10 @@ Repetition assumes that segments with the same label are similar sequences, with
 The regularity principle in music structure analysis aims to exploit the regularities present in musical segments, such as the log-normally distributed length across the track and the tendency for the duration of two equally labeled segments to span an integer ratio of beats.
 
 \section{Theoretical approach}
+\subsection{Music form}
+
+Music form refers to the structural organization of a musical composition or performance. This can include elements such as the arrangement of musical units (such as rhythm, melody, and harmony) that exhibit repetition or variation, the arrangement of instruments, or the orchestration of a symphonic piece. These elements interact to shape the composition and create a meaningful musical experience for the listener. The organizational elements can be further broken down into smaller units called phrases, which express a musical idea but lack sufficient weight to stand alone. The form of a composition unfolds over time through the expansion and development of these ideas. In tonal harmony, form is primarily articulated through cadences, phrases, and periods. 
+
 \subsection{Heinrich Schenker}
 
 Heinrich Schenker~\cite{schenkerdocumentsonline} was a prominent music theorist who developed \textit{Schenkerian Analysis}, a method for analyzing tonal music. This method is based on the concept of "the Ursatz," a fundamental structure of three levels: foreground, middle-ground, and background. Schenker's approach emphasizes the horizontal dimension of music, specifically melody, and the relationships between individual notes and the piece's overall structure. His ideas have significantly impacted the field of music theory and analysis, and the method is still widely used today. While the approach is primarily theoretical and relies on human interpretation, it can also be approached through computer algorithms such as CNNs; the results are not the same as human interpretation.
