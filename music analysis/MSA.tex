@@ -1,10 +1,18 @@
 \chapter{Music Structure Analysis (MSA)}
 
-MSA encompasses various aspects of music analysis, including algorithms, current practices, and trends in technology. This field aims to comprehensively understand music structure by applying musicological theories and principles and music signal processing algorithms. MSA considers the interplay between technical and musical aspects, focusing on improving our understanding of music signals and the music itself.
+MSA encompasses various aspects of music analysis, including algorithms, current practices, and trends in technology. This field aims to comprehensively understand music structure by applying musicological theories, principles, and signal processing algorithms. MSA considers the interplay between technical and musical aspects, focusing on improving our understanding of music signals and the music itself.
 
-In the following section, we will examine the state of MSA, including its challenges and potential for future advancements. Topics such as data representation, computational complexity, and evaluation metrics will be discussed to provide a nuanced summary of the field. Additionally, we will consider the impact of new trends and technological advancements on MSA and the directions in which the field is likely to evolve. Through this examination, we aim to provide a thorough understanding of the technical and musical aspects of MSA and its challenges.
+In the following section, we will examine the state of MSA, including its challenges and potential for future advancements. Topics such as data representation, computational complexity, and evaluation metrics will be discussed to provide a nuanced summary of the field. Additionally, we will consider the impact of new trends and technological advancements on MSA and the directions in which the field is likely to evolve. Through this examination, we aim to provide an overview of MSA's technical and musical aspects and its challenges~\cite{Nieto2020}~\cite{Chaki2021}.
 
-~\cite{Nieto2020}~\cite{Chaki2021}
+\section{Concept definition}
+
+Musical structure and form refer to the organization and arrangement of musical elements in a piece of music. They describe how the music is put together and how it unfolds over time.
+
+Musical structure hierarchically arranges various elements of music, such as melody, harmony, rhythm, timbre, and texture\footnote{Musical texture refers to the arrangement and combination of musical elements, including melody, harmony, rhythm, timbre, and dynamics, in a piece of music. Different textures, such as monophonic, homophonic, polyphonic, and heterophonic, can affect a piece's overall character and mood. Understanding musical texture is vital for music analysis and appreciation.}. This hierarchy can take different forms, such as melody being the most critical element, harmony playing a supportive role, or rhythm being the driving force behind the music. The structure of a piece of music is often characterized by its elements' repetition, development, and variation.
+
+Music form, however, refers to the larger-scale organization of musical structure over time. It describes how music sections are repeated, varied, and put together to create a complete piece. Music form can be thought of as the plan or design that underlies a piece of music. Many forms are used in music, such as binary, ternary, rondo, sonata, and theme and variations.
+
+Musicologists and theorists have developed various analytical tools and methods for understanding musical structure and form, including Schenkerian analysis, set theory, and formal function analysis. These tools and methods help uncover the underlying musical relationships and patterns in a piece of music and provide a framework for understanding how it is put together and how it develops over time.
 
 \section{The music structure analysis problem}
 
@@ -12,12 +20,12 @@ Audio-based Music Structural Analysis (MSA) identifies adjacent and non-overlapp
 
 \subsection{Problem definition}
 
-The musical structure analysis (MSA) challenges the definition due to subjectivity, ambiguity, and data scarcity. A flat structural analysis of an audio signal consists of a set of contiguous, non-overlapping, and labeled time intervals that span the entire duration of the audio signal. Given a musical recording of T audio samples, a flat segmentation is defined by a set of segment boundaries B, a set of k unique labels Y, and a mapping of segment starting points to labels S. This leads to the label assignment L, which assigns a label to each time point. The segment boundaries are usually sampled at a rate of 10 Hz to achieve a balance between resolution and computational efficiency.
+The musical structure analysis (MSA) challenges the definition due to subjectivity, ambiguity\footnote{Perception and interpretation of musical structure can vary widely between individuals and depend on factors such as personal background, cultural context, and individual preferences. This is due to the complex interplay between individual differences in perception and interpretation and how the auditory system processes sound. These factors highlight the importance of considering individual and cultural context in analyzing and interpreting musical structure.}, and data scarcity. A flat structural analysis of an audio signal consists of a set of contiguous, non-overlapping, and labeled time intervals that span the entire duration of the audio signal. Given a musical recording of T audio samples, a flat segmentation is defined by a set of segment boundaries B, a set of k unique labels Y, and a mapping of segment starting points to labels S. This leads to the label assignment L, which assigns a label to each time point. The segment boundaries are usually sampled at a rate of 10 Hz to achieve a balance between resolution and computational efficiency.
 
-As an art form, music is open to interpretation and can evoke different emotions and meanings in different listeners. This subjectivity makes it difficult to objectively analyze the structure of a piece of music, as different annotators may place boundaries between segments differently based on their perception and interpretation of the music. It can also have multiple structures, including hierarchical structures, that make it difficult to untangle the truth.
+As an art form, music is open to interpretation and can evoke different emotions and meanings in different listeners. This subjectivity makes it difficult to objectively analyze the structure of a piece of music, as different annotators may place boundaries between segments differently based on their perception and interpretation of the music. It can also have multiple structures, including hierarchical structures ~\cite{hiererchical}, that makes it difficult to untangle the underlying structure.
 
 \subsection{Segmentation principles}
-The principles of musical structure analysis (MSA) were initially defined as homogeneity, novelty, and repetition, with the addition of regularity later on. To analyze the structure of a musical recording, a self-similarity matrix (SSM) is often used to visualize the degree of similarity between audio frames. The SSM results in a square matrix with the highest degree of similarity on the diagonal.
+The main principles of musical structure analysis (MSA) were initially defined as homogeneity, novelty, and repetition, with the addition of regularity later on. 
 
 \subsubsection{Homogeneity and novelty}
 Homogeneity assumes that segments are homogeneous in musical attributes, with boundaries between distinct segments being points of novelty. 
@@ -28,20 +36,46 @@ Repetition assumes that segments with the same label are similar sequences, with
 \subsubsection{Regularity}
 The regularity principle in music structure analysis aims to exploit the regularities present in musical segments, such as the log-normally distributed length across the track and the tendency for the duration of two equally labeled segments to span an integer ratio of beats.
 
-\section{Theoretical approach}
-\subsection{Music form}
+\section{Common methods}
 
-Music form refers to the structural organization of a musical composition or performance. This can include elements such as the arrangement of musical units (such as rhythm, melody, and harmony) that exhibit repetition or variation, the arrangement of instruments, or the orchestration of a symphonic piece. These elements interact to shape the composition and create a meaningful musical experience for the listener. The organizational elements can be further broken down into smaller units called phrases, which express a musical idea but lack sufficient weight to stand alone. The form of a composition unfolds over time through the expansion and development of these ideas. In tonal harmony, form is primarily articulated through cadences, phrases, and periods. 
+To analyze the structure of a musical recording, a self-similarity matrix (SSM) is often used to visualize the degree of similarity between audio frames. The SSM results in a square matrix with the highest degree of similarity on the diagonal.
+
+It can be computed by representing the audio signal as a spectrogram (or any other suitable representation) and then calculating the similarity between all pairs of time frames in the spectrogram.
+
+One common approach is to use a dot product, where the similarity between two-time frames is equal to the dot product of their vectors. The dot product of two vectors x and y is given by:
+
+\input{music analysis/Equations/SSM equation}
+
+The resulting matrix will be symmetric, with the diagonal elements representing the similarity between a time frame and itself and the off-diagonal elements representing the similarity between two different time frames.
+
+It's also common to normalize the similarity values by dividing each entry by the Euclidean norm of the compared vectors to ensure that the self-similarity matrix has values between -1 and 1.
+
+Given a self-similarity matrix S, the novelty curve can be computed by taking the row-wise sum of the self-similarity matrix and normalizing the values. The novelty curve measures the deviation from the average similarity across time frames and can be used for various audio analysis tasks such as beat tracking or segmentation.
+
+\input{music analysis/Equations/Novelty equation}
+
+This representation is used for various tasks, such as identifying repeating patterns in the audio, detecting structural changes in the audio, or for music classification.
+
+\section{Musicological approach}
+\section{Topic overview}
+
+MSA has a long history, dating back to music theory and composition studies. In the 18th and 19th centuries, music theorists such as Rameau~\cite{christensen2004rameau} and Schenker~\cite{schenkerdocumentsonline} developed analytical frameworks for understanding the structure of music in terms of harmony, melody, and form.
 
 \subsection{Heinrich Schenker}
 
 Heinrich Schenker~\cite{schenkerdocumentsonline} was a prominent music theorist who developed \textit{Schenkerian Analysis}, a method for analyzing tonal music. This method is based on the concept of "the Ursatz," a fundamental structure of three levels: foreground, middle-ground, and background. Schenker's approach emphasizes the horizontal dimension of music, specifically melody, and the relationships between individual notes and the piece's overall structure. His ideas have significantly impacted the field of music theory and analysis, and the method is still widely used today. While the approach is primarily theoretical and relies on human interpretation, it can also be approached through computer algorithms such as CNNs; the results are not the same as human interpretation.
 
+The fundamental structure, also known as \textit{Ursatz}, represents the underlying structure of a tonal work at the most remote or background level, in the most abstract form. It comprises an essential elaboration of the tonic triad, including the entire line and accompanying bass arpeggiation. The fundamental structure, like the fundamental line, takes one of three forms, depending on which pitch of the tonic triad serves as the primary tone. For example, the key of C major would represent the fundamental structure by the fundamental descending line from scale degree 3.
+
+The \textit{Urlinie}, or fundamental line, unfolds the basic triad and presents tonality on horizontal paths. The tonal system also flows into this to bring a sense of purposeful order to chords by selecting harmonic degrees. Voice leading serves as the mediator between the horizontal formulation of tonality presented by the Urlinie and the vertical formulation presented by the harmonic degrees.
+
+The upper voice of the fundamental structure, represented by the whole line, utilizes a descending direction. In contrast, the lower voice, the bass arpeggiation through the fifth, takes an ascending direction (as shown in figure 1). The combination of the fundamental line and bass arpeggiation constitutes a unity, and neither can exist alone; it is only through their unification in a contrapuntal structure that they produce art.
+
 \subsection{Schenkerian analysis}
 
 Schenkerian analysis is a musical analysis method that examines tonal music using the theories of Heinrich Schenker. The purpose is to showcase the organic unity of a piece by highlighting the relationship between the foreground (all musical notes in the score) and the deep abstract structure known as the \textit{Ursatz}. The Ursatz, roughly the same for all tonal music, is then developed into a unique foreground in each work. The concept of tonal space, defined as the intervals between the notes of the tonic triad in the background, is crucial to the analysis. The tonal space is filled with passing and neighbor tones, creating new triads and tonal spaces for further elaboration.
 
-Schenkerian analysis uses specialized musical notation and is either presented in a generative manner, starting from the Ursatz and ending at the score or in a reductive manner, starting from the score and reducing it to its fundamental structure. The Ursatz is presented in an arrhythmic graph, and rhythmic signs display hierarchical relationships between pitch events.
+Schenkerian analysis uses specialized musical notation and is either presented in a generative manner, starting from the Ursatz and ending at the score or in a reductive manner, starting from the score and reducing it to its fundamental structure. The Ursatz is presented in an arrhythmic graph, and rhythmic signs display hierarchical relationships between events.\footnote{In Schenkerian analysis, structural levels refer to the representation of a piece of music at different levels of abstraction. These levels typically include the foreground, middle ground, and background. Schenker posits that musical form, as represented through these structural levels, can be understood as an energy transformation, specifically the transformation of forces that flow from the background to the foreground through the various levels.}
 
 While complex and challenging, Schenkerian analysis is designed to reveal the internal coherence of a work, which ultimately lies in its tonality. The analysis's results may reflect the analyst's perceptions and intuitions.
 
