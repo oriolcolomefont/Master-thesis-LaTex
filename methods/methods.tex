@@ -1,5 +1,13 @@
 \chapter{Methods}
 
+We propose the use of a triple siamese network to train a model for music similarity retrieval. Specifically, we aim to minimize the loss function between the anchor, positive, and negative samples by using online triplet mining.
+
+The positive samples are created by transforming and augmenting the original samples while preserving their perceptual underlying musical language. This is achieved by using techniques such as time-stretching, pitch-shifting, and adding noise to the samples. By doing so, we aim to enhance the diversity of the positive samples and improve the model's ability to retrieve similar-sounding samples that share the same underlying musical language.
+
+On the other hand, the negative samples are created by shuffling and scrambling the original samples while maintaining their production texture. This is achieved by using techniques such as random segment selection, time-domain filtering, and frequency-domain masking. The goal is to maintain the production texture of the samples while disrupting their underlying composition.
+
+By using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while taking into account both their underlying composition and production texture.
+
 \section{Materials}
 
 \section{Convolutional Neural Network (CNN)}
