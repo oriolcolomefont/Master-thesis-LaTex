@@ -1,0 +1,5 @@
+The Triplet Loss function is a function that measures the distance between an anchor, a positive sample, and a negative sample in a high-dimensional space. The formula for this function is given:
+
+$$L = \max( ||f(x_{a}) - f(x_{p})||^{2} - ||f(x_{a}) - f(x_{n})||^{2} + \alpha, 0 )$$
+
+where $f$ is a mapping function that transforms the input samples to a high-dimensional space, $x_{a}$ is the anchor sample, $x_{p}$ is the positive sample, $x_{n}$ is the negative sample, $\alpha$ is a margin hyperparameter that specifies the minimum difference between the distance of the anchor-positive pair and the anchor-negative pair, and $||\cdot||^{2}$ denotes the L2 norm squared.
