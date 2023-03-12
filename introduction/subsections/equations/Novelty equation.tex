@@ -1,0 +1,7 @@
+\begin{equation}
+n_i = \frac{\sum\limits_{j=1}^{N} S_{ij} - N\cdot S_{ii}}{\sqrt{\sum\limits_{j=1}^{N} (S_{ij} - S_{ii})^2}}
+\end{equation}
+
+Where $N$ is the number of time frames, $S_{ij}$ is the similarity between time frames $i$ and $j$, $S_{ii}$ is the similarity between time frame $i$ and itself, and $n_i$ is the novelty value for time frame $i$.
+
+The numerator of the expression represents the sum of similarities between time frame $i$ and all other time frames minus the average similarity across all time frames. The denominator of the expression is the standard deviation of the similarities, which is used to normalize the values to ensure that the novelty values are between -1 and 1.
