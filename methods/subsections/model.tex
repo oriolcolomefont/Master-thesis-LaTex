@@ -1,7 +1,23 @@
 SSL, or self-supervised learning, is a technique to learn latent representations from large-scale data without relying on human annotations. Instead, it solves pretext tasks by creating different views of an object that are highly correlated. An SSL model is then trained to generalize objects' representations in a latent high-dimensional space. To achieve this, the model contrasts the representations of the same object with other objects (defined as negative samples) during training. By doing so, a contrastive SSL model is expected to produce more distinctive representations. 
 
-The Triplet Loss function is a function that measures the distance between an anchor, a positive sample, and a negative sample in a high-dimensional space. The formula for this function is given:
+TRIPLET LOSS
 
-$$L = \max( ||f(x_{a}) - f(x_{p})||^{2} - ||f(x_{a}) - f(x_{n})||^{2} + \alpha, 0 )$$
+ implements the triplet loss function, which is commonly used for learning embeddings in metric learning problems. The triplet loss aims to ensure that the distance between an anchor and a positive sample (both from the same class) is smaller than the distance between the anchor and a negative sample (from a different class) by a margin.
 
-where $f$ is a mapping function that transforms the input samples to a high-dimensional space, $x_{a}$ is the anchor sample, $x_{p}$ is the positive sample, $x_{n}$ is the negative sample, $\alpha$ is a margin hyperparameter that specifies the minimum difference between the distance of the anchor-positive pair and the anchor-negative pair, and $||\cdot||^{2}$ denotes the L2 norm squared.
+$\mathcal{L} = \frac{1}{N}\sum_{i=1}^{N} \max \left( d\left(a_i, p_i\right) - d\left(a_i, n_i\right) + m, 0 \right)$
+
+In this equation:
+
+$N$ is the number of triplets in the batch
+$a_i$ is the $i$-th anchor
+$p_i$ is the $i$-th positive sample
+$n_i$ is the $i$-th negative sample
+$d(\cdot, \cdot)$ is the Euclidean distance function
+$m$ is the margin; in this case, it is set to 0.2 by default
+The forward method computes the triplet loss as follows:
+
+Calculate the pairwise Euclidean distance between the anchor and positive samples, denoted as $d(a_i, p_i)$.
+Calculate the pairwise Euclidean distance between the anchor and negative samples, denoted as $d(a_i, n_i)$.
+Compute the loss for each triplet in the batch by subtracting the negative distance from the positive distance and adding the margin: $d(a_i, p_i) - d(a_i, n_i) + m$.
+Apply the ReLU function, which is equivalent to taking the maximum value between the computed value and 0: $\max \left( d(a_i, p_i) - d(a_i, n_i) + m, 0 \right)$.
+Calculate the mean of the losses across all triplets in the batch.

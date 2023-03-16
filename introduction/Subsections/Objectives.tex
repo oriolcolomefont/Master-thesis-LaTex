@@ -11,6 +11,18 @@ In recent years, using neural networks has enabled low-dimensional musical embed
 
 This study aims to comprehensively analyze musical works from diverse styles and genres by incorporating computational techniques from Music Information Retrieval (MIR) and a musicological perspective to contextualize the findings. Aural skills are required to comprehend musical works through listening, as they involve perceptual and cognitive abilities. The underlying musical structure refers to the systematic arrangement of elements that produce a coherent and expressive musical work. This study aims to offer fresh insights into these components of musical composition and advance our understanding of their relationships.
 
+Let's denote the single embedding for a music piece as $e(M)$.
+
+Given a music piece $M$, we aim to learn a single embedding, $e(M)$, simultaneously capturing the underlying content (melody, harmony, and critical, holistic elements) and the production aspects. The embedding space should be structured so that similar content and production features are clustered together, effectively isolating the two aspects. Formally, our objective is to learn the embedding function $e(M)$ such that:
+
+\begin{itemize}
+  \item Similar content features are closer in the embedding space: $\|e(M_1) - e(M_2)\| < \epsilon_c$ for music pieces $M_1$ and $M_2$ with similar content.
+  \item Similar production features are closer in the embedding space: $\|e(M_1) - e(M_3)\| < \epsilon_p$ for music pieces $M_1$ and $M_3$ with similar production.
+  \item Distinct content and production features are further apart in the embedding space.
+\end{itemize}
+
+We describe learning a single embedding $e(M)$ that captures content and production features. The embedding space is structured to cluster similar content and production features together, effectively isolating the two aspects.
+
 Music is a complex and multi-faceted phenomenon, and implementing a model mimicking human aural music skills is challenging. However, the latest deep learning techniques provide a promising avenue to build a model that achieves good results for a specific task in music. Therefore, this study will utilize deep learning techniques to investigate the correlation between aural skills and the underlying tonal-working structure of music.
 
 Furthermore, this study will argue that MIR research should shift from a purely technical-centered approach to a more balanced and comprehensive one incorporating other relevant domains such as musicology and music theory. By doing so, we can better understand the interplay between technical and musical aspects of music and improve our understanding of music signals and the music itself.
