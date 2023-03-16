@@ -1,3 +1,5 @@
+SSL, or self-supervised learning, is a technique to learn latent representations from large-scale data without relying on human annotations. Instead, it solves pretext tasks by creating different views of an object that are highly correlated. An SSL model is then trained to generalize objects' representations in a latent high-dimensional space. To achieve this, the model contrasts the representations of the same object with other objects (defined as negative samples) during training. By doing so, a contrastive SSL model is expected to produce more distinctive representations. 
+
 The Triplet Loss function is a function that measures the distance between an anchor, a positive sample, and a negative sample in a high-dimensional space. The formula for this function is given:
 
 $$L = \max( ||f(x_{a}) - f(x_{p})||^{2} - ||f(x_{a}) - f(x_{n})||^{2} + \alpha, 0 )$$
