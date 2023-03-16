@@ -4,7 +4,7 @@ We propose using a triple siamese network to train a model for music similarity 
 
 The positive samples are created by transforming and augmenting the original samples while preserving their perceptual underlying musical language. This is achieved using techniques such as time-stretching, pitch-shifting, and adding noise to the samples. By doing so, we aim to enhance the diversity of the positive samples and improve the model's ability to retrieve similar-sounding samples that share the same underlying musical language.
 
-On the other hand, the negative samples are created by shuffling and scrambling the original samples while maintaining their production texture. This is achieved using techniques such as random segment selection, time-domain filtering, and frequency-domain masking. The goal is to maintain the production texture of the samples while disrupting their underlying composition.
+On the other hand, the negative samples are created by shuffling and scrambling the original samples while maintaining their production texture. This is achieved using random segment selection, time-domain filtering, and frequency-domain masking. The goal is to maintain the production texture of the samples while disrupting their underlying composition.
 
 Using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
 
@@ -35,25 +35,25 @@ On top of that, one of the main advantages of using CNNs for audio analysis is t
 \subsection{Neural Network (NN)}
 
 %Single
-\input{figures/Figures CNN/Single Neuron}
+\input{figures/cnn/Single Neuron}
 %NN
-\input{figures/Figures CNN/Network_graph}
+\input{figures/cnn/Network_graph}
 
 %Backpropagation
-\input{figures/Figures CNN/Multi-layer_NN}
+\input{figures/cnn/Multi-layer_NN}
 
 %CNN
 A high-level illustration of a simple convolutional neural network indicating convolutional layers, pooling layers, and fully-connected layers without details on the number of channels or neurons per layer or the input data size can be seen in XXX.
-\input{figures/Figures CNN/CNN_diagram}
+\input{figures/cnn/CNN_diagram}
 
 %Single CNN
-\input{figures/Figures CNN/Single_CNN}
+\input{figures/cnn/Single_CNN}
 
 %Single pooling layer
-\input{figures/Figures CNN/Single_Pooling_Layer}
+\input{figures/cnn/Single_Pooling_Layer}
 
 %Backpropagation
-\input{figures/Figures CNN/Back_propagation}
+\input{figures/cnn/Back_propagation}
 
 \newpage
 
