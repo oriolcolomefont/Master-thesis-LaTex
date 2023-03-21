@@ -2,7 +2,7 @@ SSL, or self-supervised learning, is a technique to learn latent representations
 
 TRIPLET LOSS
 
- implements the triplet loss function, which is commonly used for learning embeddings in metric learning problems. The triplet loss aims to ensure that the distance between an anchor and a positive sample (both from the same class) is smaller than the distance between the anchor and a negative sample (from a different class) by a margin.
+ Implements the triplet loss function, commonly used for learning embeddings in metric learning problems. The triplet loss aims to ensure that the distance between an anchor and a positive sample (both from the same class) is smaller than the distance between the anchor and a negative sample (from a different class) by a margin.
 
 $\mathcal{L} = \frac{1}{N}\sum_{i=1}^{N} \max \left( d\left(a_i, p_i\right) - d\left(a_i, n_i\right) + m, 0 \right)$
 
