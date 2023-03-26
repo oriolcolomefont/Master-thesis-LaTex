@@ -32,10 +32,10 @@
 		\node at (9,1.5){\vdots};
 		\node[hidden](hLm) at (9,-0.5){$y_{m^{(L)}}^{(L)}$};
  
-		\node[unit](y1) at (12,3.5){$y_1^{(L+1)}$};
+		\node[unit](y1) at (12,4){$y_1^{(L+1)}$};
 		\node[unit](y2) at (12,2){$y_2^{(L+1)}$};
 		\node at (12,1){\vdots};	
-		\node[unit](yc) at (12,0){$y_C^{(L+1)}$};
+		\node[unit](yc) at (12,-0.5){$y_C^{(L+1)}$};
  
 		\draw[->] (x0) -- (h11);
 		\draw[->] (x0) -- (h1m);
@@ -78,7 +78,7 @@
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (-0.5,4) -- (0.75,4) node [black,midway,yshift=+0.6cm]{input layer};
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (2.5,4.5) -- (3.75,4.5) node [black,midway,yshift=+0.6cm]{$1^{\text{st}}$ hidden layer};
 		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (8.5,4.5) -- (9.75,4.5) node [black,midway,yshift=+0.6cm]{$L^{\text{th}}$ hidden layer};
-		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (11.5,4) -- (12.75,4) node [black,midway,yshift=+0.6cm]{output layer};
+		\draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt] (11.5,5) -- (12.75,5) node [black,midway,yshift=+0.6cm]{output layer};
 	\end{tikzpicture}
 	\caption[Network graph for a $(L+1)$-layer perceptron.]{Network graph of a $(L+1)$-layer perceptron with $D$ input units and $C$ output units. The $l^{\text{th}}$ hidden layer contains $m^{(l)}$ hidden units.}
 	\label{fig:multilayer-perceptron}
