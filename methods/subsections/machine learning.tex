@@ -1,4 +1,5 @@
-Machine Learning (ML), particularly Deep Learning, has significantly advanced the Music Information Retrieval (MIR) field by enabling automatic feature learning, improving classification and analysis tasks, and facilitating novel applications like music generation and source separation. Adopting techniques like Convolutional Neural Networks (CNNs), Recurrent Neural Networks (RNNs), and generative models has led to better performance in tasks such as music classification, tagging, recommendation, transcription, synthesis, and analysis. As a result, ML has unlocked the potential of MIR, revolutionizing how we interact with, understand, and create music.
+\section{Introduction}
+Machine Learning (ML), and particularly Deep Learning, has significantly advanced the MIR field by enabling automatic feature learning, improving classification and analysis tasks, and facilitating novel applications like music generation and source separation. Adopting musically motivated neural network architectures \cite{musicmotivCNN} blends together musical concepts and perceptual approaches and use this knowledge to analyze and understand music in a way that goes beyond traditional music analysis techniques. 
 
 \section{Artificial Neural Networks (ANNs)}
 A neural network, formally known as an artificial neural network (ANN), is a computational model inspired by the structure and functionality of biological neural networks. It is a mathematical framework designed to process information and perform tasks like pattern recognition, classification, and regression by mimicking how biological neurons and synapses operate. ANNs comprise interconnected layers of artificial neurons or nodes, each performing a mathematical transformation on the input data to generate an output. The connections between these neurons, often called "weights," are adjusted during learning to optimize the network's performance on a given task.
@@ -6,33 +7,40 @@ A neural network, formally known as an artificial neural network (ANN), is a com
 \subsection{About ANNs}
 The concept of neural networks can be traced back to the early 20th century, with the pioneering work of Warren McCulloch and Walter Pitts in 1943. They proposed a mathematical model of a neuron known as the McCulloch-Pitts neuron, which provided a foundation for future research in artificial intelligence. However, Frank Rosenblatt's invention of the perceptron in 1957 marked the beginning of modern neural networks. The perceptron is a single-layer neural network capable of learning linearly separable patterns.
 
-In a more technical description, an ANN consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. Some standard activation functions include the sigmoid, hyperbolic tangent (tanh), and rectified linear unit (ReLU). The output of the last layer represents the prediction or classification result.
-
 %Single neuron
 \input{figures/neural networks/Single Neuron}
+
+In a more technical description, an ANN consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. Some standard activation functions include the sigmoid, hyperbolic tangent (tanh), and rectified linear unit (ReLU). The output of the last layer represents the prediction or classification result.
+
 %NN
 \input{figures/neural networks/Network_graph}
+
 %Multi-layer_NN
 \input{figures/neural networks/Multi-layer_NN}
+
+\section{Deep Learning (DL)}
+
 %Backpropagation
 \input{figures/neural networks/Back_propagation}
 
-\section{Convolutional Neural Network (CNN)}
+\subsection{Convolutional Neural Network (CNN)}
 
 A Convolutional Neural Network (CNN), is a deep-learning neural network. The architecture of a CNN is composed of several layers, including:
 
 \begin{itemize}
 
-\item Convolutional layers: These layers apply a convolution operation to the input data, effectively learning local patterns and features in the image. The raw audio data is typically transformed into a spectrogram or a Mel-spectrogram representation, which can be considered an image-like 2D representation of the audio data. The convolutional layers are designed to learn local patterns and features in the audio data
+\item \textbf{Convolutional layers:} These layers apply a convolution operation to the input data. The raw audio data can be either a 1D signal or transformed into a spectrogram or a Mel-spectrogram representation, which can be considered an image-like 2D representation of the audio data. The convolutional layers are designed to effectively learn local patterns and features in the audio data \footnote{For a visual explanation of convolution, see this video: \url{https://youtu.be/KuXjwB4LzSA}}.
+
+\textbf{1D Convolution Example:} Given a 1D input signal $I = [i_1, i_2, ..., i_n]$ and a filter (or kernel) $K = [k_1, k_2, ..., k_m]$, the convolution operation is defined as $(I * K)j = \sum{u=1}^{m} I_{j-u+1} K_u$, where $j$ ranges from $1$ to $n-m+1$, and $I * K$ represents the resulting feature vector after applying the convolution. The objective of the 1D convolution operation is to slide the filter over the input signal and compute the element-wise product and sum for each local region, effectively learning and detecting local patterns in the input data.
+
+\item \textbf{Pooling layers:} These layers downsample the data, reducing the spatial or temporal dimensions of the input while retaining important information. A common pooling operation is the max-pooling, which can be defined as follows: given an input matrix $I$ and a pooling window of size $m \times n$, the max-pooling operation selects the maximum value within each non-overlapping $m \times n$ region of the input matrix. This operation effectively reduces the input's dimensions while retaining the most important information in each region.
 \vspace*{3mm}
 
-\item Pooling layers: These layers downsample the data, reducing the spatial dimensions of the input while retaining important information. They can also be used to downsample the data and reduce the temporal dimensions of the input while retaining important information. 
+\item \textbf{Fully connected layers:} These layers connect every neuron in one layer to every neuron in another, allowing the network to learn non-linear combinations of the features learned in the previous layers. Mathematically, a fully connected layer can be represented as $Y = XW + b$, where $X$ is the input matrix, $W$ is the weight matrix, $b$ is the bias vector, and $Y$ is the output matrix. The non-linearity is introduced through the activation function, which is applied element-wise to the output matrix, such as $Y' = f(Y)$, where $f$ represents the activation function and $Y'$ is the transformed output matrix.
 \vspace*{3mm}
 
-\item Fully connected layers: These layers connect every neuron in one layer to every neuron in another, allowing the network to learn non-linear combinations of the features learned in the previous layers.
-\vspace*{3mm}
+\item \textbf{Output layer:} The output layer produces the final predictions of the network.
 
-\item Output layer: The output layer produces the final predictions of the network.
 \end{itemize}
 
 Compared to a traditional neural network, CNNs are more computationally efficient and have less number of parameters to train. This makes them more feasible for large-scale datasets and real-world problems.
@@ -40,7 +48,6 @@ Compared to a traditional neural network, CNNs are more computationally efficien
 On top of that, one of the main advantages of using CNNs for audio analysis is that they can automatically and adaptively learn temporal hierarchies of features from audio data, which traditional audio processing methods may not do effectively. 
 
 %CNN
-A high-level illustration of a simple convolutional neural network indicating convolutional layers, pooling layers, and fully-connected layers without details on the number of channels or neurons per layer or the input data size can be seen in XXX.
 \input{figures/neural networks/CNN_diagram}
 
 %Single CNN

@@ -1,9 +1,34 @@
 \section{Model architecture and training strategy}
-Self-Supervised Learning (SSL) is a technique to learn latent representations from large-scale data without relying on human annotations. Instead, it solves pretext tasks by creating different views of an object that are highly correlated. An SSL model is then trained to generalize objects' representations in a latent high-dimensional space. To achieve this, the model contrasts the representations of the same object with other objects (defined as negative samples) during training. By doing so, a contrastive SSL model is expected to produce more distinctive representations. 
+\section{Self-Supervised Learning (SSL)}
+Self-Supervised Learning (SSL) is a technique that leverages inductive bias to learn latent representations from large-scale data without relying on human annotations. By focusing on pretext tasks that create different, highly correlated views of an object, SSL models exploit the underlying structure and known variance in the data. 
+
+An SSL model is trained to generalize objects' representations in a latent high-dimensional space. To achieve this, the model contrasts the representations of the same object with other objects (defined as negative samples) during training. By doing so, a contrastive SSL model is expected to produce more distinctive representations \cite{audioselfsupsurvey}. Several MIR fields, such as music genre classification, or music similarity (both in the symbolic \cite{musicviaselfsup} and time domain \cite{epidemic}), have taken advantage of SSL techniques to improve their performance and alleviate the need for large amounts of labeled data \cite{audioselfsupsurvey}.
+
+\subsubsection{Strengths}
+
+\begin{enumerate}
+    \item Reduces dependency on labeled data: SSL capitalizes on inductive bias to learn from large amounts of unlabeled data, which is particularly beneficial when obtaining labeled data is expensive or time-consuming.
+    \item Encourages feature extraction: SSL encourages learning useful features or representations from the data, which can lead to better generalization and improved performance on downstream tasks.
+    \item Transfer learning: SSL models can be fine-tuned for specific tasks with smaller labeled datasets, allowing for more efficient training and potentially better results.
+    \item Robustness: SSL models can learn robust features from noisy or incomplete data, improving their ability to handle real-world scenarios.
+\end{enumerate}
+
+\subsubsection{Flaws}
+
+\begin{enumerate}
+    \item Less interpretable: SSL models tend to be less interpretable than supervised models, as their learning mechanisms are less explicit and rely more on inductive bias.
+    \item Computational complexity: SSL models often require more training iterations and larger batch sizes, which can result in higher computational costs.
+    \item Sensitive to hyperparameters: SSL models can be sensitive to hyperparameters such as learning rate, batch size, and the choice of the contrastive loss function, which may require extensive tuning.
+    \item Limited applicability: SSL may not be suitable for all tasks or domains, as its performance depends on the quality and relevance of the self-supervised pretext tasks and the effectiveness of the inductive bias in capturing the known variance in the data.
+\end{enumerate} 
+
+\subsection{Contrastive Learning of Musical Representations (CLMR)}
+
+Contrastive Learning of Musical Representations (CLMR) is a self-supervised learning technique that aims to learn discriminative representations of music by leveraging its structure and content without explicit labels \cite{CLMR2021}\cite{multisourceclmr2023}. The learning process involves creating different augmentations or transformations of the same musical piece as positive pairs and using other randomly selected pieces as antagonistic pairs. A neural network is then trained to minimize a contrastive loss function, which encourages the model to produce similar representations for positive pairs and dissimilar representations for opposing pairs. Once trained, these learned representations can be utilized for various MIR downstream tasks.
 
 \section{}
 
-We propose using a Triple Siamese Network to train a model for music similarity retrieval. Specifically, we aim to minimize the loss function between the anchor, positive, and negative samples by using online triplet mining.
+We propose using a Triple Siamese Network to train a model for music similarity retrieval \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between the anchor, positive, and negative samples by using online triplet mining.
 
 The positive samples are created by transforming and augmenting the original samples while preserving their perceptual underlying musical language. This is achieved using techniques such as time-stretching, pitch-shifting, and adding noise to the samples. By doing so, we aim to enhance the diversity of the positive samples and improve the model's ability to retrieve similar-sounding samples that share the same underlying musical language.
 
