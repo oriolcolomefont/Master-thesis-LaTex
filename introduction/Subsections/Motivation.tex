@@ -1,8 +1,11 @@
 \section{Motivation}
+As a music lover, professional musician, and connoisseur, I am interested in gaining a deeper understanding of the fundamental building of musical composition, the various techniques used to create musical works, and capturing underlying relationships among them. I am deeply interested in learning how to retrieve useful embedded information within the music. 
+
+\subsection{Beyond Digital Signal Processing (DSP)}
 
 We argue that MIR research needs to incorporate a more balanced approach that considers the interdisciplinary nature of music and the importance of other domains beyond DSP.
 
-Let's pick a core MIR task as a sample to display such complexity: Music Structure Analysis (MSA), an interdisciplinary field that aims to understand the structure of music\cite{Nieto2020Audio-BasedApplications}. However, due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification. The main principles of MSA were initially defined as homogeneity, novelty, and repetition, with the addition of regularity.
+Let's pick a core MIR task as a sample to display such complexity: Music Structure Analysis (MSA), an interdisciplinary field that aims to understand the structure of music\cite{Nieto2020Audio-BasedApplications}. However, due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}. The main principles of MSA were initially defined as homogeneity, novelty, and repetition, with the addition of regularity.
 
 The checkerboard kernel technique is a simple and effective method for Music Structure Analysis (MSA) based on the homogeneity principle. The kernel, with a checkerboard-like structure, is convolved over the main diagonal of a Self-Similarity Matrix (SSM) such as $S_{ij}$ is the similarity between time frames $i$ and $j$, $\vec{x}_i$ is the vector representation of time frame $i$, and $\left| \vec{x}_i \right|$ is the Euclidean norm of vector $\vec{x}_i$. The dot product of two vectors $\vec{x}_i$ and $\vec{x}_j$ is denoted by $\vec{x}_i \cdot \vec{x}_j$.
 
@@ -16,13 +19,11 @@ Mathematical operations are used on predefined principles such as homogeneity an
 
 Combining technical tasks, aural skills, and music perception is challenging due to the complexity and subjectivity of musical perception, discrepancies between the features extracted by DSP techniques and the features perceived by humans, and the variability of musical signals and individual differences in musical perception. DSP techniques may not always reflect how humans perceive music and may not capture the subtle variations in timing or harmonic relationships critical to musical perception. Variability in musical signals due to instrumentation, genre, and performance style further complicates the development of DSP techniques that can be generalized to different musical contexts.
 
-As a music lover, professional musician, and connoisseur, I am interested in gaining a deeper understanding of the fundamental building of musical composition, the various techniques used to create musical works, and capturing underlying relationships among them using DN.  I am eager to learn how DNNs listen to music. I am deeply interested in learning how to retrieve embedded information within music. 
-
 \section{About aural skills and high-level perceptual}
 
 %%%%%%%%%%%%%%%%%%
 
-\begin{figure}[!ht]
+\begin{figure}[h]
 \includegraphics[clip,width=\columnwidth]{figures/schenkerian analysis/SchubertOp4no3.png}% 
 \caption{Small excerpt of \textit{Wandrers Nachtlied, Op. 4, D. 224} by Franz Schubert. We can see the passage's original score, the schenkerian unfolding of the melody, the chord degrees, and the tonal function.}
 \label{fig:Wandrers Nachtlied, Op. 4, D. 224}
@@ -34,6 +35,14 @@ I have consistently been inspired by researchers who strive to uncover musical g
 
 Schenkerian Analysis:
 Schenkerian Analysis, developed by Austrian music theorist Heinrich Schenker, analyzes tonal music focusing on its underlying structure. It seeks to reveal the hierarchical relationships between pitches, based on the premise that all tonal music has a fundamental structure known as the "Ursatz" or "basic shape." The Ursatz consists of a stepwise descending line (Urlinie) supported by a bass arpeggiation (Bassbrechung). Schenkerian Analysis reduces a musical composition to its essential elements, enabling the analyst to observe how the work's various layers contribute to the overall structure. It is worth mentioning that such analysis is done in the symbolic domain.
+
+Schenkerian analysis is a method of analyzing tonal music, focusing on hierarchical relationships between musical elements. The theory is based on the ideas of Heinrich Schenker, who sought to show that free composition was an elaboration of strict composition, particularly two-voice counterpoint. Schenker's theory includes several key concepts:
+
+Prolongational levels: Hierarchically organized levels of elaboration, with each level representing a new freedom with respect to the rules of strict composition.
+Harmony: The basic component is the Stufe (scale degree), and Schenker's theory is monotonal, meaning that the work as a whole projects a single key.
+Counterpoint and voice-leading: Schenker emphasizes the importance of two-voice counterpoint and melodic fluency (stepwise motion) in both strict and free composition.
+Ursatz (fundamental structure): The underlying structure from which a work originates, consisting of a fundamental line (Urlinie) and bass arpeggiation (Bassbrechung).
+Schenkerian analysis is about showing how each work elaborates the background structure in a unique way, determining its identity and meaning. While the theory has been criticized for reducing all tonal works to a few background structures, Schenker argues that the focus is on individual elaboration.
 
 George Russell's Lydian Chromatic Concept:
 George Russell's Lydian Chromatic Concept of Tonal Organization is an innovative approach to understanding and organizing musical relationships. Introduced in the 1950s, the theory asserts that the Lydian mode, rather than the traditional major scale, is the accurate parent scale in Western music. The Lydian scale is characterized by a raised fourth degree, giving it a brighter and more consonant sound. Russell's concept revolves around "chord modes," derived from a chord's parent Lydian scale. This system allows for greater harmonic flexibility and a broader range of tonal colors, influencing the development of jazz and contemporary music.
