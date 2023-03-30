@@ -5,21 +5,24 @@ Contrastive Self-Supervised Learning for Musical Representations (CSSLMR) is an 
 
 The CSSL methodology involves the following steps:
 
-\textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as negative pairs.
-\textbf{Contrastive Learning:} Train a neural network to minimize a contrastive loss function, which encourages the model to produce similar representations for positive pairs and dissimilar representations for negative pairs.
-\textbf{Latent Representation:} Utilize the learned representations for various MIR downstream tasks, such as music genre classification or music similarity, both in the symbolic and time domains.
-\subsubsection{Strengths}
-
-CSSL inherits the strengths of both SSL and CLMR:
-
 \begin{enumerate}
-\item Reduces dependency on labeled data: By leveraging inductive bias and the structure of musical data, CSSL can learn from large amounts of unlabeled data.
-\item Encourages feature extraction: CSSL promotes learning useful and discriminative features or representations
+\item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
+\item \textbf{Contrastive Learning:} Train a neural network to minimize a contrastive loss function, which encourages the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
+\item\textbf{Latent Representation:} Utilize the learned representations for various MIR downstream tasks, such as music genre classification or music similarity, both in the symbolic and time domains.
 \end{enumerate} 
 
-\section{}
+\subsubsection{Strengths}
 
-We propose using a Triple Siamese Network to train a model for music similarity retrieval \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between the anchor, positive, and negative samples by using online triplet mining.
+CSSLMR inherits the strengths of both SSL and CLMR:
+
+\begin{enumerate}
+\item Reduces dependency on labeled data: by leveraging inductive bias (assuming a known invariance across the data samples), CSSL can learn from large amounts of unlabeled data.
+\item Encourages feature extraction: CSSLMR promotes learning useful and discriminative features or representations
+\end{enumerate} 
+
+\section{Model architecture}
+
+We propose using a Triple Siamese Network to train a model for music similarity retrieval \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between the anchor, positive, and negative samples by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
 
 The positive samples are created by transforming and augmenting the original samples while preserving their perceptual underlying musical language. This is achieved using techniques such as time-stretching, pitch-shifting, and adding noise to the samples. By doing so, we aim to enhance the diversity of the positive samples and improve the model's ability to retrieve similar-sounding samples that share the same underlying musical language.
 
