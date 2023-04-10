@@ -31,7 +31,17 @@ A Convolutional Neural Network (CNN) is a deep-learning neural network. The arch
 
 \item \textbf{Convolutional layers:} These layers apply a convolution operation to the input data. The raw audio data can be either a 1D signal or transformed into a spectrogram or a Mel-spectrogram representation, which can be considered an image-like 2D representation of the audio data. The convolutional layers are designed to effectively learn local patterns and features in the audio data \footnote{For a visual explanation of convolution, see this video: \url{https://youtu.be/KuXjwB4LzSA}}.
 
-\textbf{1D Convolution Example:} Given a 1D input signal $I = [i_1, i_2, ..., i_n]$ and a filter (or kernel) $K = [k_1, k_2, ..., k_m]$, the convolution operation is defined as $(I * K)j = \sum{u=1}^{m} I_{j-u+1} K_u$, where $j$ ranges from $1$ to $n-m+1$, and $I * K$ represents the resulting feature vector after applying the convolution. The objective of the 1D convolution operation is to slide the filter over the input signal and compute the element-wise product and sum for each local region, effectively learning and detecting local patterns in the input data.
+\textbf{Convolution:} It involves sliding a small window, called a filter or kernel, over input data to compute the dot product between the kernel and each local region of the data. The result is a new feature map highlighting patterns and essential information.
+
+Given a 2D input data represented as a matrix $I = [i_{ij}]{m \times n}$ and a filter $K = [k{ij}]_{p \times q}$, the convolution operation is defined as:
+
+$$(I * K)_{kl} = \sum_{i=1}^{p} \sum_{j=1}^{q} i_{k+i-1, l+j-1}k_{ij}$$
+
+Here, $k$ ranges from $1$ to $m-p+1$ and $l$ ranges from $1$ to $n-q+1$. The resulting feature map after applying the convolution is denoted by $(I * K)_{kl}$.
+
+The convolution operation slides the kernel $K$ over the input image $I$, performing an element-wise multiplication and sum of the local region centered at pixel $(k,l)$ to compute the value of each element in the output feature map, $(I * K)_{kl}$. This process is repeated for each pixel $(k,l)$, resulting in a new feature map that captures local patterns in the input image.
+
+\input{figures/neural networks/convolution}
 
 \item \textbf{Pooling layers:} These layers downsample the data, reducing the spatial or temporal dimensions of the input while retaining important information. A joint pooling operation is the max-pooling, which can be defined as follows: given an input matrix $I$ and a pooling window of size $m \times n$, the max-pooling operation selects the maximum value within each non-overlapping $m \times n$ region of the input matrix. This operation effectively reduces the input's dimensions while retaining the most essential information in each region.
 \vspace*{3mm}
