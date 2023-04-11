@@ -12,6 +12,9 @@ The concept of neural networks can be traced back to the early 20th century, wit
 
 In a more technical description, an ANN consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. Some standard activation functions include the sigmoid, hyperbolic tangent (tanh), and rectified linear unit (ReLU). The output of the last layer represents the prediction or classification result.
 
+%Activation equation
+\input{figures/neural networks/activation}
+
 %NN
 \input{figures/neural networks/Network_graph}
 
@@ -29,9 +32,9 @@ A Convolutional Neural Network (CNN) is a deep-learning neural network. The arch
 
 \begin{itemize}
 
-\item \textbf{Convolutional layers:} These layers apply a convolution operation to the input data. The raw audio data can be either a 1D signal or transformed into a spectrogram or a Mel-spectrogram representation, which can be considered an image-like 2D representation of the audio data. The convolutional layers are designed to effectively learn local patterns and features in the audio data \footnote{For a visual explanation of convolution, see this video: \url{https://youtu.be/KuXjwB4LzSA}}.
+\item \textbf{Convolutional layers:} These layers apply a convolution operation to the input data. The convolutional layers are designed to effectively learn local patterns and features in the audio data \footnote{For a visual explanation of convolution, see this video: \url{https://youtu.be/KuXjwB4LzSA}}.
 
-\textbf{Convolution:} It involves sliding a small window, called a filter or kernel, over input data to compute the dot product between the kernel and each local region of the data. The result is a new feature map highlighting patterns and essential information.
+A convolution operation involves sliding a small window, called a filter or kernel, over input data to compute the dot product between the kernel and each local region of the data. The result is a new feature map highlighting patterns and essential information.
 
 Given a 2D input data represented as a matrix $I = [i_{ij}]{m \times n}$ and a filter $K = [k{ij}]_{p \times q}$, the convolution operation is defined as:
 
