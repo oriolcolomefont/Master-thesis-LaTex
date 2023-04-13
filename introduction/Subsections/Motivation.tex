@@ -1,26 +1,6 @@
 \section{Motivation}
 As a music lover, professional musician, and connoisseur, I am interested in gaining a deeper understanding of the fundamental building of musical composition, the various techniques used to create musical works, and capturing underlying relationships among them. I am deeply interested in learning how to retrieve useful embedded information within the music. 
 
-\subsection{Beyond Digital Signal Processing (DSP)}
-
-We argue that MIR research needs to incorporate a more balanced approach that considers the interdisciplinary nature of music and the importance of other domains beyond DSP.
-
-Let's pick a core MIR task as a sample to display such complexity: Music Structure Analysis (MSA), an interdisciplinary field that aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. However, due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}. 
-
-The main principles of MSA were initially defined as homogeneity, novelty, and repetition, with the addition of regularity. The checkerboard kernel technique is a simple and effective method for MSA based on the homogeneity principle. The kernel, with a checkerboard-like structure, is convolved over the main diagonal of a Self-Similarity Matrix (SSM) such as $S_{ij}$ is the similarity between time frames $i$ and $j$, $\vec{x}_i$ is the vector representation of time frame $i$, and $\left| \vec{x}_i \right|$ is the Euclidean norm of vector $\vec{x}_i$. The dot product of two vectors $\vec{x}_i$ and $\vec{x}_j$ is denoted by $\vec{x}_i \cdot \vec{x}_j$.
-
-\input{introduction/subsections/equations/SSM equation}
-
-This yields a novelty curve highlighting sudden changes in the selected musical features from which to extract the segment boundaries.
-
-\input{introduction/subsections/equations/Novelty equation}
-
-Mathematical operations are used on predefined principles such as homogeneity and repetition to analyze a musical structure. It analyzes features extracted from a musical signal and identifies peaks in a novelty curve to extract segment boundaries. In contrast, human aural skills rely on the perception and interpretation of music by human listeners based on cultural and academic background. They can capture subtle nuances of musical structure, but those still are subjective and can vary across listeners.
-
-Combining technical tasks, aural skills, and music perception is challenging due to the complexity and subjectivity of musical perception, discrepancies between the features extracted by DSP techniques and the features perceived by humans, and the variability of musical signals and individual differences in musical perception. 
-
-Purely mathematical approaches may not always reflect how humans perceive music and may not capture the subtle variations in timing or harmonic relationships critical to musical perception. Variability in musical signals due to instrumentation, genre, and performance style further complicates the development of these techniques that can be generalized to different musical contexts.
-
 \section{About music aural skills and high-level perceptual concepts}
 
 I have consistently been inspired by musicians and researchers who strive to uncover musical ground truth within the existing tonal paradigm, such as Heinrich Schenker \cite{}, or by challenging it, as exemplified by George Russell \cite{LydianRussell}. Both approaches aim to identify abstract concepts that reinforce or disrupt the tonal foundation. Their ultimate goal is to advance the tonal landscape, providing musicians with a dependable playground for growth, development, and further understanding tonal paradigms.
@@ -58,4 +38,26 @@ The glossary also includes related articles, references, and external links for 
 %MESOSTRUC
 %%%%%%%%%%%%%
 
-Mesostructures \cite{Mesostructures2023} are intermediate levels of articulation between waveshapes' microstructure and musical forms' macrostructure. Examples of mesostructures include melody, arpeggios, syncopation, polyphonic grouping, and textural contrast. The article notes that mesostructures have received limited attention in deep learning, as current models only focus on microstructures. The article proposes a new approach to mesostructural audio modeling, which involves a differentiable arpeggiator and time-frequency scattering. The article also discusses the need for a time-invariant and multiscale differentiable time-frequency model of similarity at the level of both local spectra and spectrotemporal modulations.
+Mesostructures \cite{Mesostructures2023} are intermediate levels of articulation between waveshapes' microstructure and musical forms' macrostructure. Examples of mesostructures include melody, arpeggios, syncopation, polyphonic grouping, and textural contrast. The article notes that mesostructures have received limited attention in deep learning, as current models only focus on microstructures. The article proposes a new approach to mesostructural audio modeling, which involves a differentiable arpeggiator and time-frequency scattering. The report also discusses the need for a time-invariant and multiscale differentiable time-frequency model of similarity at the level of both local spectra and spectrotemporal modulations.
+
+\subsection{Beyond Digital Signal Processing (DSP)}
+
+We argue that MIR research needs to incorporate a more balanced approach that considers the interdisciplinary nature of music and the importance of other domains beyond DSP.
+
+\subsection{Sample MIR task}
+
+Let's pick a core MIR task as a sample to display such complexity: Music Structure Analysis (MSA), an interdisciplinary field that aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. However, due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}. 
+
+The main principles of MSA were initially defined as homogeneity, novelty, and repetition, with the addition of regularity. The checkerboard kernel technique is a simple and effective method for MSA based on the homogeneity principle. The kernel, with a checkerboard-like structure, is convolved over the main diagonal of a Self-Similarity Matrix (SSM) such as $S_{ij}$ is the similarity between time frames $i$ and $j$, $\vec{x}_i$ is the vector representation of time frame $i$, and $\left| \vec{x}_i \right|$ is the Euclidean norm of vector $\vec{x}_i$. The dot product of two vectors $\vec{x}_i$ and $\vec{x}_j$ is denoted by $\vec{x}_i \cdot \vec{x}_j$.
+
+\input{introduction/subsections/equations/SSM equation}
+
+This yields a novelty curve highlighting sudden changes in the selected musical features from which to extract the segment boundaries.
+
+\input{introduction/subsections/equations/Novelty equation}
+
+Mathematical operations are used on predefined principles such as homogeneity and repetition to analyze a musical structure. It explores features extracted from a musical signal and identifies peaks in a novelty curve to extract segment boundaries. In contrast, human aural skills rely on the perception and interpretation of music by human listeners based on cultural and academic background. They can capture subtle nuances of musical structure, but those still are subjective and can vary across listeners.
+
+Combining technical tasks, aural skills, and music perception is challenging due to the complexity and subjectivity of musical perception, discrepancies between the features extracted by DSP techniques and the features perceived by humans, and the variability of musical signals and individual differences in musical perception. 
+
+Purely mathematical approaches may not always reflect how humans perceive music and may not capture the subtle variations in timing or harmonic relationships critical to musical perception. Variability in musical signals due to instrumentation, genre, and performance style further complicates the development of these techniques that can be generalized to different musical contexts.

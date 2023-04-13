@@ -1,18 +1,18 @@
 \section{Model architecture and training strategy}
-Piaget's theory of cognitive development \cite{Piagets_Theory_of_Cognitive_Development} posits that children acquire knowledge from sensory and motor experiences in their early stages, from birth to around 18 months. This period referred to as the \textit{sensorimotor stage}, sees the emergence of early representational thought through basic actions such as sucking, grasping, looking, and listening. As children progress through different developmental stages until adolescence and adulthood, their reasoning progressively moves toward abstract ideas and deductive logic. Schemas, higher-order cognitive structures hypothesized to underlie many aspects of human knowledge and skill, emerge during this process, which Piaget interprets through an equilibration mechanism that balances new information with old knowledge. This mechanism involves \textit{assimilation} and \textit{accommodation}, which entail taking in new information to fit pre-existing schemas and modifying existing schemas resulting from new information. In the context of learning, complex structures are based on simpler ones, and transfer of learning occurs when dynamic structures capable of generalization are created. \cite{audioselfsupsurvey}
+Piaget's theory of cognitive development \cite{Piagets_Theory_of_Cognitive_Development} posits that children acquire knowledge from sensory and motor experiences in their early stages, from birth to around 18 months. This period, called the \textit{sensorimotor stage}, sees the emergence of early representational thought through basic actions such as sucking, grasping, looking, and listening. As children progress through different developmental stages until adolescence and adulthood, their reasoning progressively moves toward abstract ideas and deductive logic. Schemas, higher-order cognitive structures hypothesized to underlie many aspects of human knowledge and skill, emerge during this process, which Piaget interprets through an equilibration mechanism that balances new information with old knowledge. This mechanism involves \textit{assimilation} and \textit{accommodation}, which entail taking in further information to fit pre-existing schemas and modifying existing schemas resulting from the latest news. In the context of learning, complex structures are based on simpler ones, and knowledge transfer occurs when dynamic systems capable of generalization are created. \cite{audioselfsupsurvey}
 
 There are similarities between assimilation and accommodation in Piaget's theory of cognitive development and backpropagation in DL, both of which involve modifying existing structures based on new information. However, it should be noted that these processes' underlying mechanisms and contexts are distinct. While assimilation and accommodation involve modifying mental structures to incorporate new information, backpropagation entails adjusting neural network weights to improve output predictions. Assimilation and accommodation occur in cognitive development, while backpropagation is specific to machine learning. Thus, while these processes have broad similarities, they are fundamentally different and cannot be directly compared in detail.
 
 \subsection{Contrastive Self-Supervised Learning of Musical Representations (CSSLMR)}
 
-Contrastive Self-Supervised Learning of Musical Representations (CSSLMR) is an approach that combines the principles of Self-Supervised Learning (SSL) and Contrastive Learning of Musical Representations (CLMR) to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
+Contrastive Self-Supervised Learning of Musical Representations (CSSLMR) is an approach that combines the principles of Self-Supervised Learning (SSL) \cite{audioselfsupsurvey} and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
 
 The CSSLMR methodology involves the following steps:
 
 \begin{enumerate}
 \item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
-\item \textbf{Contrastive Learning:} Train a neural network to minimize a contrastive loss function, which encourages the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
-\item\textbf{Latent Representation:} Utilize the learned representations for various MIR downstream tasks, such as music genre classification or music similarity, both in the symbolic and time domains.
+\item \textbf{Contrastive Learning:} Train a neural network to minimize a contrastive loss function, encouraging the model to produce similar representations for positive and dissimilar representations for antagonistic pairs.
+\item\textbf{Latent Representation:} Utilize the learned representations for various MIR downstream tasks, such as music genre classification or similarity, both in the symbolic and time domains.
 \end{enumerate} 
 
 \subsubsection{Strengths}
@@ -20,21 +20,28 @@ The CSSLMR methodology involves the following steps:
 CSSLMR inherits the strengths of both SSL and CLMR:
 
 \begin{enumerate}
-\item Reduces dependency on labeled data: by leveraging inductive bias (assuming a known invariance across the data samples), CSSL can learn from large amounts of unlabeled data.
-\item Encourages feature extraction: CSSLMR promotes learning useful and discriminative features or representations
+\item Reduces dependency on labeled data: by leveraging inductive bias (assuming a general invariance across the data samples), CSSL can learn from large amounts of unlabeled data.
+\item Encourages feature extraction: CSSLMR promotes learning practical and discriminative representations.
 \end{enumerate} 
 
 \section{Model architecture}
 
-We propose using a Triple Siamese Network to train a model for music similarity retrieval \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between the anchor, positive, and negative samples by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
-
-The positive samples are created by transforming and augmenting the original samples while preserving their perceptual underlying musical language. This is achieved using techniques such as time-stretching, pitch-shifting, and adding noise to the samples. By doing so, we aim to enhance the diversity of the positive samples and improve the model's ability to retrieve similar-sounding samples that share the same underlying musical language.
-
-On the other hand, the negative samples are created by shuffling and scrambling the original samples while maintaining their production texture. This is achieved using random segment selection, time-domain filtering, and frequency-domain masking. The goal is to maintain the production texture of the samples while disrupting their underlying composition.
+We propose using a Triple Siamese Network to train a model for music similarity retrieval \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between an anchor, a positive, and a negative sample by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
 
 Using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
 
- Implements the triplet loss function, commonly used for learning embeddings in metric learning problems. The triplet loss aims to ensure that the distance between an anchor and a positive sample (both from the same class) is smaller than the distance between the anchor and a negative sample (from a different class) by a margin.
+
+\subsection{Encoder}
+
+
+\subsection{Data augmentation and transformation pipeline}
+The positive samples are created by transforming and augmenting the original samples while preserving their perceptual underlying musical language. This is achieved using techniques such as time-stretching, pitch-shifting, and adding noise to the samples. By doing so, we aim to enhance the diversity of the positive samples and improve the model's ability to retrieve similar-sounding samples that share the same underlying musical language.
+
+On the other hand, the negative samples are created by shuffling and scrambling the original samples while maintaining their production texture. This is achieved using random segment selection, time-domain filtering, and frequency-domain masking. The goal is to retain the texture production of the samples while disrupting their underlying composition.
+
+\subsection{Loss function}
+
+Implements the triplet loss function, commonly used for learning embeddings in metric learning problems. The triplet loss aims to ensure that the distance between an anchor and a positive sample (both from the same class) is smaller than the distance between the anchor and a negative sample (from a different class) by a margin.
 
 $\mathcal{L} = \frac{1}{N}\sum_{i=1}^{N} \max \left( d\left(a_i, p_i\right) - d\left(a_i, n_i\right) + m, 0 \right)$
 

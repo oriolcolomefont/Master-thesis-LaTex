@@ -10,18 +10,22 @@ The concept of neural networks can be traced back to the early 20th century, wit
 %Single neuron
 \input{figures/neural networks/Single Neuron}
 
+%NN
+\input{figures/neural networks/Network_graph}
+
 In a more technical description, an ANN consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. Some standard activation functions include the sigmoid, hyperbolic tangent (tanh), and rectified linear unit (ReLU). The output of the last layer represents the prediction or classification result.
 
 %Activation equation
 \input{figures/neural networks/activation}
 
-%NN
-\input{figures/neural networks/Network_graph}
-
 %Multi-layer_NN
 \input{figures/neural networks/Multi-layer_NN}
 
 \section{Deep Learning (DL)}
+
+Deep learning is a machine learning subfield that utilizes deep neural networks to learn hierarchical data representations automatically. These networks handle complex, high-dimensional data across domains such as computer vision and natural language processing. Their effectiveness stems from their nonlinear modeling capabilities and scalability with large datasets.
+
+A core algorithm in deep learning is backpropagation which efficiently computes gradients of the loss function concerning the network's parameters. It involves a two-step process: (1) forward pass, where input data propagates through the network to generate predictions, and (2) backward pass, where the error between predictions and ground truth is calculated and propagated back through the network. This process updates the network's parameters using gradient descent, which minimizes the loss function and improves the model's performance.
 
 %Backpropagation
 \input{figures/neural networks/Back_propagation}
@@ -45,11 +49,16 @@ Here, $k$ ranges from $1$ to $m-p+1$ and $l$ ranges from $1$ to $n-q+1$. The res
 The convolution operation slides the kernel $K$ over the input image $I$, performing an element-wise multiplication and sum of the local region centered at pixel $(k,l)$ to compute the value of each element in the output feature map, $(I * K)_{kl}$. This process is repeated for each pixel $(k,l)$, resulting in a new feature map that captures local patterns in the input image.
 
 \input{figures/neural networks/convolution}
+%Single CNN
+\input{figures/neural networks/Single_CNN}
 
-\item \textbf{Pooling layers:} These layers downsample the data, reducing the spatial or temporal dimensions of the input while retaining important information. A joint pooling operation is the max-pooling, which can be defined as follows: given an input matrix $I$ and a pooling window of size $m \times n$, the max-pooling operation selects the maximum value within each non-overlapping $m \times n$ region of the input matrix. This operation effectively reduces the input's dimensions while retaining the most essential information in each region.
+\item \textbf{Pooling layers:} These layers downsample the data, reducing the spatial or temporal dimensions of the input while retaining important information. A joint pooling operation is the max-pooling, which can be defined as follows: given an input matrix $I$ and a pooling window of size $m \times n$, the max-pooling operation selects the maximum value within each non-overlapping $m \times n$ region of the input matrix. This operation effectively reduces the input's dimensions while retaining the essential information in each area.
 \vspace*{3mm}
 
-\item \textbf{Fully connected layers:} These layers connect every neuron in one layer to every neuron in another, allowing the network to learn non-linear combinations of the features learned in the previous layers. Mathematically, a fully connected layer can be represented as $Y = XW + b$, where $X$ is the input matrix, $W$ is the weight matrix, $b$ is the bias vector, and $Y$ is the output matrix. The nonlinearity is introduced through the activation function, which is applied element-wise to the output matrix, such as $Y' = f(Y)$, where $f$ represents the activation function and $Y'$ is the transformed output matrix.
+%Single pooling layer
+\input{figures/neural networks/Single_Pooling_Layer}
+
+\item \textbf{Fully connected layers:} These layers connect every neuron in one layer to every neuron in another, allowing the network to learn non-linear combinations of the features discovered in the previous layers. Mathematically, a fully connected layer can be represented as $Y = XW + b$, where $X$ is the input matrix, $W$ is the weight matrix, $b$ is the bias vector, and $Y$ is the output matrix. The nonlinearity is introduced through the activation function, which is applied element-wise to the output matrix, such as $Y' = f(Y)$, where $f$ represents the activation function and $Y'$ is the transformed output matrix.
 \vspace*{3mm}
 
 \item \textbf{Output layer:} The output layer produces the final predictions of the network.
@@ -60,14 +69,8 @@ Compared to a traditional neural network, CNNs are more computationally efficien
 
 On top of that, one of the main advantages of using CNNs for audio analysis is that they can automatically and adaptively learn temporal hierarchies of features from audio data, which traditional audio processing methods may not do effectively. 
 
-%CNN
-\input{figures/neural networks/CNN_diagram}
-
-%Single CNN
-\input{figures/neural networks/Single_CNN}
-
-%Single pooling layer
-\input{figures/neural networks/Single_Pooling_Layer}
+%Colour CNN
+\input{figures/neural networks/colour CNN}
 
 \newpage
 

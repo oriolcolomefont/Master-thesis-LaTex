@@ -1,5 +1,6 @@
 \begin{SCfigure}[2\sidecaptionrelwidth][h]
 	\centering
+        \scalebox{0.8}{
 	\begin{tikzpicture}
 		\node at (1.5,4){\begin{tabular}{c}input data\\or input feature map\end{tabular}};
 	
@@ -25,6 +26,7 @@
 		\draw[fill=black,opacity=0.2,draw=black] (4.5,0.5) -- (6.5,0.5) -- (6.5,2.5) -- (4.5,2.5) -- (4.5,0.5);
 		\draw[fill=black,opacity=0.2,draw=black] (4,0) -- (6,0) -- (6,2) -- (4,2) -- (4,0);
 	\end{tikzpicture}
-	\caption[Illustration of a 2D convolutional layer.]{Illustration of a 2D single convolutional layer. If layer $l$ is a convolutional layer, the input data (if $l = 1$) or a feature map of the previous layer is convolved by different filters (or kernels) to yield the output feature maps of layer $l$.}
-	\label{fig:convolutional-layer}
+        }
+	\caption[Illustration of a 2D convolutional layer.]{\small{Illustration of a 2D single convolutional layer. If layer $l$ is a convolutional layer, the input data (if $l = 1$) or a feature map of the previous layer is convolved by different filters (or kernels) to yield the output feature maps of layer $l$.}}
+	\label{fig: convolutional layer}
 \end{SCfigure}

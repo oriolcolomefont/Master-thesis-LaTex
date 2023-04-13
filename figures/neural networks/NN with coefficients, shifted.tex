@@ -1,6 +1,4 @@
-\begin{figure}[ht]
-	\centering
-	% NEURAL NETWORK with coefficients, shifted
+% NEURAL NETWORK with coefficients, shifted
 \begin{tikzpicture}[x=2.2cm,y=1.4cm]
   \message{^^JNeural network, shifted}
   \readlist\Nnod{4,5,5,5,3} % array of number of nodes per layer
@@ -33,11 +31,8 @@
   }
   
   % LABELS
-  \node[above=0.8,align=center,mygreen!60!black] at (N1-1.90) {input\\[-0.2em]layer};
-  \node[above=0.5,align=center,myblue!60!black] at (N3-1.90) {hidden layers};
-  \node[above=1.3,align=center,myred!60!black] at (N\Nnodlen-1.90) {output\\[-0.2em]layer};
+  \node[above=5,align=center,mygreen!60!black] at (N1-1.90) {input\\[-0.2em]layer};
+  \node[above=2,align=center,myblue!60!black] at (N3-1.90) {hidden layers};
+  \node[above=10,align=center,myred!60!black] at (N\Nnodlen-1.90) {output\\[-0.2em]layer};
   
 \end{tikzpicture}
-	\caption[Network graph for a $(L+1)$-layer perceptron.]{\small{Network graph of a $(L+1)$-layer perceptron with $D$ input units and $C$ output units. The $l^{\text{th}}$ hidden layer contains $m^{(l)}$ hidden units.}}
-	\label{fig: multilayer color perceptron}
-\end{figure}
