@@ -32,9 +32,85 @@ Using the proposed triple siamese network and online triplet mining, we aim to t
 
 
 \subsection{Encoder}
+\subsubsection{SampleCNN}
+
+The SampleCNN model takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
+
+After the initial layer, there are 9 hidden layers with varying kernel sizes, strides, and channels according to the values specified in self.strides and self.hidden. Each hidden layer consists of:
+
+A 1D convolutional layer with the specified number of input and output channels, kernel size, stride of 1, and padding of 1.
+Batch normalization.
+ReLU activation.
+Max pooling with kernel size and stride equal to the stride value of the current layer.
+After the hidden layers, there's another 1D convolutional layer with 512 input channels, 512 output channels, kernel size of 3, stride of 1, and padding of 1. This is followed by batch normalization and ReLU activation.
+
+The output of the final convolutional layer is passed through an average pooling operation across the temporal dimension (dim=2).
+
+If the model is in supervised mode, dropout with a rate of 0.5 is applied.
+
+Finally, a linear layer with 512 input features and 128 output dimension features is applied to generate the embeddings.
+
+\input{figures/my model/SampleCNN}
+
+Layer 1:
+
+Input channels: 1
+Output channels: 128
+Layer 2:
+
+Input channels: 128
+Output channels: 128
+Layer 3:
+
+Input channels: 128
+Output channels: 128
+Layer 4:
+
+Input channels: 128
+Output channels: 128
+Layer 5:
+
+Input channels: 128
+Output channels: 256
+Layer 6:
+
+Input channels: 256
+Output channels: 256
+Layer 7:
+
+Input channels: 256
+Output channels: 256
+Layer 8:
+
+Input channels: 256
+Output channels: 256
+Layer 9:
+
+Input channels: 256
+Output channels: 256
+Layer 10:
+
+Input channels: 256
+Output channels: 256
+Layer 11:
+
+Input channels: 256
+Output channels: 256
+Layer 12:
+
+Input channels: 256
+Output channels: 512
+Layer 13:
+
+Input channels: 512
+Output channels: 512
+Layer 14:
+
+Input channels: 512
+Output channels: 128
 
 
-\subsection{Data augmentation and transformation pipeline}
+\subsection{Audio augmentation and transformation pipeline}
 The positive samples are created by transforming and augmenting the original samples while preserving their perceptual underlying musical language. This is achieved using techniques such as time-stretching, pitch-shifting, and adding noise to the samples. By doing so, we aim to enhance the diversity of the positive samples and improve the model's ability to retrieve similar-sounding samples that share the same underlying musical language.
 
 On the other hand, the negative samples are created by shuffling and scrambling the original samples while maintaining their production texture. This is achieved using random segment selection, time-domain filtering, and frequency-domain masking. The goal is to retain the texture production of the samples while disrupting their underlying composition.
@@ -52,7 +128,7 @@ $a_i$ is the $i$-th anchor
 $p_i$ is the $i$-th positive sample
 $n_i$ is the $i$-th negative sample
 $d(\cdot, \cdot)$ is the Euclidean distance function
-$m$ is the margin; in this case, it is set to 0.2 by default
+$m$ is the margin; commonly set to 0.2 by default
 The forward method computes the triplet loss as follows:
 
 Calculate the pairwise Euclidean distance between the anchor and positive samples, denoted as $d(a_i, p_i)$.

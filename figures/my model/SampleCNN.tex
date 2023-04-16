@@ -1,0 +1,51 @@
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  block/.style={draw, rectangle, fill=blue!20, text width=1.5cm, align=center, minimum height=1cm},
+  arrow/.style={->, >=stealth, line width=0.5mm}
+]
+
+% Input
+\node (input) [block] {Input};
+
+% Conv 1
+\node (conv1) [block, right=of input] {Conv1D\\128};
+\draw[arrow] (input) -- (conv1);
+
+% BatchNorm 1 and ReLU 1
+\node (bn1) [block, right=of conv1] {BatchNorm\\ReLU};
+\draw[arrow] (conv1) -- (bn1);
+
+% Hidden Layers
+\node (hidden1) [block, right=of bn1] {Hidden Layer 1};
+\draw[arrow] (bn1) -- (hidden1);
+
+\node (hidden2) [block, right=of hidden1] {Hidden Layer 2};
+\draw[arrow] (hidden1) -- (hidden2);
+
+\node (hidden3) [block, right=of hidden2] {Hidden Layer 3};
+\draw[arrow] (hidden2) -- (hidden3);
+
+\node (dots) [right=of hidden3] {$\cdots$};
+\draw[arrow] (hidden3) -- (dots);
+
+% Conv N
+\node (convN) [block, right=of dots] {Conv1D\\512};
+\draw[arrow] (dots) -- (convN);
+
+% BatchNorm N and ReLU N
+\node (bnN) [block, right=of convN] {BatchNorm\\ReLU};
+\draw[arrow] (convN) -- (bnN);
+
+% Average Pooling
+\node (avgpool) [block, right=of bnN] {Avg Pool};
+\draw[arrow] (bnN) -- (avgpool);
+
+% Dropout (optional)
+\node (dropout) [block, right=of avgpool, dashed] {Dropout (optional)};
+\draw[arrow, dashed] (avgpool) -- (dropout);
+
+% Fully Connected
+\node (fc) [block, right=of dropout] {Linear\\Out\_dim};
+\draw[arrow] (dropout) -- (fc);
+
+\end{tikzpicture}
