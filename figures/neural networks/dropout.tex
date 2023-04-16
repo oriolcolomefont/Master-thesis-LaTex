@@ -1,9 +1,10 @@
 \def\layersep{2}
 \def\nodesep{1.5}
 
-\begin{center}
-\scalebox{0.7}{
-\begin{tikzpicture}[node/.style={circle, draw, thick}]
+\begin{figure}
+    \centering
+    \scalebox{0.8}{
+    \begin{tikzpicture}[node/.style={circle, draw, thick}]
   % TikZ code here
   \foreach \y in {1,...,5}{
       \node[node] (i\y) at (0,\nodesep*\y) {};
@@ -60,7 +61,9 @@
   \foreach \source in {1,3,5}
   \foreach \dest in {1,2}
   \draw[-stealth, thick] (dh2\source) -- (do\dest);
-  
+
 \end{tikzpicture}
-}
-\end{center}
+    }
+    \caption{Dropout}
+    \label{figure: dropout}
+\end{figure}

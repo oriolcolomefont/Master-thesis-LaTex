@@ -36,7 +36,7 @@ A Convolutional Neural Network (CNN) is a deep-learning neural network. The arch
 
 \begin{itemize}
 
-\item \textbf{Convolutional layers:} These layers apply a convolution operation to the input data. The convolutional layers are designed to effectively learn local patterns and features in the audio data \footnote{For a visual explanation of convolution, see this video: \url{https://youtu.be/KuXjwB4LzSA}}.
+\item \textbf{Convolutional layers:} These layers apply a convolution operation to the input data. The convolutional layers are designed to effectively learn local patterns and features in the audio data \footnote{For a visual explanation and further understanding of the operation convolution, see this video: \url{https://youtu.be/KuXjwB4LzSA}}.
 
 A convolution operation involves sliding a small window, called a filter or kernel, over input data to compute the dot product between the kernel and each local region of the data. The result is a new feature map highlighting patterns and essential information.
 
@@ -58,7 +58,7 @@ The convolution operation slides the kernel $K$ over the input image $I$, perfor
 %Single pooling layer
 \input{figures/neural networks/Single_Pooling_Layer}
 
-\item \textbf{Fully connected layers:} These layers connect every neuron in one layer to every neuron in another, allowing the network to learn non-linear combinations of the features discovered in the previous layers. Mathematically, a fully connected layer can be represented as $Y = XW + b$, where $X$ is the input matrix, $W$ is the weight matrix, $b$ is the bias vector, and $Y$ is the output matrix. The nonlinearity is introduced through the activation function, which is applied element-wise to the output matrix, such as $Y' = f(Y)$, where $f$ represents the activation function and $Y'$ is the transformed output matrix.
+\item \textbf{Fully connected layers:} These layers connect every neuron in one layer to every neuron in another, allowing the network to learn non-linear combinations of the features discovered in the previous layers. Mathematically, a fully connected layer can be represented as $Y = XW + b$, where $X$ is the input matrix, $W$ is the weight matrix, $b$ is the bias vector, and $Y$ is the output matrix.
 \vspace*{3mm}
 
 \item \textbf{Output layer:} The output layer produces the final predictions of the network.
