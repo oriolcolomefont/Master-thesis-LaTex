@@ -34,90 +34,151 @@ Using the proposed triple siamese network and online triplet mining, we aim to t
 \subsection{Encoder}
 \subsubsection{SampleCNN}
 
-The SampleCNN model takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
+The SampleCNN model takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
 
-After the initial layer, there are 9 hidden layers with varying kernel sizes, strides, and channels according to the values specified in self.strides and self.hidden. Each hidden layer consists of:
+After the initial layer, there are nine hidden layers with varying kernel sizes, strides, and channels. Each hidden layer consists of:
 
-A 1D convolutional layer with the specified number of input and output channels, kernel size, stride of 1, and padding of 1.
-Batch normalization.
-ReLU activation.
-Max pooling with kernel size and stride equal to the stride value of the current layer.
-After the hidden layers, there's another 1D convolutional layer with 512 input channels, 512 output channels, kernel size of 3, stride of 1, and padding of 1. This is followed by batch normalization and ReLU activation.
+\begin{itemize}
+    \item A 1D convolutional layer with the specified number of input and output channels, kernel size, a stride of 1, and padding of 1.
+    \item Batch normalization.
+    \item ReLU activation.
+    \item Max pooling with kernel size and stride equal to the stride value of the current layer.
+\end{itemize}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Layer} & \textbf{Input Channels} & \textbf{Output Channels} \\
+\hline
+1 & 128 & 128 \\
+\hline
+2 & 128 & 128 \\
+\hline
+3 & 128 & 256 \\
+\hline
+4 & 256 & 256 \\
+\hline
+5 & 256 & 256 \\
+\hline
+6 & 256 & 256 \\
+\hline
+7 & 256 & 256 \\
+\hline
+8 & 256 & 256 \\
+\hline
+9 & 256 & 512 \\
+\hline
+\end{tabular}
+
+After the hidden layers, there's another 1D convolutional layer with 512 input channels, 512 output channels, a kernel size of 3, a stride of 1, and padding of 1. This is followed by batch normalization and ReLU activation.
 
 The output of the final convolutional layer is passed through an average pooling operation across the temporal dimension (dim=2).
 
-If the model is in supervised mode, dropout with a rate of 0.5 is applied.
+If the model is "supervised", dropout with a rate of 0.5 is applied.
+
+\input{figures/neural networks/dropout}
 
 Finally, a linear layer with 512 input features and 128 output dimension features is applied to generate the embeddings.
 
 \input{figures/my model/SampleCNN}
 
-Layer 1:
-
-Input channels: 1
-Output channels: 128
-Layer 2:
-
-Input channels: 128
-Output channels: 128
-Layer 3:
-
-Input channels: 128
-Output channels: 128
-Layer 4:
-
-Input channels: 128
-Output channels: 128
-Layer 5:
-
-Input channels: 128
-Output channels: 256
-Layer 6:
-
-Input channels: 256
-Output channels: 256
-Layer 7:
-
-Input channels: 256
-Output channels: 256
-Layer 8:
-
-Input channels: 256
-Output channels: 256
-Layer 9:
-
-Input channels: 256
-Output channels: 256
-Layer 10:
-
-Input channels: 256
-Output channels: 256
-Layer 11:
-
-Input channels: 256
-Output channels: 256
-Layer 12:
-
-Input channels: 256
-Output channels: 512
-Layer 13:
-
-Input channels: 512
-Output channels: 512
-Layer 14:
-
-Input channels: 512
-Output channels: 128
-
 
 \subsection{Audio augmentation and transformation pipeline}
-The positive samples are created by transforming and augmenting the original samples while preserving their perceptual underlying musical language. This is achieved using techniques such as time-stretching, pitch-shifting, and adding noise to the samples. By doing so, we aim to enhance the diversity of the positive samples and improve the model's ability to retrieve similar-sounding samples that share the same underlying musical language.
+\subsubsection{Positive sample generation}
+Let $W$ be the input waveform and $W_p$ be the generated positive waveform. The pipeline applies a series of audio effects and adds noise with a random SNR. Define the following random variables for the effects:
 
-On the other hand, the negative samples are created by shuffling and scrambling the original samples while maintaining their production texture. This is achieved using random segment selection, time-domain filtering, and frequency-domain masking. The goal is to retain the texture production of the samples while disrupting their underlying composition.
+\begin{alignat*}{2}
+&gain \sim \text{Uniform}(-12, 0), \quad
+&pitch \sim \text{Uniform}(-1200, 1200), \\
+&reverb\_params \sim \text{Uniform}(0, 100)^3, \quad
+&chorus\_params = \begin{cases}
+\text{Uniform}(0.1, 1.0), & i=1,2, \\
+\text{Uniform}(20, 55), & i=3, \\
+\text{Uniform}(0.1, 0.9), & i=4, \\
+\text{Uniform}(0.1, 2.0), & i=5, \\
+\text{Uniform}(2, 5), & i=6, \\
+\text{Categorical}(\{-s, -t\}), & i=7,
+\end{cases}, \\
+&drive \sim \text{Uniform}(0, 30), \quad
+&stretch \sim \text{Uniform}(0.9, 1.1), \\
+&speed \sim \text{Uniform}(0.9, 1.1), \quad
+&tremolo\_speed \sim \text{Uniform}(0.1, 100), \\
+&tremolo\_depth \sim \text{Uniform}(1, 101), \quad
+&snr\_range \sim \text{Uniform}(12, 100).
+\end{alignat*}
+
+For white noise, let $N$ be the noise matrix with dimensions (channels, samples) as $W$. Calculate signal power $P_s$ and noise power $P_n$:
+
+\begin{align*}
+&P_s = \sum (W_{ij})^2, \
+&P_n = \sum (N_{ij})^2.
+\end{align*}
+
+Calculate the scaling factor $\alpha$ for noise based on the desired SNR:
+
+\[
+\alpha = \sqrt{\frac{P_s}{P_n \times 10^{\frac{snr\_range}{10}}}}
+\]
+
+Compute the scaled noise matrix $N_s$ and the noisy waveform matrix $W_n$:
+
+\begin{align*}
+&N_s = \alpha \times N, \
+&W_n = W + N_s.
+\end{align*}
+
+The final positive waveform $W_p$ is obtained with noise added according to the chosen SNR. This pipeline enhances the diversity of the positive samples and aims to improve the model's ability to retrieve similar-sounding samples sharing the same underlying musical language.
+
+\subsubsection{Negative sample generation}
+
+Let $a$ be the original anchor clip and $n$ be the negative clip to be generated. The steps for generating the negative clip $n$ are as follows:
+
+\begin{enumerate}
+\item Calculate the length $L_a$ and duration $T_a$ of the anchor clip $a$:
+
+$L_a = \text{shape}(a)$, $\quad T_a = \frac{L_a}{f_s}$,
+
+where $\text{shape}(a)$ returns the shape of the audio clip, and $f_s$ is the sample rate of the audio.
+
+\item Determine the number of chunks $n_c$ to split the anchor clip into based on a minimum chunk duration $T_c$:
+$$
+n_c = \left\lfloor\frac{T_a}{T_c}\right\rfloor.
+$$
+
+\item Calculate the minimum and maximum chunk lengths in samples:
+$$
+L_{c,\text{min}} = T_c \times f_s, \quad L_{c,\text{max}} = T_{\text{max}} \times f_s,
+$$
+where $T_{\text{max}}$ is the maximum chunk duration specified in seconds.
+
+\item Generate $n_c$ chunk lengths $L_{c,1},\ldots,L_{c,n_c}$ as follows:
+$$
+L_{c,i} = \begin{cases}
+L_{c,\text{min}}, & i=1, \\
+\text{randint}(L_{c,\text{min}}, L_{c,\text{max}}), & 1<i<n_c, \\
+L_a - \sum_{j=1}^{i-1} L_{c,j}, & i=n_c.
+\end{cases}
+$$
+
+\item Split the anchor clip into chunks $c_1,\ldots,c_{n_c}$ based on the lengths $L_{c,1},\ldots,L_{c,n_c}$:
+$$
+c_i = a[..., s_i : s_i + L_{c,i}], \quad S_c = \text{cumsum}([0] + [L_{c,1},\ldots,L_{c,n_c-1}]), \quad s_i = S_c[i], \quad i=1,\ldots,n_c.
+$$
+
+\item Shuffle the resulting list of chunks randomly to obtain the reordered chunks $c'_1,\ldots,c'_{n_c}$:
+$$
+c' = \text{shuffle}([c_1,\ldots,c_{n_c}]).
+$$
+
+\item Concatenate the shuffled chunks $c'_1,\ldots,c'_{n_c}$ to create the negative clip $n$:
+$$
+n = \text{concatenate}(c').
+$$
+
+\end{enumerate}
 
 \subsection{Loss function}
 
-Implements the triplet loss function, commonly used for learning embeddings in metric learning problems. The triplet loss aims to ensure that the distance between an anchor and a positive sample (both from the same class) is smaller than the distance between the anchor and a negative sample (from a different class) by a margin.
+The triplet loss aims to ensure that the distance between an anchor and a positive sample (both from the same class) is smaller than the distance between the anchor and a negative sample (from a different class) by a margin.
 
 $\mathcal{L} = \frac{1}{N}\sum_{i=1}^{N} \max \left( d\left(a_i, p_i\right) - d\left(a_i, n_i\right) + m, 0 \right)$
 
