@@ -5,13 +5,13 @@ There are similarities between assimilation and accommodation in Piaget's theory
 
 \subsection{Contrastive Self-Supervised Learning of Musical Representations (CSSLMR)}
 
-Contrastive Self-Supervised Learning of Musical Representations (CSSLMR) is an approach that combines the principles of Self-Supervised Learning (SSL) \cite{audioselfsupsurvey} and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
+Contrastive Self-Supervised Learning of Musical Representations (CoSSLeMuR) is an approach that combines the principles of Self-Supervised Learning (SSL) \cite{audioselfsupsurvey} and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
 
 The CSSLMR methodology involves the following steps:
 
 \begin{enumerate}
 \item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
-\item \textbf{Contrastive Learning:} Train a neural network to minimize a contrastive loss function, encouraging the model to produce similar representations for positive and dissimilar representations for antagonistic pairs.
+\item \textbf{Contrastive Learning:} Train a neural network to minimize a contrastive loss function, encouraging the model to produce similar positive and dissimilar representations for antagonistic pairs.
 \item\textbf{Latent Representation:} Utilize the learned representations for various MIR downstream tasks, such as music genre classification or similarity, both in the symbolic and time domains.
 \end{enumerate} 
 
@@ -34,14 +34,50 @@ Using the proposed triple siamese network and online triplet mining, we aim to t
 \subsection{Encoder}
 \subsubsection{SampleCNN}
 
-The SampleCNN model takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
+The SampleCNN model \cite{CLMR2021} takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
 
-After the initial layer, there are nine hidden layers with varying kernel sizes, strides, and channels. Each hidden layer consists of:
+After the initial layer, there are nine hidden layers with varying kernel sizes, strides, and channels. Each hidden layer consists of the following:
 
 \begin{itemize}
     \item A 1D convolutional layer with the specified number of input and output channels, kernel size, a stride of 1, and padding of 1.
-    \item Batch normalization.
-    \item ReLU activation.
+
+    \begin{equation}
+y_{c_o}(n) = \sum_{c_i=1}^{C_{\text{in}}} \sum_{k=-\lfloor K/2 \rfloor}^{\lfloor K/2 \rfloor} x_{c_i}(n - k) \cdot w_{c_o, c_i}(k)
+\end{equation}
+
+where:
+
+$y_{c_o}(n)$ is the output for the $c_o$-th output channel at position $n$
+$C_{\text{in}}$ is the number of input channels
+$x_{c_i}(n)$ is the input for the $c_i$-th input channel at position $n$
+$w_{c_o, c_i}(k)$ is the kernel weight for the $c_o$-th output channel and $c_i$-th input channel at position $k$
+$K$ is the kernel size
+The stride is set to 1 and padding is set to 1 (equal padding $\lfloor K/2 \rfloor$ on both sides)
+s
+    \item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. It pads the waveforms to the same length, performs online triplet mining to find the hardest negatives, and returns the padded anchors, positives, and hardest negatives.
+
+    Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples, respectively. The maximum length in the batch is given by:
+
+    \begin{equation}
+L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
+\end{equation}
+
+    The anchor-positive distance and the anchor-negative distance are computed as the Euclidean distance between the corresponding samples:
+
+    \begin{equation}
+D_{\text{AP}} = \sqrt{\sum_{i} (A_i - P_i)^2}
+\end{equation}
+
+    The hardest negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances:
+
+    \begin{equation}
+D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
+\end{equation}
+
+    
+    \item ReLU activation. \input{figures/equations/ReLU}
+
+    
     \item Max pooling with kernel size and stride equal to the stride value of the current layer.
 \end{itemize}
 
@@ -81,98 +117,145 @@ Finally, a linear layer with 512 input features and 128 output dimension feature
 
 \input{figures/my model/SampleCNN}
 
+We have changed and adapted the original architecture for our experiments to our purpose and needs—the weights initialization and the final average pooling step.
 
 \subsection{Audio augmentation and transformation pipeline}
 \subsubsection{Positive sample generation}
-Let $W$ be the input waveform and $W_p$ be the generated positive waveform. The pipeline applies a series of audio effects and adds noise with a random SNR. Define the following random variables for the effects:
+Let $W$ be the input waveform and $W_p$ be the generated positive waveform. The pipeline applies audio effects and adds noise with a random SNR. Define the following random variables for the effects:
 
-\begin{alignat*}{2}
-&gain \sim \text{Uniform}(-12, 0), \quad
-&pitch \sim \text{Uniform}(-1200, 1200), \\
-&reverb\_params \sim \text{Uniform}(0, 100)^3, \quad
-&chorus\_params = \begin{cases}
+\begin{equation}
+gain \sim \text{Uniform}(-12, 0)
+\end{equation}
+\begin{equation}
+pitch \sim \text{Uniform}(-1200, 1200)
+\end{equation}
+\begin{equation}
+reverb\_params \sim \text{Uniform}(0, 100)^3
+\end{equation}
+\begin{equation}
+chorus\_params = \begin{cases}
 \text{Uniform}(0.1, 1.0), & i=1,2, \\
 \text{Uniform}(20, 55), & i=3, \\
 \text{Uniform}(0.1, 0.9), & i=4, \\
 \text{Uniform}(0.1, 2.0), & i=5, \\
 \text{Uniform}(2, 5), & i=6, \\
 \text{Categorical}(\{-s, -t\}), & i=7,
-\end{cases}, \\
-&drive \sim \text{Uniform}(0, 30), \quad
-&stretch \sim \text{Uniform}(0.9, 1.1), \\
-&speed \sim \text{Uniform}(0.9, 1.1), \quad
-&tremolo\_speed \sim \text{Uniform}(0.1, 100), \\
-&tremolo\_depth \sim \text{Uniform}(1, 101), \quad
-&snr\_range \sim \text{Uniform}(12, 100).
-\end{alignat*}
+\end{cases}
+\end{equation}
+\begin{equation}
+drive \sim \text{Uniform}(0, 30)
+\end{equation}
+\begin{equation}
+stretch \sim \text{Uniform}(0.9, 1.1)
+\end{equation}
+\begin{equation}
+speed \sim \text{Uniform}(0.9, 1.1)
+\end{equation}
+\begin{equation}
+tremolo\_speed \sim \text{Uniform}(0.1, 100)
+\end{equation}
+\begin{equation}
+tremolo\_depth \sim \text{Uniform}(1, 101)
+\end{equation}
+\begin{equation}
+snr\_range \sim \text{Uniform}(12, 100)
+\end{equation}
 
-For white noise, let $N$ be the noise matrix with dimensions (channels, samples) as $W$. Calculate signal power $P_s$ and noise power $P_n$:
+Let $N$ be the noise matrix with dimensions [channels, time domain samples] as $W$ for white noise. Calculate signal power $P_s$ and noise power $P_n$:
 
-\begin{align*}
-&P_s = \sum (W_{ij})^2, \
-&P_n = \sum (N_{ij})^2.
-\end{align*}
+\begin{equation}
+P_s = \sum (W_{ij})^2
+\end{equation}
+\begin{equation}
+P_n = \sum (N_{ij})^2
+\end{equation}
 
-Calculate the scaling factor $\alpha$ for noise based on the desired SNR:
+Calculate the scaling factor $\alpha$ for noise based on the desired signal-to-noise ratio (SNR):
 
-\[
+\begin{equation}
 \alpha = \sqrt{\frac{P_s}{P_n \times 10^{\frac{snr\_range}{10}}}}
-\]
+\end{equation}
 
 Compute the scaled noise matrix $N_s$ and the noisy waveform matrix $W_n$:
 
-\begin{align*}
-&N_s = \alpha \times N, \
-&W_n = W + N_s.
-\end{align*}
+\begin{equation}
+N_s = \alpha \times N
+\end{equation}
+\begin{equation}
+W_n = W + N_s
+\end{equation}
 
 The final positive waveform $W_p$ is obtained with noise added according to the chosen SNR. This pipeline enhances the diversity of the positive samples and aims to improve the model's ability to retrieve similar-sounding samples sharing the same underlying musical language.
 
 \subsubsection{Negative sample generation}
 
-Let $a$ be the original anchor clip and $n$ be the negative clip to be generated. The steps for generating the negative clip $n$ are as follows:
+Let $a$ be the original anchor clip and $n$ be the negative clip generated. The steps for generating the negative clip $n$ are as follows:
 
 \begin{enumerate}
 \item Calculate the length $L_a$ and duration $T_a$ of the anchor clip $a$:
 
-$L_a = \text{shape}(a)$, $\quad T_a = \frac{L_a}{f_s}$,
+\begin{equation}
+L_a = \text{shape}(a)
+\end{equation}
+\begin{equation}
+T_a = \frac{L_a}{f_s}
+\end{equation}
 
 where $\text{shape}(a)$ returns the shape of the audio clip, and $f_s$ is the sample rate of the audio.
 
 \item Determine the number of chunks $n_c$ to split the anchor clip into based on a minimum chunk duration $T_c$:
-$$
-n_c = \left\lfloor\frac{T_a}{T_c}\right\rfloor.
-$$
+
+\begin{equation}
+n_c = \left\lfloor\frac{T_a}{T_c}\right\rfloor
+\end{equation}
 
 \item Calculate the minimum and maximum chunk lengths in samples:
-$$
-L_{c,\text{min}} = T_c \times f_s, \quad L_{c,\text{max}} = T_{\text{max}} \times f_s,
-$$
+
+\begin{equation}
+L_{c,\text{min}} = T_c \times f_s
+\end{equation}
+\begin{equation}
+L_{c,\text{max}} = T_{\text{max}} \times f_s
+\end{equation}
+
 where $T_{\text{max}}$ is the maximum chunk duration specified in seconds.
 
 \item Generate $n_c$ chunk lengths $L_{c,1},\ldots,L_{c,n_c}$ as follows:
-$$
+
+\begin{equation}
 L_{c,i} = \begin{cases}
 L_{c,\text{min}}, & i=1, \\
 \text{randint}(L_{c,\text{min}}, L_{c,\text{max}}), & 1<i<n_c, \\
 L_a - \sum_{j=1}^{i-1} L_{c,j}, & i=n_c.
 \end{cases}
-$$
+\end{equation}
 
 \item Split the anchor clip into chunks $c_1,\ldots,c_{n_c}$ based on the lengths $L_{c,1},\ldots,L_{c,n_c}$:
-$$
-c_i = a[..., s_i : s_i + L_{c,i}], \quad S_c = \text{cumsum}([0] + [L_{c,1},\ldots,L_{c,n_c-1}]), \quad s_i = S_c[i], \quad i=1,\ldots,n_c.
-$$
+
+\begin{equation}
+c_i = a[..., s_i : s_i + L_{c,i}]
+\end{equation}
+\begin{equation}
+S_c = \text{cumsum}([0] + [L_{c,1},\ldots,L_{c,n_c-1}])
+\end{equation}
+\begin{equation}
+s_i = S_c[i]
+\end{equation}
+\begin{equation}
+i=1,\ldots,n_c
+\end{equation}
 
 \item Shuffle the resulting list of chunks randomly to obtain the reordered chunks $c'_1,\ldots,c'_{n_c}$:
-$$
-c' = \text{shuffle}([c_1,\ldots,c_{n_c}]).
-$$
+
+\begin{equation}
+c' = \text{shuffle}([c_1,\ldots,c_{n_c}])
+\end{equation}
 
 \item Concatenate the shuffled chunks $c'_1,\ldots,c'_{n_c}$ to create the negative clip $n$:
-$$
-n = \text{concatenate}(c').
-$$
+
+\begin{equation}
+n = \text{concatenate}(c')
+\end{equation}
 
 \end{enumerate}
 
