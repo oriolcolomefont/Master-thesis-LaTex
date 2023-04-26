@@ -1,11 +1,11 @@
 \section{Model architecture and training strategy}
-Piaget's theory of cognitive development \cite{Huitt2003PiagetsDevelopment} posits that children acquire knowledge from sensory and motor experiences in their early stages, from birth to around 18 months. This period called the \textit{sensorimotor stage}, sees the emergence of early representational thought through basic actions such as sucking, grasping, looking, and listening. As children progress through different developmental stages until adolescence and adulthood, their reasoning progressively moves toward abstract ideas and deductive logic. Schemas, higher-order cognitive structures hypothesized to underlie many aspects of human knowledge and skill, emerge during this process, which Piaget interprets through an equilibration mechanism that balances new information with old knowledge. This mechanism involves \textit{assimilation} and \textit{accommodation}, which entail taking in further information to fit pre-existing schemas and modifying existing schemas resulting from the latest news. In the context of learning, complex structures are based on simpler ones, and knowledge transfer occurs when dynamic systems capable of generalization are created. \cite{audioselfsupsurvey}
+Piaget's theory of cognitive development \cite{Huitt2003PiagetsDevelopment} posits that children acquire knowledge from sensory and motor experiences in their early stages, from birth to around 18 months, during the \textit{sensorimotor stage}. This stage sees the emergence of early representational thought through basic actions such as sucking, grasping, looking, and listening. As children progress through different developmental stages until adolescence and adulthood, their reasoning progressively moves toward abstract ideas and deductive logic. Schemas, higher-order cognitive structures hypothesized to underlie many aspects of human knowledge and skill, emerge during this process, which Piaget interprets through an equilibration mechanism that balances new information with old knowledge. This mechanism involves \textit{assimilation} and \textit{accommodation}, which entail taking in further information to fit pre-existing schemas and modifying existing schemas resulting from the latest information. In the context of learning, complex structures are based on simpler ones, and knowledge transfer occurs when dynamic systems capable of generalization are created. \cite{audioselfsupsurvey}
 
 There are similarities between assimilation and accommodation in Piaget's theory of cognitive development and backpropagation in DL, both of which involve modifying existing structures based on new information. However, it should be noted that these processes' underlying mechanisms and contexts are distinct. While assimilation and accommodation involve modifying mental structures to incorporate new information, backpropagation entails adjusting neural network weights to improve output predictions. Assimilation and accommodation occur in cognitive development, while backpropagation is specific to machine learning. Thus, while these processes have broad similarities, they are fundamentally different and cannot be directly compared in detail.
 
 \subsection{Contrastive Self-Supervised Learning of Musical Representations (CSSLMR)}
 
-Contrastive Self-Supervised Learning of Musical Representations (CoSSLeMuR) is an approach that combines the principles of Self-Supervised Learning (SSL) \cite{audioselfsupsurvey} and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
+Contrastive Self-Supervised Learning of Musical Representations (CSSLMR) is an approach that combines the principles of Self-Supervised Learning (SSL) \cite{audioselfsupsurvey} and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
 
 The CSSLMR methodology involves the following steps:
 
@@ -45,7 +45,7 @@ After the initial layer, there are nine hidden layers with varying kernel sizes,
 y_{c_o}(n) = \sum_{c_i=1}^{C_{\text{in}}} \sum_{k=-\lfloor K/2 \rfloor}^{\lfloor K/2 \rfloor} x_{c_i}(n - k) \cdot w_{c_o, c_i}(k)
 \end{equation}
 
-where:
+Where:
 
 $y_{c_o}(n)$ is the output for the $c_o$-th output channel at position $n$
 $C_{\text{in}}$ is the number of input channels
@@ -56,7 +56,7 @@ The stride is set to 1 and padding is set to 1 (equal padding $\lfloor K/2 \rflo
 s
     \item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. It pads the waveforms to the same length, performs online triplet mining to find the hardest negatives, and returns the padded anchors, positives, and hardest negatives.
 
-    Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples, respectively. The maximum length in the batch is given by:
+    Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples. The maximum length in the batch is given by:
 
     \begin{equation}
 L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
@@ -68,7 +68,7 @@ L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text
 D_{\text{AP}} = \sqrt{\sum_{i} (A_i - P_i)^2}
 \end{equation}
 
-    The hardest negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances:
+    The "hardest" negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances:
 
     \begin{equation}
 D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
@@ -109,7 +109,7 @@ After the hidden layers, there's another 1D convolutional layer with 512 input c
 
 The output of the final convolutional layer is passed through an average pooling operation across the temporal dimension (dim=2).
 
-If the model is "supervised", dropout with a rate of 0.5 is applied.
+If the model is "supervised", dropout with a rate of 0.5 is applied; a regularization technique randomly drops out neurons during training to prevent overfitting, with a 0.5 rate meaning half of the neurons are dropped out.
 
 \input{figures/neural networks/dropout}
 
@@ -117,7 +117,7 @@ Finally, a linear layer with 512 input features and 128 output dimension feature
 
 \input{figures/my model/SampleCNN}
 
-We have changed and adapted the original architecture for our experiments to our purpose and needs—the weights initialization and the final average pooling step.
+We have adapted the original architecture for our experiments to our purpose and needs—the weights initialization and the final average pooling step.
 
 \subsection{Audio augmentation and transformation pipeline}
 \subsubsection{Positive sample generation}
@@ -185,7 +185,7 @@ N_s = \alpha \times N
 W_n = W + N_s
 \end{equation}
 
-The final positive waveform $W_p$ is obtained with noise added according to the chosen SNR. This pipeline enhances the diversity of the positive samples and aims to improve the model's ability to retrieve similar-sounding samples sharing the same underlying musical language.
+The final positive waveform $W_p$ is obtained with noise added according to the chosen SNR. This pipeline enhances the diversity of the positive samples and aims to improve the model's ability to retrieve content-based similar-sounding samples sharing the same underlying musical language.
 
 \subsubsection{Negative sample generation}
 
@@ -195,13 +195,14 @@ Let $a$ be the original anchor clip and $n$ be the negative clip generated. The 
 \item Calculate the length $L_a$ and duration $T_a$ of the anchor clip $a$:
 
 \begin{equation}
-L_a = \text{shape}(a)
+L_a = \text{len}(a)
 \end{equation}
+
 \begin{equation}
 T_a = \frac{L_a}{f_s}
 \end{equation}
 
-where $\text{shape}(a)$ returns the shape of the audio clip, and $f_s$ is the sample rate of the audio.
+where $\text{len}(a)$ returns the shape of the audio clip, and $f_s$ is the sample rate of the audio.
 
 \item Determine the number of chunks $n_c$ to split the anchor clip into based on a minimum chunk duration $T_c$:
 
@@ -236,7 +237,8 @@ L_a - \sum_{j=1}^{i-1} L_{c,j}, & i=n_c.
 c_i = a[..., s_i : s_i + L_{c,i}]
 \end{equation}
 \begin{equation}
-S_c = \text{cumsum}([0] + [L_{c,1},\ldots,L_{c,n_c-1}])
+S_c = [0] + [L_{c,1},...,L_{c,n_c-1}]
+S_c = \sum_{i=0}^{n_c-1} S_{c,i}
 \end{equation}
 \begin{equation}
 s_i = S_c[i]
@@ -245,38 +247,38 @@ s_i = S_c[i]
 i=1,\ldots,n_c
 \end{equation}
 
-\item Shuffle the resulting list of chunks randomly to obtain the reordered chunks $c'_1,\ldots,c'_{n_c}$:
+\item Shuffle the resulting list of chunks randomly to obtain the reordered chips $c'_1,\ldots,c'_{n_c}$:
 
+Let $p$ be a random permutation of the indices $1$ to $n_c$. Then, the shuffled array $c'$ is given by:
 \begin{equation}
-c' = \text{shuffle}([c_1,\ldots,c_{n_c}])
+c' = [c_{p(1)}, c_{p(2)}, \dots, c_{p(n_c)}]
 \end{equation}
 
-\item Concatenate the shuffled chunks $c'_1,\ldots,c'_{n_c}$ to create the negative clip $n$:
 
+\item Let $c'_1, \dots, c'_{n_c}$ be the shuffled chunks. Then, the negative clip $n$ is obtained by concatenating the shuffled chunks:
 \begin{equation}
-n = \text{concatenate}(c')
+n = [c'_1, \dots, c'_{n_c}]
 \end{equation}
+
 
 \end{enumerate}
 
 \subsection{Loss function}
 
-The triplet loss aims to ensure that the distance between an anchor and a positive sample (both from the same class) is smaller than the distance between the anchor and a negative sample (from a different class) by a margin.
+The mathematical expression for the triplet loss function with a variable margin can be written as follows:
 
-$\mathcal{L} = \frac{1}{N}\sum_{i=1}^{N} \max \left( d\left(a_i, p_i\right) - d\left(a_i, n_i\right) + m, 0 \right)$
+\begin{equation}
+L(\mathbf{a}, \mathbf{p}, \mathbf{n}) = \frac{1}{N} \sum_{i=1}^{N} \max \left(0, m + \left| \mathbf{a}_i - \mathbf{p}_i \right|_2^2 - \left| \mathbf{a}_i - \mathbf{n}_i \right|_2^2 \right)
+\end{equation}
 
-In this equation:
+In the triplet loss function, $d(\mathbf{a}, \mathbf{p})$ and $d(\mathbf{a}, \mathbf{n})$ denote the Euclidean distance (L2-norm) between the anchor $\mathbf{a}$ and the positive sample $\mathbf{p}$ and the negative sample $\mathbf{n}$, respectively. The margin $m$ is a positive constant determining the minimum distance between the anchor-positive and anchor-negative pairs.
 
-$N$ is the number of triplets in the batch
-$a_i$ is the $i$-th anchor
-$p_i$ is the $i$-th positive sample
-$n_i$ is the $i$-th negative sample
-$d(\cdot, \cdot)$ is the Euclidean distance function
-$m$ is the margin; commonly set to 0.2 by default
-The forward method computes the triplet loss as follows:
+The $\max(0, ...)$ function computes the maximum of the expression within the parentheses and 0. This function aims to ensure that the loss is only calculated for triplets that violate the margin constraint, where the negative sample is closer to the anchor than the positive sample by at least the margin. When the distance between the positive and negative samples is greater than the margin, the loss is zero. Otherwise, the loss is proportional to the extent to which the constraint is violated.
 
-Calculate the pairwise Euclidean distance between the anchor and positive samples, denoted as $d(a_i, p_i)$.
-Calculate the pairwise Euclidean distance between the anchor and negative samples, denoted as $d(a_i, n_i)$.
-Compute the loss for each triplet in the batch by subtracting the negative distance from the positive distance and adding the margin: $d(a_i, p_i) - d(a_i, n_i) + m$.
-Apply the ReLU function, which is equivalent to taking the maximum value between the computed value and 0: $\max \left( d(a_i, p_i) - d(a_i, n_i) + m, 0 \right)$.
-Calculate the mean of the losses across all triplets in the batch.
+The final form of the loss function is obtained by averaging the loss over a mini-batch of triplets. 
+
+\begin{equation}
+L = \frac{1}{N} \sum_{i=1}^{N} L(anchor_i, positive_i, negative_i)
+\end{equation}
+
+Here, $N$ is the number of triplets in the mini-batch, and $L(anchor_i, positive_i, negative_i)$ represents the loss function computed for the i-th triplet in the batch.

@@ -1,31 +1,24 @@
 \section{Objectives}
 
-This work aims to uncover a generalization of the fundamental tonal-working structure of western-tradition music by learning and embedding space used to facilitate its application in downstream MIR tasks.
+This study seeks to discover a generalization of the fundamental tonal structure in Western music by creating and examining an embedding space that can be applied to downstream Music Information Retrieval (MIR) tasks.
 
-In recent years, using neural networks has enabled low-dimensional musical embeddings that capture crucial musical features and allow the computation of content-based similarity between musical passages \cite{KimLEARNINGLOSS}\cite{Hung2022Feature-informedClassification}. By acquiring an embedding function $f(x) \in \mathbb{R}^d$ that maps a given course $x$ to a vector in the real space $\mathbb{R}^d$, we can measure the similarity between two musical passages using the Euclidean distance, as represented by the formula $D_{i,j} = ||f(x_i) - f(x_j)||^2$. The effectiveness of such systems depends on the level of musical abstraction and the embedding space's ability to interpret music in a way that aligns with human perception. Therefore, a suitable embedding space is crucial to ensure the output aligns with human expectations.
+Neural networks have recently facilitated the development of low-dimensional musical embeddings that capture essential musical features, enabling the computation of content-based similarity between musical passages \cite{KimLEARNINGLOSS}\cite{Hung2022Feature-informedClassification}. An embedding function $f(x) \in \mathbb{R}^d$ maps a given course $x$ to a vector in the real space $\mathbb{R}^d$, allowing the measurement of similarity between two musical passages using Euclidean distance, as denoted by the formula $D_{i,j} = ||f(x_i) - f(x_j)||^2$. The success of such systems hinges on the level of musical abstraction and the embedding space's capacity to interpret music in a manner consistent with human perception. As a result, a suitable embedding space is vital for producing output that aligns with human expectations.
 
-This study aims to comprehensively analyze musical works from diverse styles and genres by incorporating computational techniques from Music Information Retrieval (MIR) and a musicological perspective to contextualize the findings. Aural skills are required to comprehend musical works through listening, as they involve perceptual and cognitive abilities. The underlying musical structure refers to the systematic arrangement of elements that produce a coherent and expressive musical work. This study aims to offer fresh insights into these components of musical composition and advance our understanding of their relationships.
+This research aims to thoroughly analyze musical works from various styles and genres, employing computational techniques from Music Information Retrieval (MIR) and a musicological perspective to contextualize the findings. Aural skills, encompassing perceptual and cognitive abilities, are necessary for understanding musical works through listening. The underlying musical structure consists of a systematic arrangement of elements that generate a coherent and expressive musical work. This study seeks to provide new insights into these components of musical composition and further our comprehension of their interrelationships.
 
-Let's denote the single embedding for a music piece as $e(M)$.
+We denote a single embedding for a music piece as $e(M)$.
 
-Given a music piece $M$, we aim to learn a single embedding, $e(M)$, simultaneously capturing the underlying content (melody, harmony, critical, holistic elements) and the production aspects. The embedding space should be structured so that similar content and production features are clustered together, effectively isolating the two aspects. Formally, our objective is to learn the embedding function $e(M)$ such that:
+For a given music piece $M$, we aim to learn a single embedding, $e(M)$, that captures both the underlying content (melody, harmony, critical, holistic elements) and production aspects. The embedding space should be structured to cluster similar content and production features together, effectively separating the two aspects. Formally, our objective is to learn the embedding function $e(M)$ such that:
 
 \begin{itemize}
-  \item Similar content features are closer in the embedding space: $\|e(M_1) - e(M_2)\| < \epsilon_c$ for music pieces $M_1$ and $M_2$ with similar content.
-  \item Similar production features are closer in the embedding space: $\|e(M_1) - e(M_3)\| < \epsilon_p$ for music pieces $M_1$ and $M_3$ with similar production.
-  \item Distinct content and production features are further apart in the embedding space.
+\item Similar content features are closer in the embedding space: $|e(M_1) - e(M_2)| < \epsilon_c$ for music pieces $M_1$ and $M_2$ with similar content.
+\item Similar production features are closer in the embedding space: $|e(M_1) - e(M_3)| < \epsilon_p$ for music pieces $M_1$ and $M_3$ with similar production.
+\item Distinct content and production features are further apart in the embedding space.
 \end{itemize}
 
-We describe learning a single embedding $e(M)$ that captures content and production features. The embedding space is structured to cluster similar content and production features together, effectively isolating the two aspects.
+We propose learning a single embedding $e(M)$ that captures content and production features, with the embedding space structured to cluster similar aspects together, effectively distinguishing between the two.
 
-Music is a complex and multi-faceted phenomenon, and implementing a model mimicking human aural music skills is challenging. However, the latest deep learning techniques provide a promising avenue to build a model that achieves good results for a specific task in music. Therefore, this study will utilize deep learning techniques to investigate the correlation between aural skills and the underlying tonal-working structure of music.
+Music is a complex and multi-dimensional phenomenon, and developing a model that emulates human aural skills is challenging. Nonetheless, recent advancements in deep learning offer promising avenues for creating a model that achieves satisfactory results in specific music-related tasks. This study will employ deep learning techniques to explore the correlation between aural skills and the underlying tonal structure of music.
 
-Furthermore, this study will argue that MIR research should shift from a purely technical-centered approach to a more balanced and comprehensive one incorporating other relevant domains such as musicology and music theory. By doing so, we can better understand the interplay between technical and musical aspects of music and improve our understanding of music signals and the music itself.
-
-
-\subsection{Academic research and industrial applications}
-
-The advent of self-supervised models that learn embedding spaces for retrieving musical content from audio signals has opened up novel avenues in academic research and industrial applications. By capturing high-level semantic information from raw audio data in an unsupervised manner, these models can potentially revolutionize various aspects of the music industry. Their applications span music information retrieval, sharing learned latent representations for MIR \cite{HamelTransferSimilarity}, recommendation systems, digital rights management, and audio signal processing, fostering interdisciplinary research and innovation in musicology, computer science, and artificial intelligence. 
-
-The embedding spaces generated by these models can be utilized to create personalized and intelligent music recommendation systems \cite{Chen2020LearningRecommendation}\cite{epidemic}, facilitate effective enforcement of intellectual property rights, and contribute to developing more sophisticated audio editing-production tools, and technical products in general, \cite{WonEmotionStories}, ultimately enhancing our interaction with music in the digital age.
+Additionally, this research contends that MIR studies should transition from a solely technical-centered approach to a more balanced and comprehensive method that integrates other pertinent domains such as musicology and music theory. This shift will enable a better understanding of the interplay between technical and musical aspects of music, enhancing our comprehension of music signals and music itself.
 
