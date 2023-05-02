@@ -2,13 +2,13 @@
 
 This study seeks to discover a generalization of the fundamental tonal structure in Western music by creating and examining an embedding space that can be applied to downstream Music Information Retrieval (MIR) tasks.
 
-Neural networks have recently facilitated the development of low-dimensional musical embeddings that capture essential musical features, enabling the computation of content-based similarity between musical passages \cite{KimLEARNINGLOSS}\cite{Hung2022Feature-informedClassification}. An embedding function $f(x) \in \mathbb{R}^d$ maps a given course $x$ to a vector in the real space $\mathbb{R}^d$, allowing the measurement of similarity between two musical passages using Euclidean distance, as denoted by the formula $D_{i,j} = ||f(x_i) - f(x_j)||^2$. The success of such systems hinges on the level of musical abstraction and the embedding space's capacity to interpret music in a manner consistent with human perception. As a result, a suitable embedding space is vital for producing output that aligns with human expectations.
-
 This research aims to thoroughly analyze musical works from various styles and genres, employing computational techniques from Music Information Retrieval (MIR) and a musicological perspective to contextualize the findings. Aural skills, encompassing perceptual and cognitive abilities, are necessary for understanding musical works through listening. The underlying musical structure consists of a systematic arrangement of elements that generate a coherent and expressive musical work. This study seeks to provide new insights into these components of musical composition and further our comprehension of their interrelationships.
+
+Neural networks have recently facilitated the development of low-dimensional musical embeddings that capture essential musical features, enabling the computation of content-based similarity between musical passages \cite{Kim2021LearningLoss}\cite{Hung2022Feature-informedClassification}. An embedding function $f(x) \in \mathbb{R}^d$ maps a given course $x$ to a vector in the real space $\mathbb{R}^d$, allowing the measurement of similarity between two musical passages using Euclidean distance, as denoted by the formula $D_{i,j} = ||f(x_i) - f(x_j)||^2$. The success of such systems hinges on the level of musical abstraction and the embedding space's capacity to interpret music in a manner consistent with human perception. As a result, a suitable embedding space is vital for producing output that aligns with human expectations.
 
 We denote a single embedding for a music piece as $e(M)$.
 
-For a given music piece $M$, we aim to learn a single embedding, $e(M)$, that captures both the underlying content (melody, harmony, critical, holistic elements) and production aspects. The embedding space should be structured to cluster similar content and production features together, effectively separating the two aspects. Formally, our objective is to learn the embedding function $e(M)$ such that:
+For a given music piece $M$, we aim to learn a single embedding, $e(M)$, that captures the underlying content (melody, harmony, critical, holistic elements) and production aspects. The embedding space should be structured to cluster similar content and production features, effectively separating the two elements. Formally, our objective is to learn the embedding function $e(M)$ such that:
 
 \begin{itemize}
 \item Similar content features are closer in the embedding space: $|e(M_1) - e(M_2)| < \epsilon_c$ for music pieces $M_1$ and $M_2$ with similar content.
@@ -16,9 +16,9 @@ For a given music piece $M$, we aim to learn a single embedding, $e(M)$, that ca
 \item Distinct content and production features are further apart in the embedding space.
 \end{itemize}
 
-We propose learning a single embedding $e(M)$ that captures content and production features, with the embedding space structured to cluster similar aspects together, effectively distinguishing between the two.
+We propose learning a single embedding $e(M)$ that captures musical high-level content while keeping agnostic to production features. The embedding space is structured to cluster similar aspects together, effectively distinguishing between the two.
 
 Music is a complex and multi-dimensional phenomenon, and developing a model that emulates human aural skills is challenging. Nonetheless, recent advancements in deep learning offer promising avenues for creating a model that achieves satisfactory results in specific music-related tasks. This study will employ deep learning techniques to explore the correlation between aural skills and the underlying tonal structure of music.
 
-Additionally, this research contends that MIR studies should transition from a solely technical-centered approach to a more balanced and comprehensive method that integrates other pertinent domains such as musicology and music theory. This shift will enable a better understanding of the interplay between technical and musical aspects of music, enhancing our comprehension of music signals and music itself.
+Additionally, this research contends that MIR studies should transition from a solely technical-centered approach to a more balanced and comprehensive method that integrates other pertinent domains, such as musicology and music theory. This shift will enable a better understanding of the interplay between technical and musical aspects of music, enhancing our comprehension of music signals and the music itself.
 
