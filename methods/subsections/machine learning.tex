@@ -14,7 +14,7 @@ Throughout this chapter, we aim to provide a comprehensive understanding of the 
 A neural network, formally known as an Artificial Neural Network (ANN), is a computational model inspired by the structure and functionality of biological neural networks. It is a mathematical framework designed to process information and perform tasks like pattern recognition, classification, and regression by mimicking how biological neurons and synapses operate. ANNs comprise interconnected layers of artificial neurons or nodes, each performing a mathematical transformation on the input data to generate an output. The connections between these neurons, often called "weights," are adjusted during learning to optimize the network's performance on a given task.
 
 \subsection{About ANNs}
-The concept of neural networks can be traced back to the early 20th century, with the pioneering work of Warren McCulloch and Walter Pitts in 1943. They proposed a mathematical model of a neuron known as the McCulloch-Pitts neuron, which provided a foundation for future research in artificial intelligence. However, Frank Rosenblatt's invention of the perceptron in 1957 marked the beginning of modern neural networks. The perceptron is a single-layer neural network capable of learning linearly separable patterns.
+The concept of neural networks can be traced back to the mid-20th century, with the pioneering work of Warren McCulloch and Walter Pitts in 1943. They proposed a mathematical model of a neuron known as the McCulloch-Pitts neuron, which provided a foundation for future research in artificial intelligence. However, Frank Rosenblatt's invention of the perceptron in 1957 marked the beginning of modern neural networks. The perceptron is a single-layer neural network capable of learning linearly separable patterns.
 
 %Single neuron
 \input{figures/neural networks/Single Neuron}
@@ -22,7 +22,7 @@ The concept of neural networks can be traced back to the early 20th century, wit
 %NN
 \input{figures/neural networks/Network_graph}
 
-In a more technical description, an ANN consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. Some standard activation functions include the sigmoid, hyperbolic tangent (tanh), and rectified linear unit (ReLU). The output of the last layer represents the prediction or classification result.
+In a more technical description, an ANN consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. The output of the last layer represents the prediction or classification result.
 
 %Activation equation
 \input{figures/neural networks/activation}
@@ -32,7 +32,7 @@ In a more technical description, an ANN consists of an input layer, one or more 
 
 \section{Deep Learning (DL)}
 
-Deep learning is a machine learning subfield that utilizes deep neural networks to learn hierarchical data representations automatically. These networks handle complex, high-dimensional data across domains such as computer vision and natural language processing. Their effectiveness stems from their nonlinear modeling capabilities and scalability with large datasets.
+Deep learning is a machine learning subfield that utilizes deep neural networks to learn hierarchical data representations. These networks handle complex, high-dimensional data across several domains. Their effectiveness stems from their nonlinear modeling capabilities and scalability with large datasets.
 
 A core algorithm in deep learning is backpropagation which efficiently computes gradients of the loss function concerning the network's parameters. It involves a two-step process: (1) forward pass, where input data propagates through the network to generate predictions, and (2) backward pass, where the error between predictions and ground truth is calculated and propagated back through the network. This process updates the network's parameters using gradient descent, which minimizes the loss function and improves the model's performance.
 

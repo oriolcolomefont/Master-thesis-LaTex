@@ -3,6 +3,10 @@ Piaget's theory of cognitive development \cite{Huitt2003PiagetsDevelopment} posi
 
 There are similarities between assimilation and accommodation in Piaget's theory of cognitive development and backpropagation in DL, both of which involve modifying existing structures based on new information. However, it should be noted that these processes' underlying mechanisms and contexts are distinct. While assimilation and accommodation involve modifying mental structures to incorporate new information, backpropagation entails adjusting neural network weights to improve output predictions. Assimilation and accommodation occur in cognitive development, while backpropagation is specific to machine learning. Thus, while these processes have broad similarities, they are fundamentally different and cannot be directly compared in detail.
 
+We propose using a Triple Siamese Network to train a model for music similarity retrieval \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between an anchor, a positive, and a negative sample by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
+
+Using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
+
 \subsection{Contrastive Self-Supervised Learning of Musical Representations (CSSLMR)}
 
 Contrastive Self-Supervised Learning of Musical Representations (CSSLMR) is an approach that combines the principles of Self-Supervised Learning (SSL) \cite{audioselfsupsurvey} and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
@@ -24,13 +28,6 @@ CSSLMR inherits the strengths of both SSL and CLMR:
 \item Encourages feature extraction: CSSLMR promotes learning practical and discriminative representations.
 \end{enumerate} 
 
-\section{Model architecture}
-
-We propose using a Triple Siamese Network to train a model for music similarity retrieval \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between an anchor, a positive, and a negative sample by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
-
-Using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
-
-
 \subsection{Encoder}
 \subsubsection{SampleCNN}
 
@@ -45,7 +42,7 @@ After the initial layer, there are nine hidden layers with varying kernel sizes,
 y_{c_o}(n) = \sum_{c_i=1}^{C_{\text{in}}} \sum_{k=-\lfloor K/2 \rfloor}^{\lfloor K/2 \rfloor} x_{c_i}(n - k) \cdot w_{c_o, c_i}(k)
 \end{equation}
 
-Where:
+where:
 
 $y_{c_o}(n)$ is the output for the $c_o$-th output channel at position $n$
 $C_{\text{in}}$ is the number of input channels
@@ -54,9 +51,9 @@ $w_{c_o, c_i}(k)$ is the kernel weight for the $c_o$-th output channel and $c_i$
 $K$ is the kernel size
 The stride is set to 1 and padding is set to 1 (equal padding $\lfloor K/2 \rfloor$ on both sides)
 s
-    \item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. It pads the waveforms to the same length, performs online triplet mining to find the hardest negatives, and returns the padded anchors, positives, and hardest negatives.
+    \item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. We pad the waveforms to the same  maximum length among batch, performs online triplet mining to find the hardest negatives, and returns the padded anchors, positives, and hardest negatives.
 
-    Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples. The maximum length in the batch is given by:
+    Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples. The maximum array length in the batch is given by:
 
     \begin{equation}
 L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
@@ -117,7 +114,20 @@ Finally, a linear layer with 512 input features and 128 output dimension feature
 
 \input{figures/my model/SampleCNN}
 
-We have adapted the original architecture for our experiments to our purpose and needs—the weights initialization and the final average pooling step.
+We have adapted the original architecture for our experiments to our purpose, which consists of the final average pooling step.
+
+\begin{equation}
+y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
+\end{equation}
+
+\begin{itemize}
+  \item \(y_i\) represents the output tensor after the average pooling operation,
+  \item \(x_{ij}\) represents the elements in the 2D input tensor,
+  \item \(N\) is the number of elements along the second dimension of the input tensor,
+  \item \(i\) iterates over the first dimension of the tensors, and
+  \item \(j\) iterates over the second dimension of the input tensor.
+\end{itemize}
+
 
 \subsection{Audio augmentation and transformation pipeline}
 \subsubsection{Positive sample generation}
