@@ -1,32 +1,65 @@
-\section{Model architecture and training strategy}
-Piaget's theory of cognitive development \cite{Huitt2003PiagetsDevelopment} posits that children acquire knowledge from sensory and motor experiences in their early stages, from birth to around 18 months, during the \textit{sensorimotor stage}. This stage sees the emergence of early representational thought through basic actions such as sucking, grasping, looking, and listening. As children progress through different developmental stages until adolescence and adulthood, their reasoning progressively moves toward abstract ideas and deductive logic. Schemas, higher-order cognitive structures hypothesized to underlie many aspects of human knowledge and skill, emerge during this process, which Piaget interprets through an equilibration mechanism that balances new information with old knowledge. This mechanism involves \textit{assimilation} and \textit{accommodation}, which entail taking in further information to fit pre-existing schemas and modifying existing schemas resulting from the latest information. In the context of learning, complex structures are based on simpler ones, and knowledge transfer occurs when dynamic systems capable of generalization are created. \cite{audioselfsupsurvey}
+\section{Machine Learning Modeling}
 
-There are similarities between assimilation and accommodation in Piaget's theory of cognitive development and backpropagation in DL, both of which involve modifying existing structures based on new information. However, it should be noted that these processes' underlying mechanisms and contexts are distinct. While assimilation and accommodation involve modifying mental structures to incorporate new information, backpropagation entails adjusting neural network weights to improve output predictions. Assimilation and accommodation occur in cognitive development, while backpropagation is specific to machine learning. Thus, while these processes have broad similarities, they are fundamentally different and cannot be directly compared in detail.
+This section delves into the systematic process of developing, training and evaluating algorithms, which empower data-driven learning, predictions, and decisions. This process encompasses selecting an appropriate algorithm, designing the model architecture, preprocessing and transforming data, and extracting relevant features. By iteratively adjusting the model's parameters, we aim to minimize the prediction error. The choice of techniques, such as supervised, unsupervised, or reinforcement learning, is dictated by the specific problem and data structure. Model evaluation, fine-tuning, and deployment are essential to ensure the model generalizes well to new data and performs effectively in real-world applications.
 
-We propose using a Triple Siamese Network to train a model for music similarity retrieval \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between an anchor, a positive, and a negative sample by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
+
+\subsection{Model architecture and training strategy}
+
+Given the nature of our task, we propose using a Triple Siamese Network. This model architecture has been proven efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between an anchor, a positive, and a negative sample by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
 
 Using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
 
-\subsection{Contrastive Self-Supervised Learning of Musical Representations (CSSLMR)}
+\subsection{Problem to solve}
 
-Contrastive Self-Supervised Learning of Musical Representations (CSSLMR) is an approach that combines the principles of Self-Supervised Learning (SSL) \cite{audioselfsupsurvey} and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
+\subsection{Self-Supervised Learning (SSL)}
 
-The CSSLMR methodology involves the following steps:
+Self-supervised learning is a subfield of machine learning where models learn to generate representations of data by finding patterns and structures within the data without relying on external labels or annotations. In other words, the model learns by creating its supervision signal from the raw, unlabeled data.\cite{audioselfsupsurvey}
+
+This approach to learning is inspired by the way humans and animals learn from their environment, where a great deal of knowledge is acquired through observation and interaction without explicit instruction. Self-supervised learning algorithms often involve tasks where the model learns to predict or reconstruct parts of the input data, such as predicting the next word in a sentence or completing an image with missing pixels.
+
+Some of the main advantages of self-supervised learning include:
+
+\begin{enumerate}
+\item Reduces dependency on labeled data, which can be expensive and time-consuming to collect and annotate.
+\item Encourages more generalizable and robust representations of the data since they capture the inherent structure and properties of the data rather than relying on human-provided labels.
+\end{enumerate} 
+
+\subsubsection{Known and unknown invariance}
+
+In machine learning and pattern recognition, invariance refers to the property of a model or algorithm being robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
+
+Known invariance: Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. This can include the input data's rotations, translations, scaling, or other known perturbations. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
+
+Unknown invariance: Unknown invariances are transformations or change the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. For example, a deep learning model might automatically learn to be invariant to certain lighting conditions or other factors not explicitly specified in its design.
+
+In summary, known invariances are explicitly incorporated into the design of a model or algorithm to improve its robustness and generalization. In contrast, the model learns unknown invariances from the data without explicit instruction.
+
+\begin{equation}
+\forall x \in X, \forall y \in Y, \forall \rho \in \mathcal{T}, f(x) = f(y) \implies f(\rho(x)) = f(\rho(y))
+\end{equation}
+
+In this expression, $X$ and $Y$ represent sets of input data, $\rho$ represents a transformation function, and $f$ represents a machine learning model. The expression states that for all inputs $x$ and $y$ in $X$ and $Y$, if $f(x) = f(y)$, then $f(\rho(x)) = f(\rho(y))$.
+
+The expression specifies that a model is invariant to a particular transformation function $\rho$ if it produces the same output for both the original and transformed input.
+
+
+\subsection{Contrastive Learning of Musical Representations (CLMR)}
+
+Contrastive Learning of Musical Representations (CLMR) is an approach that combines the principles of Self-Supervised Learning (SSL) and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
+
+The CLMR methodology involves the following steps:
 
 \begin{enumerate}
 \item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
-\item \textbf{Contrastive Learning:} Train a neural network to minimize a contrastive loss function, encouraging the model to produce similar positive and dissimilar representations for antagonistic pairs.
+\item \textbf{Contrastive Learning:} Train by minimizing a contrastive loss function, encouraging the model to produce similar positive and dissimilar representations for antagonistic pairs.
 \item\textbf{Latent Representation:} Utilize the learned representations for various MIR downstream tasks, such as music genre classification or similarity, both in the symbolic and time domains.
 \end{enumerate} 
 
-\subsubsection{Strengths}
 
-CSSLMR inherits the strengths of both SSL and CLMR:
-
-\begin{enumerate}
-\item Reduces dependency on labeled data: by leveraging inductive bias (assuming a general invariance across the data samples), CSSL can learn from large amounts of unlabeled data.
-\item Encourages feature extraction: CSSLMR promotes learning practical and discriminative representations.
-\end{enumerate} 
+\subsection{Siamese Networks}
+\subsection{Triplet Siamese Networks}
+\subsection{XXX}
+\subsection{XXX}
 
 \subsection{Encoder}
 \subsubsection{SampleCNN}
@@ -275,6 +308,8 @@ n = [c'_1, \dots, c'_{n_c}]
 
 \subsection{Loss function}
 
+Triplet loss was initially proposed and used by Google to learn face recognition of the same person at different poses and angles. \cite{Schroff2015FaceNet:Clustering}
+
 The mathematical expression for the triplet loss function with a variable margin can be written as follows:
 
 \begin{equation}
@@ -283,7 +318,7 @@ L(\mathbf{a}, \mathbf{p}, \mathbf{n}) = \frac{1}{N} \sum_{i=1}^{N} \max \left(0,
 
 In the triplet loss function, $d(\mathbf{a}, \mathbf{p})$ and $d(\mathbf{a}, \mathbf{n})$ denote the Euclidean distance (L2-norm) between the anchor $\mathbf{a}$ and the positive sample $\mathbf{p}$ and the negative sample $\mathbf{n}$, respectively. The margin $m$ is a positive constant determining the minimum distance between the anchor-positive and anchor-negative pairs.
 
-The $\max(0, ...)$ function computes the maximum of the expression within the parentheses and 0. This function aims to ensure that the loss is only calculated for triplets that violate the margin constraint, where the negative sample is closer to the anchor than the positive sample by at least the margin. When the distance between the positive and negative samples is greater than the margin, the loss is zero. Otherwise, the loss is proportional to the extent to which the constraint is violated.
+The $\max(0, ...)$ function computes the maximum of the expression within the parentheses and 0. This function ensures that the loss is only calculated for triplets that violate the margin constraint, where the negative sample is closer to the anchor than the positive sample by at least the margin. The loss is zero when the distance between the positive and negative samples is greater than the margin. Otherwise, the loss is proportional to the extent to which the constraint is violated.
 
 The final form of the loss function is obtained by averaging the loss over a mini-batch of triplets. 
 
