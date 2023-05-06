@@ -26,26 +26,27 @@ Some of the main advantages of self-supervised learning include:
 
 \subsubsection{Known and unknown invariance}
 
-In machine learning and pattern recognition, invariance refers to the property of a model or algorithm being robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
+In pattern recognition, invariance refers to the property of a model or algorithm being robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
 
 Known invariance: Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. This can include the input data's rotations, translations, scaling, or other known perturbations. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
 
 Unknown invariance: Unknown invariances are transformations or change the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. For example, a deep learning model might automatically learn to be invariant to certain lighting conditions or other factors not explicitly specified in its design.
 
-In summary, known invariances are explicitly incorporated into the design of a model or algorithm to improve its robustness and generalization. In contrast, the model learns unknown invariances from the data without explicit instruction.
-
 \begin{equation}
+\label{eq:invariance_to_particular_transformation_function}
 \forall x \in X, \forall y \in Y, \forall \rho \in \mathcal{T}, f(x) = f(y) \implies f(\rho(x)) = f(\rho(y))
 \end{equation}
 
-In this expression, $X$ and $Y$ represent sets of input data, $\rho$ represents a transformation function, and $f$ represents a machine learning model. The expression states that for all inputs $x$ and $y$ in $X$ and $Y$, if $f(x) = f(y)$, then $f(\rho(x)) = f(\rho(y))$.
+In this expression \ref{eq:invariance_to_particular_transformation_function}, $X$ and $Y$ represent sets of input data, $\rho$ represents a transformation function, and $f$ represents a machine learning model. The expression states that for all inputs $x$ and $y$ in $X$ and $Y$, if $f(x) = f(y)$, then $f(\rho(x)) = f(\rho(y))$.
 
 The expression specifies that a model is invariant to a particular transformation function $\rho$ if it produces the same output for both the original and transformed input.
 
 
 \subsection{Contrastive Learning of Musical Representations (CLMR)}
 
-Contrastive Learning of Musical Representations (CLMR) is an approach that combines the principles of Self-Supervised Learning (SSL) and Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly (or not) selected pieces, CSSLMR models can effectively capture the underlying structure and known invariance in the data.
+Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} aims to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly generated pieces, CLMR models can effectively capture the underlying known invariances that are explicitly incorporated into the design of a model to improve its robustness and generalization. 
+
+In contrast, the model learns unknown invariances from the data without explicit instruction.
 
 The CLMR methodology involves the following steps:
 
@@ -82,9 +83,9 @@ $C_{\text{in}}$ is the number of input channels
 $x_{c_i}(n)$ is the input for the $c_i$-th input channel at position $n$
 $w_{c_o, c_i}(k)$ is the kernel weight for the $c_o$-th output channel and $c_i$-th input channel at position $k$
 $K$ is the kernel size
-The stride is set to 1 and padding is set to 1 (equal padding $\lfloor K/2 \rfloor$ on both sides)
+The stride is set to 1, and padding is set to 1 (equal padding $\lfloor K/2 \rfloor$ on both sides)
 s
-    \item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. We pad the waveforms to the same  maximum length among batch, performs online triplet mining to find the hardest negatives, and returns the padded anchors, positives, and hardest negatives.
+    \item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. We pad the waveforms to the same  maximum length among the collection, perform online triplet mining to find the hardest negatives and return the padded anchors, positives, and hardest negatives.
 
     Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples. The maximum array length in the batch is given by:
 
@@ -318,7 +319,7 @@ L(\mathbf{a}, \mathbf{p}, \mathbf{n}) = \frac{1}{N} \sum_{i=1}^{N} \max \left(0,
 
 In the triplet loss function, $d(\mathbf{a}, \mathbf{p})$ and $d(\mathbf{a}, \mathbf{n})$ denote the Euclidean distance (L2-norm) between the anchor $\mathbf{a}$ and the positive sample $\mathbf{p}$ and the negative sample $\mathbf{n}$, respectively. The margin $m$ is a positive constant determining the minimum distance between the anchor-positive and anchor-negative pairs.
 
-The $\max(0, ...)$ function computes the maximum of the expression within the parentheses and 0. This function ensures that the loss is only calculated for triplets that violate the margin constraint, where the negative sample is closer to the anchor than the positive sample by at least the margin. The loss is zero when the distance between the positive and negative samples is greater than the margin. Otherwise, the loss is proportional to the extent to which the constraint is violated.
+The $\max(0, ...)$ function computes the maximum of the expression within the parentheses and 0. This function ensures that the loss is only calculated for triplets that violate the margin constraint, where the negative sample is closer to the anchor than the positive sample by at least the margin. The loss is zero when the distance between the positive and negative samples exceeds the margin. Otherwise, the loss is proportional to the extent to which the constraint is violated.
 
 The final form of the loss function is obtained by averaging the loss over a mini-batch of triplets. 
 

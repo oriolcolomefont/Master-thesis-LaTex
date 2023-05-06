@@ -1,6 +1,6 @@
 \begin{figure}
     \centering
-    \scalebox{1.0}{
+    \scalebox{0.8}{
 % NEURAL NETWORK activation
 % https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi&index=1
 \begin{tikzpicture}[x=2.7cm,y=1.6cm]
@@ -90,10 +90,11 @@
          \color{mydarkred}\right)
          %\color{black},\quad \mathbf{W}^{(0)} \in \mathbb{R}^{m\times n}
     \end{aligned}$};
-  
+
 \end{tikzpicture}
-    
-    }
-    \caption[Activation function]{\small{Activation function}}
-    \label{fig:my_label}
+}
+    \caption[Activation function]{\small{The input layer has "n" nodes, represented as $a_i^{(0)}$, where $i$ ranges from 1 to n. The output layer has "m" nodes, represented as $a_j^{(1)}$, where $j$ ranges from 1 to m. The connections between the input and output layers are defined by the weight matrix $\mathbf{W}^{(0)} \in \mathbb{R}^{m\times n}$, with each element represented as $w_{j,i}$, and the bias vector $\mathbf{b}^{(0)} \in \mathbb{R}^{m}$, with each element represented as $b_j^{(0)}$.The activation function, \\sigma, is applied element-wise to the product of the weight matrix and the input vector plus the bias vector}}
+
+    \label{fig:activation_function}
+
 \end{figure}
