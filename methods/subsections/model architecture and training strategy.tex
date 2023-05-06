@@ -37,7 +37,7 @@ Unknown invariance: Unknown invariances are transformations or change the model 
 \forall x \in X, \forall y \in Y, \forall \rho \in \mathcal{T}, f(x) = f(y) \implies f(\rho(x)) = f(\rho(y))
 \end{equation}
 
-In this expression \ref{eq:invariance_to_particular_transformation_function}, $X$ and $Y$ represent sets of input data, $\rho$ represents a transformation function, and $f$ represents a machine learning model. The expression states that for all inputs $x$ and $y$ in $X$ and $Y$, if $f(x) = f(y)$, then $f(\rho(x)) = f(\rho(y))$.
+In expression \ref{eq:invariance_to_particular_transformation_function}, $X$ and $Y$ represent sets of input data, $\rho$ represents a transformation function, and $f$ represents a machine learning model. The expression states that for all inputs $x$ and $y$ in $X$ and $Y$, if $f(x) = f(y)$, then $f(\rho(x)) = f(\rho(y))$.
 
 The expression specifies that a model is invariant to a particular transformation function $\rho$ if it produces the same output for both the original and transformed input.
 
@@ -58,7 +58,29 @@ The CLMR methodology involves the following steps:
 
 
 \subsection{Siamese Networks}
+
+A Siamese Network is a class of deep learning architecture specifically designed to address tasks involving similarity or comparison between two input instances. Bromley and LeCun first introduced it in the early 1990s to solve signature verification tasks to assess the similarity between two input images. The name "Siamese" comes from the network's structure, which involves two or more identical subnetworks connected in parallel and joined at their output layer.
+
+Architecture: A Siamese Network consists of two or more identical subnetworks (also known as "sister networks" or "twin networks") that share the same architecture, weights, and hyperparameters. Each subnetwork processes an input independently, and the outputs from these subnetworks are then combined and processed further to produce a single similarity score.
+
+Shared Weights: The critical feature of Siamese Networks is that the subnetworks share the same weights during training. This weight-sharing mechanism enables the model to learn an invariant representation for the input instances, making it more efficient in comparing and contrasting them.
+
+Loss Function: Siamese Networks use a specialized loss function, often called contrastive or triplet loss, to guide the training process. These loss functions are designed to minimize the distance between similar input pairs and maximize the distance between dissimilar input pairs, thus encouraging the network to learn a meaningful similarity metric.
+
+Applications: Siamese Networks are particularly well-suited for tasks such as one-shot learning, where a model needs to generalize from very few examples and functions that require a comparison or matching between instances, such as image recognition, face recognition, signature verification, and anomaly detection.
+
+Advantages: Siamese Networks have several advantages over traditional deep learning architectures. They are more efficient regarding memory usage and computational complexity due to the shared weights. They are also more effective in learning from limited or imbalanced datasets, as the network focuses on learning the similarity metric rather than the specific features of individual classes.
+
+In summary, a Siamese Network is a deep learning architecture designed for similarity-based tasks, consisting of two or more identical subnetworks sharing weights and connected at the output layer. It employs specialized loss functions to learn a meaningful similarity metric and is particularly well-suited for tasks involving one-shot learning or comparison between instances.
+
 \subsection{Triplet Siamese Networks}
+
+A Triplet Siamese Network is a variation of the Siamese Network architecture that extends the concept of similarity comparison to three input instances instead of two. The primary goal of a Triplet Siamese Network is to learn an adequate embedding space where the distance between similar instances is minimized. In contrast, the distance between dissimilar instances is maximized.
+
+In a Triplet Siamese Network, the input consists of three instances: an anchor, a positive, and a negative. The anchor and the positive instances belong to the same class, while the negative instance belongs to a different class. Each instance is processed by an identical subnetwork with the same architecture, weights, and hyperparameters.
+
+The Triplet Siamese Network uses a specialized loss function called the triplet loss to guide the learning process. The triplet loss function encourages the network to minimize the distance between the anchor and the positive instances (similar instances) and to maximize the distance between the anchor and the negative instances (dissimilar instances). A margin parameter is introduced in the loss function to ensure a minimum separation between the positive and negative instances in the embedding space.
+
 \subsection{XXX}
 \subsection{XXX}
 

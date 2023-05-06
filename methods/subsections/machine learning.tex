@@ -32,9 +32,12 @@ In a more technical description, an ANN consists of an input layer, one or more 
 
 \section{Deep Learning (DL)}
 
-Deep learning is a machine learning subfield that utilizes deep neural networks to learn hierarchical data representations. These networks handle complex, high-dimensional data across several domains. Their effectiveness stems from their nonlinear modeling capabilities and scalability with large datasets.
 
-A core algorithm in deep learning is backpropagation which efficiently computes gradients of the loss function concerning the network's parameters. It involves a two-step process: (1) forward pass, where input data propagates through the network to generate predictions, and (2) backward pass, where the error between predictions and ground truth is calculated and propagated back through the network. This process updates the network's parameters using gradient descent, which minimizes the loss function and improves the model's performance.
+Deep learning is a subfield of machine learning that employs deep neural networks to learn hierarchical data representations, enabling computational models with multiple processing layers to learn data abstractions across numerous levels. These methods have dramatically advanced the state-of-the-art in various domains, including speech recognition, visual object recognition, object detection, drug discovery, genomics, and more \cite{LeCun2015DeepLearning}. The effectiveness of deep learning arises from its nonlinear modeling capabilities and scalability with large datasets.
+
+A central algorithm in deep learning is backpropagation, which uses the forward and backward pass process to efficiently compute gradients of the loss function concerning the network's parameters. The forward pass involves propagating input data through the network to generate predictions. In contrast, the backward pass calculates the error between predictions and ground truth and subsequently returns it through the network. This procedure updates the network's parameters using gradient descent, minimizing the loss function and enhancing the model's performance.
+
+Deep learning has led to breakthroughs in processing complex, high-dimensional data, including images, video, speech, and audio, primarily due to deep convolutional nets. Simultaneously, recurrent nets have illuminated sequential data analysis such as text and speech. Deep learning discovers intricate structures in large datasets, improving our understanding and processing capabilities across various applications.
 
 %Backpropagation
 \input{figures/neural networks/Back_propagation}
