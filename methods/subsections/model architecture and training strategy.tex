@@ -13,24 +13,24 @@ Using the proposed triple siamese network and online triplet mining, we aim to t
 
 \subsection{Self-Supervised Learning (SSL)}
 
-Self-supervised learning is a subfield of machine learning where models learn to generate representations of data by finding patterns and structures within the data without relying on external labels or annotations. In other words, the model learns by creating its supervision signal from the raw, unlabeled data.\cite{audioselfsupsurvey}
+Self-supervised learning (SSL) is a subfield of machine learning where models learn to generate representations of data by finding patterns and structures within the data without relying on external labels or annotations. In other words, the model learns by creating its supervision signal from the raw, unlabeled data.\cite{audioselfsupsurvey}
 
-This approach to learning is inspired by the way humans and animals learn from their environment, where a great deal of knowledge is acquired through observation and interaction without explicit instruction. Self-supervised learning algorithms often involve tasks where the model learns to predict or reconstruct parts of the input data, such as predicting the next word in a sentence or completing an image with missing pixels.
+This approach to learning is inspired by the way humans and animals learn from their environment, where a great deal of knowledge is acquired through observation and interaction without explicit instruction. SSL algorithms often involve tasks where the model learns to predict or reconstruct parts of the input data, such as predicting the next word in a sentence or completing an image with missing pixels.
 
-Some of the main advantages of self-supervised learning include:
+Some of the main advantages of SSL include:
 
 \begin{enumerate}
 \item Reduces dependency on labeled data, which can be expensive and time-consuming to collect and annotate.
 \item Encourages more generalizable and robust representations of the data since they capture the inherent structure and properties of the data rather than relying on human-provided labels.
-\end{enumerate} 
+\end{enumerate}
 
 \subsubsection{Known and unknown invariance}
 
-In pattern recognition, invariance refers to the property of a model or algorithm being robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
+In this section, we discuss the concepts of known and unknown invariance in pattern recognition. Invariance refers to the property of a model or algorithm being robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
 
 Known invariance: Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. This can include the input data's rotations, translations, scaling, or other known perturbations. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
 
-Unknown invariance: Unknown invariances are transformations or change the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. For example, a deep learning model might automatically learn to be invariant to certain lighting conditions or other factors not explicitly specified in its design.
+Unknown invariance: Unknown invariances are transformations or changes the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. For example, a deep learning model might automatically learn to be invariant to certain lighting conditions or other factors not explicitly specified in its design.
 
 \begin{equation}
 \label{eq:invariance_to_particular_transformation_function}
@@ -41,10 +41,9 @@ In expression \ref{eq:invariance_to_particular_transformation_function}, $X$ and
 
 The expression specifies that a model is invariant to a particular transformation function $\rho$ if it produces the same output for both the original and transformed input.
 
-
 \subsection{Contrastive Learning of Musical Representations (CLMR)}
 
-Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} aims to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly generated pieces, CLMR models can effectively capture the underlying known invariances that are explicitly incorporated into the design of a model to improve its robustness and generalization. 
+Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} aims to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly generated pieces, CLMR models can effectively capture the underlying known invariances that are explicitly incorporated into the design of a model to improve its robustness and generalization.
 
 In contrast, the model learns unknown invariances from the data without explicit instruction.
 
@@ -52,34 +51,27 @@ The CLMR methodology involves the following steps:
 
 \begin{enumerate}
 \item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
-\item \textbf{Contrastive Learning:} Train by minimizing a contrastive loss function, encouraging the model to produce similar positive and dissimilar representations for antagonistic pairs.
-\item\textbf{Latent Representation:} Utilize the learned representations for various MIR downstream tasks, such as music genre classification or similarity, both in the symbolic and time domains.
-\end{enumerate} 
+\item \textbf{Contrastive Learning:} Train by minimizing a contrastive loss function, encouraging the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
+\item\textbf{Latent Representation:} Utilize the learned representations for various Music Information Retrieval (MIR) downstream tasks, such as music genre classification or similarity, both in the symbolic and time domains.
+\end{enumerate}
 
+By following these steps, CLMR models can learn meaningful and robust representations of music, potentially enhancing their performance in various MIR tasks and reducing the need for labeled data.
 
 \subsection{Siamese Networks}
 
-A Siamese Network is a class of deep learning architecture specifically designed to address tasks involving similarity or comparison between two input instances. Bromley and LeCun first introduced it in the early 1990s to solve signature verification tasks to assess the similarity between two input images. The name "Siamese" comes from the network's structure, which involves two or more identical subnetworks connected in parallel and joined at their output layer.
+A Siamese Network, a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}, is designed explicitly for tasks involving similarity or comparison between two input instances, such as signature verification. Its name derives from the structure, which consists of two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing for more efficient memory usage and computational complexity. This design is particularly effective for learning from limited or imbalanced datasets, as it focuses on learning the similarity metric rather than specific features of individual classes.
 
-Architecture: A Siamese Network consists of two or more identical subnetworks (also known as "sister networks" or "twin networks") that share the same architecture, weights, and hyperparameters. Each subnetwork processes an input independently, and the outputs from these subnetworks are then combined and processed further to produce a single similarity score.
+Each subnetwork processes an input independently, and its outputs are combined and further processed to yield a single similarity score. The shared weights during training enable the model to learn an invariant representation for the input instances, improving its efficiency in comparing and contrasting them. Siamese Networks employ specialized loss functions, such as contrastive or triplet loss, which minimize the distance between similar input pairs and maximize the distance between dissimilar ones. This approach encourages the network to learn a meaningful similarity metric.
 
-Shared Weights: The critical feature of Siamese Networks is that the subnetworks share the same weights during training. This weight-sharing mechanism enables the model to learn an invariant representation for the input instances, making it more efficient in comparing and contrasting them.
-
-Loss Function: Siamese Networks use a specialized loss function, often called contrastive or triplet loss, to guide the training process. These loss functions are designed to minimize the distance between similar input pairs and maximize the distance between dissimilar input pairs, thus encouraging the network to learn a meaningful similarity metric.
-
-Applications: Siamese Networks are particularly well-suited for tasks such as one-shot learning, where a model needs to generalize from very few examples and functions that require a comparison or matching between instances, such as image recognition, face recognition, signature verification, and anomaly detection.
-
-Advantages: Siamese Networks have several advantages over traditional deep learning architectures. They are more efficient regarding memory usage and computational complexity due to the shared weights. They are also more effective in learning from limited or imbalanced datasets, as the network focuses on learning the similarity metric rather than the specific features of individual classes.
-
-In summary, a Siamese Network is a deep learning architecture designed for similarity-based tasks, consisting of two or more identical subnetworks sharing weights and connected at the output layer. It employs specialized loss functions to learn a meaningful similarity metric and is particularly well-suited for tasks involving one-shot learning or comparison between instances.
 
 \subsection{Triplet Siamese Networks}
 
-A Triplet Siamese Network is a variation of the Siamese Network architecture that extends the concept of similarity comparison to three input instances instead of two. The primary goal of a Triplet Siamese Network is to learn an adequate embedding space where the distance between similar instances is minimized. In contrast, the distance between dissimilar instances is maximized.
 
-In a Triplet Siamese Network, the input consists of three instances: an anchor, a positive, and a negative. The anchor and the positive instances belong to the same class, while the negative instance belongs to a different class. Each instance is processed by an identical subnetwork with the same architecture, weights, and hyperparameters.
+Triplet Siamese Networks, an extension of the Siamese Network architecture, involve comparing three input instances instead of two, aiming to learn an embedding space where similar instances are close and dissimilar instances are distant. The input consists of an anchor, a positive instance (same class as the anchor), and a negative instance (different class). Each instance is processed by an identical subnetwork with shared architecture, weights, and hyperparameters.
 
-The Triplet Siamese Network uses a specialized loss function called the triplet loss to guide the learning process. The triplet loss function encourages the network to minimize the distance between the anchor and the positive instances (similar instances) and to maximize the distance between the anchor and the negative instances (dissimilar instances). A margin parameter is introduced in the loss function to ensure a minimum separation between the positive and negative instances in the embedding space.
+The triplet loss function guides learning, minimizing the distance between the anchor and positive instances while maximizing the distance between the anchor and negative instances. A margin parameter in the loss function ensures a minimum separation between positive and negative instances in the embedding space.
+
+Triplet Siamese Networks offer several advantages, including learning fine-grained similarity metrics, being well-suited for one-shot learning tasks, and offering efficient memory usage and computational complexity due to shared weights. These networks have been applied to various tasks and domains, such as image recognition, face recognition, speaker recognition, text similarity, and medical imaging for diagnosis or treatment purposes.
 
 \subsection{XXX}
 \subsection{XXX}
@@ -98,7 +90,7 @@ After the initial layer, there are nine hidden layers with varying kernel sizes,
 y_{c_o}(n) = \sum_{c_i=1}^{C_{\text{in}}} \sum_{k=-\lfloor K/2 \rfloor}^{\lfloor K/2 \rfloor} x_{c_i}(n - k) \cdot w_{c_o, c_i}(k)
 \end{equation}
 
-where:
+Where:
 
 $y_{c_o}(n)$ is the output for the $c_o$-th output channel at position $n$
 $C_{\text{in}}$ is the number of input channels
@@ -186,167 +178,115 @@ y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 
 
 \subsection{Audio augmentation and transformation pipeline}
+
+%\input{figures/neural networks/pipeline}
+
 \subsubsection{Positive sample generation}
-Let $W$ be the input waveform and $W_p$ be the generated positive waveform. The pipeline applies audio effects and adds noise with a random SNR. Define the following random variables for the effects:
+Given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of audio effects and adding noise. Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
 
-\begin{equation}
-gain \sim \text{Uniform}(-12, 0)
-\end{equation}
-\begin{equation}
-pitch \sim \text{Uniform}(-1200, 1200)
-\end{equation}
-\begin{equation}
-reverb\_params \sim \text{Uniform}(0, 100)^3
-\end{equation}
-\begin{equation}
-chorus\_params = \begin{cases}
-\text{Uniform}(0.1, 1.0), & i=1,2, \\
-\text{Uniform}(20, 55), & i=3, \\
-\text{Uniform}(0.1, 0.9), & i=4, \\
-\text{Uniform}(0.1, 2.0), & i=5, \\
-\text{Uniform}(2, 5), & i=6, \\
-\text{Categorical}(\{-s, -t\}), & i=7,
-\end{cases}
-\end{equation}
-\begin{equation}
-drive \sim \text{Uniform}(0, 30)
-\end{equation}
-\begin{equation}
-stretch \sim \text{Uniform}(0.9, 1.1)
-\end{equation}
-\begin{equation}
-speed \sim \text{Uniform}(0.9, 1.1)
-\end{equation}
-\begin{equation}
-tremolo\_speed \sim \text{Uniform}(0.1, 100)
-\end{equation}
-\begin{equation}
-tremolo\_depth \sim \text{Uniform}(1, 101)
-\end{equation}
-\begin{equation}
-snr\_range \sim \text{Uniform}(12, 100)
+The positive signal $P[n]$ is generated as follows:
+
+\begin{equation}\label{eq:positive_signal}
+P[n] = A[n] \ast h_{G}[n] \ast h_{C}[n] \ast h_{D}[n] \ast h_{P_t}[n] \ast h_{R}[n] \ast h_{S}[n] \ast h_{T}[n] \ast h_{T_m}[n] + N[n]
 \end{equation}
 
-Let $N$ be the noise matrix with dimensions [channels, time domain samples] as $W$ for white noise. Calculate signal power $P_s$ and noise power $P_n$:
+where $\ast$ denotes convolution, $h_{G}[n] = g \delta[n]$, $h_{D}[n]$ is the impulse response of the overdrive effect, $h_{P_t}[n]$ is the impulse response of the pitch shift effect, $h_{S}[n]$ represents the impulse response of the speed change effect, $h_{T}[n]$ is the impulse response of the stretch effect, and $h_{T_m}[n] = (1 - d_m \cos(2 \pi f_m n))\delta[n]$ is the impulse response of the tremolo effect. The noise signal $N[n]$ is added with a specific signal-to-noise ratio (SNR) in the range $[12, 100]$ in decibels.
 
-\begin{equation}
-P_s = \sum (W_{ij})^2
-\end{equation}
-\begin{equation}
-P_n = \sum (N_{ij})^2
-\end{equation}
+These effect selections behave and affect the signal in several domains, adding aggressive transformations while preserving high-level musical content.
 
-Calculate the scaling factor $\alpha$ for noise based on the desired signal-to-noise ratio (SNR):
+\begin{itemize}
+\item \textbf{Amplitude effects:} Amplitude or gain modification.
+\begin{itemize}
+    \item Gain: Adjusts the overall amplitude of the signal by a constant factor $g \in [-12, 0]$ dB.
+\end{itemize}
 
-\begin{equation}
-\alpha = \sqrt{\frac{P_s}{P_n \times 10^{\frac{snr\_range}{10}}}}
-\end{equation}
+\item \textbf{Time-domain effects:} Time-domain manipulation alters the signal's timing or duration.
+\begin{itemize}
+    \item Speed change: Alters the playback speed of the signal by a factor $\alpha \in [0.9, 1.1]$.
+    \item Stretch: Changes the signal duration without affecting its pitch by a factor $\beta \in [0.9, 1.1]$.
+\end{itemize}
 
-Compute the scaled noise matrix $N_s$ and the noisy waveform matrix $W_n$:
+\item \textbf{Frequency-domain effects:} Frequency domain manipulation alters the frequency content or pitch of the signal.
+\begin{itemize}
+    \item Pitch shift: Changes the signal's pitch by $\Delta p \in [-1200, 1200]$ cents.
+\end{itemize}
 
-\begin{equation}
-N_s = \alpha \times N
-\end{equation}
-\begin{equation}
-W_n = W + N_s
-\end{equation}
+\item \textbf{Nonlinear effects:} Nonlinear transformations to the audio signal, resulting in harmonic distortion or other complex changes.
+\begin{itemize}
+    \item Overdrive: Adds harmonic distortion to the signal based on the parameter $d \in [0, 30]$.
+\end{itemize}
 
-The final positive waveform $W_p$ is obtained with noise added according to the chosen SNR. This pipeline enhances the diversity of the positive samples and aims to improve the model's ability to retrieve content-based similar-sounding samples sharing the same underlying musical language.
+\item \textbf{Modulation effects:} Audio signal modulation using a low-frequency oscillator or control signal.
+\begin{itemize}
+    \item Chorus: Applies a varying time delay to the signal, resulting in a richer, thicker sound. The specified ranges determine the chorus parameters.
+    \item Tremolo: Modulates the signal's amplitude at a modulation frequency $f_m \in [0.1, 100]$ Hz and depth $d_m \in [1, 101]$.
+\end{itemize}
+
+\item \textbf{Reverberation effects:} Acoustic reflections simulation and reverberations of physical space.
+\begin{itemize}
+    \item Reverb: Applies an impulse response $h_R[n]$ that simulates the reverberation of space with parameters in the range $[0, 100]$.
+\end{itemize}
+
+\item \textbf{Noise effects:} These effects add noise or other random elements to the audio signal.
+\begin{itemize}
+    \item Additive noise: Adds a noise signal $N[n]$ with a specific signal-to-noise ratio (SNR) in the range $[12, 100]$.
+\end{itemize}
+\end{itemize}
 
 \subsubsection{Negative sample generation}
 
-Let $a$ be the original anchor clip and $n$ be the negative clip generated. The steps for generating the negative clip $n$ are as follows:
-
 \begin{enumerate}
-\item Calculate the length $L_a$ and duration $T_a$ of the anchor clip $a$:
-
-\begin{equation}
-L_a = \text{len}(a)
-\end{equation}
-
-\begin{equation}
-T_a = \frac{L_a}{f_s}
-\end{equation}
-
-where $\text{len}(a)$ returns the shape of the audio clip, and $f_s$ is the sample rate of the audio.
-
-\item Determine the number of chunks $n_c$ to split the anchor clip into based on a minimum chunk duration $T_c$:
-
-\begin{equation}
-n_c = \left\lfloor\frac{T_a}{T_c}\right\rfloor
-\end{equation}
-
 \item Calculate the minimum and maximum chunk lengths in samples:
-
-\begin{equation}
-L_{c,\text{min}} = T_c \times f_s
+2\begin{equation}
+l_{min} = t_{min} \times S
 \end{equation}
 \begin{equation}
-L_{c,\text{max}} = T_{\text{max}} \times f_s
+l_{max} = t_{max} \times S
 \end{equation}
-
-where $T_{\text{max}}$ is the maximum chunk duration specified in seconds.
-
-\item Generate $n_c$ chunk lengths $L_{c,1},\ldots,L_{c,n_c}$ as follows:
-
+\item Generate random chunk lengths $l_1, l_2, \ldots, l_{n-1}$ from the uniform distribution on the interval $[l_{min}, l_{max}]$. Calculate the final chunk length as:
 \begin{equation}
-L_{c,i} = \begin{cases}
-L_{c,\text{min}}, & i=1, \\
-\text{randint}(L_{c,\text{min}}, L_{c,\text{max}}), & 1<i<n_c, \\
-L_a - \sum_{j=1}^{i-1} L_{c,j}, & i=n_c.
-\end{cases}
+l_n = L_A - \sum_{i=1}^{n-1} l_i
 \end{equation}
-
-\item Split the anchor clip into chunks $c_1,\ldots,c_{n_c}$ based on the lengths $L_{c,1},\ldots,L_{c,n_c}$:
-
-\begin{equation}
-c_i = a[..., s_i : s_i + L_{c,i}]
+where $L_A$ is the length of the anchor signal in samples.
+\item Split the anchor signal $A$ into chunks $C_1, C_2, \ldots, C_n$ according to the calculated chunk lengths.
+\item Shuffle the chunks randomly to get the permuted chunks $C_{\sigma(1)}, C_{\sigma(2)}, \ldots, C_{\sigma(n)}$, where $\sigma$ is a random permutation of indices from $1$ to $n$.
+\item Concatenate the shuffled chunks to generate the negative signal:
+\begin{equation}\label{eq:negative_signal}
+N = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 \end{equation}
-\begin{equation}
-S_c = [0] + [L_{c,1},...,L_{c,n_c-1}]
-S_c = \sum_{i=0}^{n_c-1} S_{c,i}
-\end{equation}
-\begin{equation}
-s_i = S_c[i]
-\end{equation}
-\begin{equation}
-i=1,\ldots,n_c
-\end{equation}
-
-\item Shuffle the resulting list of chunks randomly to obtain the reordered chips $c'_1,\ldots,c'_{n_c}$:
-
-Let $p$ be a random permutation of the indices $1$ to $n_c$. Then, the shuffled array $c'$ is given by:
-\begin{equation}
-c' = [c_{p(1)}, c_{p(2)}, \dots, c_{p(n_c)}]
-\end{equation}
-
-
-\item Let $c'_1, \dots, c'_{n_c}$ be the shuffled chunks. Then, the negative clip $n$ is obtained by concatenating the shuffled chunks:
-\begin{equation}
-n = [c'_1, \dots, c'_{n_c}]
-\end{equation}
-
-
 \end{enumerate}
+
+Ensure that the length of the anchor and negative signals are the same, i.e.,
+
+\begin{equation}
+L_A = L_N,
+\end{equation}
+
+where $L_N$ is the length of the negative signal in samples.
 
 \subsection{Loss function}
 
-Triplet loss was initially proposed and used by Google to learn face recognition of the same person at different poses and angles. \cite{Schroff2015FaceNet:Clustering}
+Schroff, F., Kalenichenko, D. and Philbin, J. at Google initially proposed and used triplet loss to learn face recognition of the same person at different poses and angles. \cite{Schroff2015FaceNet:Clustering}
 
-The mathematical expression for the triplet loss function with a variable margin can be written as follows:
+A triplet loss function with a variable margin can be written as follows:
 
 \begin{equation}
-L(\mathbf{a}, \mathbf{p}, \mathbf{n}) = \frac{1}{N} \sum_{i=1}^{N} \max \left(0, m + \left| \mathbf{a}_i - \mathbf{p}_i \right|_2^2 - \left| \mathbf{a}_i - \mathbf{n}_i \right|_2^2 \right)
+\mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n}) = \sum_{i=1}^{N} \max \left(0, \left| \mathbf{a}_i - \mathbf{p}_i \right|_2^2 - \left| \mathbf{a}_i - \mathbf{n}_i \right|_2^2 + m \right)
 \end{equation}
 
-In the triplet loss function, $d(\mathbf{a}, \mathbf{p})$ and $d(\mathbf{a}, \mathbf{n})$ denote the Euclidean distance (L2-norm) between the anchor $\mathbf{a}$ and the positive sample $\mathbf{p}$ and the negative sample $\mathbf{n}$, respectively. The margin $m$ is a positive constant determining the minimum distance between the anchor-positive and anchor-negative pairs.
+In this equation:
 
-The $\max(0, ...)$ function computes the maximum of the expression within the parentheses and 0. This function ensures that the loss is only calculated for triplets that violate the margin constraint, where the negative sample is closer to the anchor than the positive sample by at least the margin. The loss is zero when the distance between the positive and negative samples exceeds the margin. Otherwise, the loss is proportional to the extent to which the constraint is violated.
+$\mathcal{L}$ is the triplet loss function.
+$\mathbf{a}_i$, $\mathbf{p}_i$, and $\mathbf{n}_i$ are the anchor, positive, and negative embedding vectors, respectively, for the $i$-th sample.
+$\left| \cdot \right|_2^2$ denotes the squared Euclidean distance between two points.
+$m$ is the margin, a hyperparameter that helps ensure that the anchor-positive distance is smaller than the anchor-negative distance by at least a margin.
+The summation $\sum_{i=1}^{N}$ is over all $N$ triplets in the dataset.
+The goal of the triplet loss is to minimize the distance between the anchor and the positive sample while maximizing the distance between the anchor and the negative sample. This encourages the model to learn embeddings that are similar for the same class and dissimilar for different classes.
 
 The final form of the loss function is obtained by averaging the loss over a mini-batch of triplets. 
 
 \begin{equation}
-L = \frac{1}{N} \sum_{i=1}^{N} L(anchor_i, positive_i, negative_i)
+\mathcal{L} = \frac{1}{N} \sum_{i=1}^{N} L(anchor_i, positive_i, negative_i)
 \end{equation}
 
 Here, $N$ is the number of triplets in the mini-batch, and $L(anchor_i, positive_i, negative_i)$ represents the loss function computed for the i-th triplet in the batch.
