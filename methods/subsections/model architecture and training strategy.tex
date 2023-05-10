@@ -2,6 +2,8 @@
 
 This section delves into the systematic process of developing, training and evaluating algorithms, which empower data-driven learning, predictions, and decisions. This process encompasses selecting an appropriate algorithm, designing the model architecture, preprocessing and transforming data, and extracting relevant features. By iteratively adjusting the model's parameters, we aim to minimize the prediction error. The choice of techniques, such as supervised, unsupervised, or reinforcement learning, is dictated by the specific problem and data structure. Model evaluation, fine-tuning, and deployment are essential to ensure the model generalizes well to new data and performs effectively in real-world applications.
 
+\input{figures/neural networks/pipeline}
+
 
 \subsection{Model architecture and training strategy}
 
@@ -26,7 +28,7 @@ Some of the main advantages of SSL include:
 
 \subsubsection{Known and unknown invariance}
 
-In this section, we discuss the concepts of known and unknown invariance in pattern recognition. Invariance refers to the property of a model or algorithm being robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
+This section discusses the concepts of known and unknown invariance in pattern recognition. Invariance refers to the property of a model or algorithm being robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
 
 Known invariance: Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. This can include the input data's rotations, translations, scaling, or other known perturbations. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
 
@@ -178,8 +180,6 @@ y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 
 
 \subsection{Audio augmentation and transformation pipeline}
-
-%\input{figures/neural networks/pipeline}
 
 \subsubsection{Positive sample generation}
 Given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of audio effects and adding noise. Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 

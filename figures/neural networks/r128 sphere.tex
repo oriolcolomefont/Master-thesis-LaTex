@@ -1,0 +1,32 @@
+% A Bloch sphere of radius |a| = 1 contains all possible states of a two-state quantum system (qubit).
+% Each Bloch vector fully determines a spin-1/2 density matrix.
+% Used in Exercise Sheet 10 of Statistical Physics by Manfred Salmhofer (2016), available at https://janosh.dev/physics/statistical-physics.
+
+
+%\usetikzlibrary{angles, quotes}
+
+\begin{figure}
+    \centering
+    \scalebox{1.0}{
+    \begin{tikzpicture}
+
+  % Define radius
+  \def\r{3}
+
+  % Bloch vector
+  \draw (0, 0) node[circle, fill, inner sep=1] (orig) {} -- (\r/3, \r/2) node[circle, fill, inner sep=0.7, label=above:$\vec{a}$] (a) {};
+  \draw[dashed] (orig) -- (\r/3, -\r/5) node (phi) {} -- (a);
+
+  % Sphere
+  \draw (orig) circle (\r);
+  \draw[dashed] (orig) ellipse (\r{} and \r/3);
+
+  % Axes
+  \draw[->] (orig) -- ++(-\r/5, -\r/3) node[below] (x1) {$x_1$};
+  \draw[->] (orig) -- ++(\r, 0) node[right] (x2) {$x_n \in \mathbb{R}$ $2 \leq n \leq 127$};
+  \draw[->] (orig) -- ++(0, \r) node[above] (x3) {$x_128$};
+
+\end{tikzpicture}}
+    \caption[128-dimensional hypersphere]{\small{A representation of a 128-dimensional hypersphere in the Euclidean space $\mathbb{R}^{128}$. Due to the limitations of visualizing high-dimensional objects in two or three dimensions, this figure offers a simplified and abstract depiction of the hypersphere.}}
+    \label{fig:my_label}
+\end{figure}
