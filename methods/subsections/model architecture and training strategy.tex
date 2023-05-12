@@ -28,11 +28,18 @@ Some of the main advantages of SSL include:
 
 \subsubsection{Known and unknown invariance}
 
-This section discusses the concepts of known and unknown invariance in pattern recognition. Invariance refers to the property of a model or algorithm being robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
+In pattern recognition, \textit{invariance} refers to the property of a model to be robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
 
-Known invariance: Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. This can include the input data's rotations, translations, scaling, or other known perturbations. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
+
+
+\begin{definition}[Known invariance]
+Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. This can include the input data's rotations, translations, scaling, or other known perturbations. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
+\end{definition}
+
+\begin{definition}[Unknown invariance]
 
 Unknown invariance: Unknown invariances are transformations or changes the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. For example, a deep learning model might automatically learn to be invariant to certain lighting conditions or other factors not explicitly specified in its design.
+\end{definition}
 
 \begin{equation}
 \label{eq:invariance_to_particular_transformation_function}
@@ -81,7 +88,7 @@ Triplet Siamese Networks offer several advantages, including learning fine-grain
 \subsection{Encoder}
 \subsubsection{SampleCNN}
 
-The SampleCNN model \cite{CLMR2021} takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
+The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
 
 After the initial layer, there are nine hidden layers with varying kernel sizes, strides, and channels. Each hidden layer consists of the following:
 
