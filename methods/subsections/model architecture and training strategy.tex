@@ -11,13 +11,11 @@ Given the nature of our task, we propose using a Triple Siamese Network. This mo
 
 Using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
 
-\subsection{Problem to solve}
-
-\subsection{Self-Supervised Learning (SSL)}
+\subsubsection{Self-Supervised Learning (SSL)}
 
 Self-supervised learning (SSL) is a subfield of machine learning where models learn to generate representations of data by finding patterns and structures within the data without relying on external labels or annotations. In other words, the model learns by creating its supervision signal from the raw, unlabeled data.\cite{audioselfsupsurvey}
 
-This approach to learning is inspired by the way humans and animals learn from their environment, where a great deal of knowledge is acquired through observation and interaction without explicit instruction. SSL algorithms often involve tasks where the model learns to predict or reconstruct parts of the input data, such as predicting the next word in a sentence or completing an image with missing pixels.
+This approach to learning is inspired by the way humans and animals learn from their environment, where a great deal of knowledge is acquired through observation and interaction without explicit instruction. 
 
 Some of the main advantages of SSL include:
 
@@ -25,6 +23,10 @@ Some of the main advantages of SSL include:
 \item Reduces dependency on labeled data, which can be expensive and time-consuming to collect and annotate.
 \item Encourages more generalizable and robust representations of the data since they capture the inherent structure and properties of the data rather than relying on human-provided labels.
 \end{enumerate}
+
+Further understanding of the cognitive processes in music can be obtained through Jean Piaget's theory of cognitive development. Piaget suggests that children acquire knowledge through sensory and motor experiences in their early stages, with reasoning gradually evolving toward abstract ideas and deductive logic through the development of schemas—cognitive structures that underlie human knowledge and skill \cite{Huitt2003PiagetsDevelopment}. These schemas evolve through an equilibration mechanism that incorporates new information with pre-existing knowledge, involving processes of assimilation and accommodation \cite{audioselfsupsurvey}.
+
+Although there are resemblances between assimilation and accommodation in Piaget's theory and backpropagation in Deep Learning (DL), these processes occur in distinct mechanisms and contexts. Assimilation and accommodation modify mental structures to incorporate new information, while backpropagation adjusts neural network weights to enhance output predictions.
 
 \subsubsection{Known and unknown invariance}
 
@@ -38,7 +40,7 @@ Known invariances are transformations or changes that the model or algorithm is 
 
 \begin{definition}[Unknown invariance]
 
-Unknown invariance: Unknown invariances are transformations or changes the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. For example, a deep learning model might automatically learn to be invariant to certain lighting conditions or other factors not explicitly specified in its design.
+Unknown invariance: Unknown invariances are transformations the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. For example, a deep learning model might automatically learn to be invariant to certain lighting conditions or other factors not explicitly specified in its design.
 \end{definition}
 
 \begin{equation}
@@ -50,7 +52,7 @@ In expression \ref{eq:invariance_to_particular_transformation_function}, $X$ and
 
 The expression specifies that a model is invariant to a particular transformation function $\rho$ if it produces the same output for both the original and transformed input.
 
-\subsection{Contrastive Learning of Musical Representations (CLMR)}
+\subsubsection{Contrastive Learning of Musical Representations (CLMR)}
 
 Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} aims to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly generated pieces, CLMR models can effectively capture the underlying known invariances that are explicitly incorporated into the design of a model to improve its robustness and generalization.
 
@@ -73,7 +75,7 @@ A Siamese Network, a deep learning architecture introduced by Bromley and LeCun 
 Each subnetwork processes an input independently, and its outputs are combined and further processed to yield a single similarity score. The shared weights during training enable the model to learn an invariant representation for the input instances, improving its efficiency in comparing and contrasting them. Siamese Networks employ specialized loss functions, such as contrastive or triplet loss, which minimize the distance between similar input pairs and maximize the distance between dissimilar ones. This approach encourages the network to learn a meaningful similarity metric.
 
 
-\subsection{Triplet Siamese Networks}
+\subsubsection{Triplet Siamese Networks}
 
 
 Triplet Siamese Networks, an extension of the Siamese Network architecture, involve comparing three input instances instead of two, aiming to learn an embedding space where similar instances are close and dissimilar instances are distant. The input consists of an anchor, a positive instance (same class as the anchor), and a negative instance (different class). Each instance is processed by an identical subnetwork with shared architecture, weights, and hyperparameters.
@@ -101,38 +103,35 @@ y_{c_o}(n) = \sum_{c_i=1}^{C_{\text{in}}} \sum_{k=-\lfloor K/2 \rfloor}^{\lfloor
 
 Where:
 
-$y_{c_o}(n)$ is the output for the $c_o$-th output channel at position $n$
-$C_{\text{in}}$ is the number of input channels
-$x_{c_i}(n)$ is the input for the $c_i$-th input channel at position $n$
-$w_{c_o, c_i}(k)$ is the kernel weight for the $c_o$-th output channel and $c_i$-th input channel at position $k$
-$K$ is the kernel size
-The stride is set to 1, and padding is set to 1 (equal padding $\lfloor K/2 \rfloor$ on both sides)
-s
-    \item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. We pad the waveforms to the same  maximum length among the collection, perform online triplet mining to find the hardest negatives and return the padded anchors, positives, and hardest negatives.
+$y_{c_o}(n)$ is the output for the $c_o$-th output channel at position $n$, $C_{\text{in}}$ is the number of input channels, $x_{c_i}(n)$ is the input for the $c_i$-th input channel at position $n$, $w_{c_o, c_i}(k)$ is the kernel weight for the $c_o$-th output channel and $c_i$-th input, channel at position $k$, and $K$ is the kernel size. The stride is set to 1 and padding to 1 (equal padding $\lfloor K/2 \rfloor$ on both sides).
 
-    Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples. The maximum array length in the batch is given by:
+\item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. We pad the waveforms to the same  maximum length among the collection, perform online triplet mining to find the hardest negatives and return the padded anchors, positives, and hardest negatives.
 
-    \begin{equation}
+We have intentionally chosen to use zero padding instead of array truncating in our experiment. This decision was based on our belief that preserving the integrity of the music data was more critical, despite the potential trade-off with computational efficiency during the normalization process.
+
+Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples. The maximum array length in the batch is given by:
+
+\begin{equation}
 L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
 \end{equation}
 
-    The anchor-positive distance and the anchor-negative distance are computed as the Euclidean distance between the corresponding samples:
+The anchor-positive distance and the anchor-negative distance are computed as the Euclidean distance between the corresponding samples:
 
-    \begin{equation}
+\begin{equation}
 D_{\text{AP}} = \sqrt{\sum_{i} (A_i - P_i)^2}
 \end{equation}
 
-    The "hardest" negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances:
+The "hardest" negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances:
 
-    \begin{equation}
+\begin{equation}
 D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
 \end{equation}
 
     
-    \item ReLU activation. \input{figures/equations/ReLU}
+\item ReLU activation. \input{figures/equations/ReLU}
 
     
-    \item Max pooling with kernel size and stride equal to the stride value of the current layer.
+\item Max pooling with kernel size and stride equal to the stride value of the current layer.
 \end{itemize}
 
 \begin{tabular}{|c|c|c|}
@@ -171,25 +170,20 @@ Finally, a linear layer with 512 input features and 128 output dimension feature
 
 \input{figures/my model/SampleCNN}
 
-We have adapted the original architecture for our experiments to our purpose, which consists of the final average pooling step.
+We have adapted the original architecture to our purpose, which consists of the final average pooling step.
 
 \begin{equation}
 y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 \end{equation}
 
-\begin{itemize}
-  \item \(y_i\) represents the output tensor after the average pooling operation,
-  \item \(x_{ij}\) represents the elements in the 2D input tensor,
-  \item \(N\) is the number of elements along the second dimension of the input tensor,
-  \item \(i\) iterates over the first dimension of the tensors, and
-  \item \(j\) iterates over the second dimension of the input tensor.
-\end{itemize}
-
+$y_i$ represents the output tensor after the average pooling operation, $x_{ij}$ represents the elements in the 2D input tensor, $N$ is the number of elements along the second dimension of the input tensor, $i$ iterates over the first dimension of the tensors, and $j$ iterates over the second dimension of the input tensor.
 
 \subsection{Audio augmentation and transformation pipeline}
 
 \subsubsection{Positive sample generation}
-Given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of audio effects and adding noise. Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
+Given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top. 
+
+Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
 
 The positive signal $P[n]$ is generated as follows:
 
