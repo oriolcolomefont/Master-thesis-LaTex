@@ -70,13 +70,14 @@ By following these steps, CLMR models can learn meaningful and robust representa
 
 \subsection{Siamese Networks}
 
-A Siamese Network, a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}, is designed explicitly for tasks involving similarity or comparison between two input instances, such as signature verification. Its name derives from the structure, which consists of two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing for more efficient memory usage and computational complexity. This design is particularly effective for learning from limited or imbalanced datasets, as it focuses on learning the similarity metric rather than specific features of individual classes.
+A Siamese Network, a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}, is designed explicitly for tasks involving similarity or comparison between two input instances. Its name derives from the structure, which consists of two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing for more efficient memory usage and computational complexity. 
+
+This design is particularly effective for learning from limited or imbalanced datasets, as it focuses on learning the similarity metric rather than specific features of individual classes.
 
 Each subnetwork processes an input independently, and its outputs are combined and further processed to yield a single similarity score. The shared weights during training enable the model to learn an invariant representation for the input instances, improving its efficiency in comparing and contrasting them. Siamese Networks employ specialized loss functions, such as contrastive or triplet loss, which minimize the distance between similar input pairs and maximize the distance between dissimilar ones. This approach encourages the network to learn a meaningful similarity metric.
 
 
 \subsubsection{Triplet Siamese Networks}
-
 
 Triplet Siamese Networks, an extension of the Siamese Network architecture, involve comparing three input instances instead of two, aiming to learn an embedding space where similar instances are close and dissimilar instances are distant. The input consists of an anchor, a positive instance (same class as the anchor), and a negative instance (different class). Each instance is processed by an identical subnetwork with shared architecture, weights, and hyperparameters.
 
