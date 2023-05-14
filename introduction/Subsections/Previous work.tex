@@ -1,9 +1,26 @@
 \section{Related work}
 
-Learning deep audio embeddings can somehow be considered as breaking down the essence of tonal music to its fundamental and most empirical elements. Dissecting musical structures from the most ethereal and spiritual foreground  to the foundational numerical nuances. 
+Neural networks have recently facilitated the development of low-dimensional embeddings that capture essential musical features, enabling the computation of various task-specific aspects. These aspects include:
 
-It also delves into middle-ground elements and mesostructures \cite{Mesostructures2023}, bridging micro and macro structures with harmonic progressions, thematic materials, and voice-leading reductions. 
+\begin{itemize}
 
-\subsection{XXXX}
+\item The utilization of multi-level music segmentation through deep audio embeddings has replaced manually engineered features and demonstrated significant performance improvement over existing approaches \cite{SalamonDeepSegmentation}.
 
-Neural networks have recently facilitated the development of low-dimensional musical embeddings that capture essential musical features, enabling the computation of content-based similarity between musical passages \cite{Kim2021LearningLoss}\cite{Hung2022Feature-informedClassification}. An embedding function $f(x) \in \mathbb{R}^d$ maps a given course $x$ to a vector in the real space $\mathbb{R}^d$, allowing the measurement of similarity between two musical passages using Euclidean distance, as denoted by the formula $D_{i,j} = ||f(x_i) - f(x_j)||^2$. The success of such systems hinges on the level of musical abstraction and the embedding space's capacity to interpret music in a manner consistent with human perception. As a result, a suitable embedding space is vital for producing output that aligns with human expectations.
+\item The enhancement of environmental sound classification, suggesting the potential for further improvements through class-specific augmentations \cite{Kim2020OneStrategies}.
+
+\item The improvement of vocal-centric music tasks using cross-domain audio embedding \cite{Kim2021LearningLoss}.
+
+\item The enhancement of audio classification through a combination of task-specific and pre-trained features \cite{Hung2022Feature-informedClassification}.
+
+\item The creation of a music similarity search engine specifically for video producers \cite{epidemic}.
+
+\item The improved performance in Music Emotion Recognition (MER) tasks, eliminating the necessity for expert human engineering \cite{KohComparisonRecognition}.
+
+\item The resolution of the cross-modal text-to-music retrieval problem, enabling content creators to find music that matches the emotion conveyed in their text-based stories \cite{WonEmotionStories}.
+\end{itemize}
+
+Moreover, deep audio embeddings offer the advantage of transferability. Once trained, these embeddings can be utilized as a starting point for various other tasks, thus saving computational resources and time compared to training a model from scratch.
+
+Given their demonstrated success in the literature and their potential for transfer learning, exploring deep audio embeddings for MIR downstream tasks seems worthwhile.
+
+Returning to musicological influences, the concept of the middle ground can be compared to the mesostructure in music. The middle ground, analogous to the mesostructure, represents the intermediate-level musical patterns that bridge the micro and macro structures. This element is often overlooked when applying deep learning to music. As emphasized by \cite{Mesostructures2023}, models that address this mesostructure level could significantly enrich tasks such as music analysis, composition, and retrieval, providing a more holistic understanding of music similar to the insights gained from analyzing the middle-ground in Schenkerian analysis. \cite{Introduction_to_Schenkerian_Analysis}
