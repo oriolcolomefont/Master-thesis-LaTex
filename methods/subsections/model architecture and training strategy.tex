@@ -7,11 +7,13 @@ This section delves into the systematic process of developing, training and eval
 
 \subsection{Model architecture and training strategy}
 
+I advocate for exposure as the primary method of learning music, emphasizing the importance of immersing oneself in various musical experiences to foster a holistic understanding of music as an art form. Individuals can cultivate well-rounded musical expertise by engaging with different styles, genres, techniques, and learning approaches, ultimately promoting creativity and experimentation.
+
 Given the nature of our task, we propose using a Triple Siamese Network. This model architecture has been proven efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between an anchor, a positive, and a negative sample by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
 
 Using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
 
-\subsubsection{Self-Supervised Learning (SSL)}
+\subsection{Self-Supervised Learning (SSL)}
 
 Self-supervised learning (SSL) is a subfield of machine learning where models learn to generate representations of data by finding patterns and structures within the data without relying on external labels or annotations. In other words, the model learns by creating its supervision signal from the raw, unlabeled data.\cite{audioselfsupsurvey}
 
@@ -52,7 +54,7 @@ In expression \ref{eq:invariance_to_particular_transformation_function}, $X$ and
 
 The expression specifies that a model is invariant to a particular transformation function $\rho$ if it produces the same output for both the original and transformed input.
 
-\subsubsection{Contrastive Learning of Musical Representations (CLMR)}
+\subsection{Contrastive Learning of Musical Representations (CLMR)}
 
 Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} aims to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly generated pieces, CLMR models can effectively capture the underlying known invariances that are explicitly incorporated into the design of a model to improve its robustness and generalization.
 
@@ -79,17 +81,50 @@ Each subnetwork processes an input independently, and its outputs are combined a
 
 \subsubsection{Triplet Siamese Networks}
 
-Triplet Siamese Networks, an extension of the Siamese Network architecture, involve comparing three input instances instead of two, aiming to learn an embedding space where similar instances are close and dissimilar instances are distant. The input consists of an anchor, a positive instance (same class as the anchor), and a negative instance (different class). Each instance is processed by an identical subnetwork with shared architecture, weights, and hyperparameters.
+Triplet Siamese Networks, an extension of the Siamese Network architecture, involve comparing three input instances instead of two, aiming to learn an embedding space where similar instances are close and dissimilar instances are distant. The input consists of an anchor, a positive instance (same class as the anchor), and a negative instance (different class). An identical subnetwork with shared architecture, weights, and hyperparameters processes each instance.
 
 The triplet loss function guides learning, minimizing the distance between the anchor and positive instances while maximizing the distance between the anchor and negative instances. A margin parameter in the loss function ensures a minimum separation between positive and negative instances in the embedding space.
 
 Triplet Siamese Networks offer several advantages, including learning fine-grained similarity metrics, being well-suited for one-shot learning tasks, and offering efficient memory usage and computational complexity due to shared weights. These networks have been applied to various tasks and domains, such as image recognition, face recognition, speaker recognition, text similarity, and medical imaging for diagnosis or treatment purposes.
 
-\subsection{XXX}
-\subsection{XXX}
 
-\subsection{Encoder}
-\subsubsection{SampleCNN}
+\subsection{Convolutional Neural Network (CNN)}
+
+A Convolutional Neural Network (CNN) is a deep-learning neural network. The architecture of a CNN is composed of several layers, including:
+
+\begin{itemize}
+
+\item \textbf{Convolutional layers:} These layers apply a convolution operation to the input data. The convolutional layers are designed to effectively learn local patterns and features in the audio data \footnote{For a visual explanation and further understanding of the convolution operation, please refer to this URL: \url{https://youtu.be/KuXjwB4LzSA}}.
+
+Let's consider a 1D input sequence or signal represented as a vector $I = [i_{i}]{n}$ and a filter $K = [k_{j}]_{p}$, where $n$ is the length of the input sequence and $p$ is the length of the filter. The convolution operation is defined as:
+
+\begin{equation}
+(I * K){k} = \sum{j=1}^{p} i_{k+j-1}k_{j}
+\end{equation}
+
+Here, $k$ ranges from $1$ to $n-p+1$. The resulting feature vector after applying the convolution is denoted by $(I * K)_{k}$.
+
+The convolution operation slides the kernel $K$ over the input sequence $I$, performing an element-wise multiplication and sum of the local region centered at element $k$ to compute the value of each element in the output feature vector, $(I * K)_{k}$. This process is repeated for each component $k$, resulting in a new feature vector that captures local patterns in the input sequence.
+
+In simple terms, the filter or kernel is slid across the 1D input data. For each position, we perform an element-wise multiplication of the filter with the portion of the input it currently covers and sums the results. This value becomes the corresponding entry in the output. The process is repeated for each position the filter can occupy.
+
+\item \textbf{Pooling layers:} These layers downsample the data, reducing the input dimensions while retaining important information. A joint pooling operation is the max-pooling, which can be defined as follows: given an input matrix $I$ and a pooling window of size $m \times n$, the max-pooling operation selects the maximum value within each non-overlapping $m \times n$ region of the input matrix. This operation effectively reduces the input's dimensions while retaining the essential information in each area.
+\vspace*{3mm}
+
+\item \textbf{Fully connected layers:} These layers connect every neuron in one layer to every neuron in another, allowing the network to learn non-linear combinations of the features discovered in the previous layers. Mathematically, a fully connected layer can be represented as $Y = XW + b$, where $X$ is the input matrix, $W$ is the weight matrix, $b$ is the bias vector, and $Y$ is the output matrix.
+\vspace*{3mm}
+
+\item \textbf{Output layer:} The output layer produces the final predictions of the network.
+
+\end{itemize}
+
+Compared to a traditional neural network, CNNs are more computationally efficient and have less number of parameters to train. This makes them more feasible for large-scale datasets and real-world problems. On top of that, one of the main advantages of using CNNs for audio analysis is that they can automatically and adaptively learn temporal hierarchies of features from audio data, which traditional audio processing methods may not do effectively. 
+
+%Colour CNN
+\input{figures/neural networks/colour CNN}
+
+
+\subsection{Encoder: SampleCNN}
 
 The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
 
@@ -129,39 +164,26 @@ D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
 \end{equation}
 
     
-\item ReLU activation. \input{figures/equations/ReLU}
+\item ReLU activation. The Rectified Linear Unit (ReLU) activation function is a simple yet highly effective non-linear function used in neural networks. It helps introduce non-linearity to the model and accelerates training due to its computational efficiency.
 
     
 \item Max pooling with kernel size and stride equal to the stride value of the current layer.
 \end{itemize}
 
-\begin{tabular}{|c|c|c|}
-\hline
-\textbf{Layer} & \textbf{Input Channels} & \textbf{Output Channels} \\
-\hline
-1 & 128 & 128 \\
-\hline
-2 & 128 & 128 \\
-\hline
-3 & 128 & 256 \\
-\hline
-4 & 256 & 256 \\
-\hline
-5 & 256 & 256 \\
-\hline
-6 & 256 & 256 \\
-\hline
-7 & 256 & 256 \\
-\hline
-8 & 256 & 256 \\
-\hline
-9 & 256 & 512 \\
-\hline
-\end{tabular}
-
 After the hidden layers, there's another 1D convolutional layer with 512 input channels, 512 output channels, a kernel size of 3, a stride of 1, and padding of 1. This is followed by batch normalization and ReLU activation.
 
-The output of the final convolutional layer is passed through an average pooling operation across the temporal dimension (dim=2).
+The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation across the temporal dimension.
+
+This adaptation of the original architecture incorporates an average pooling step at the end.
+
+\begin{figure}[ht]
+\centering
+\begin{equation}
+y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
+\end{equation}
+\caption{\small{Representation of the Average Pooling operation. Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the 2D input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.}}
+\end{figure}
+
 
 If the model is "supervised", dropout with a rate of 0.5 is applied; a regularization technique randomly drops out neurons during training to prevent overfitting, with a 0.5 rate meaning half of the neurons are dropped out.
 
@@ -170,14 +192,6 @@ If the model is "supervised", dropout with a rate of 0.5 is applied; a regulariz
 Finally, a linear layer with 512 input features and 128 output dimension features is applied to generate the embeddings.
 
 \input{figures/my model/SampleCNN}
-
-We have adapted the original architecture to our purpose, which consists of the final average pooling step.
-
-\begin{equation}
-y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
-\end{equation}
-
-$y_i$ represents the output tensor after the average pooling operation, $x_{ij}$ represents the elements in the 2D input tensor, $N$ is the number of elements along the second dimension of the input tensor, $i$ iterates over the first dimension of the tensors, and $j$ iterates over the second dimension of the input tensor.
 
 \subsection{Audio augmentation and transformation pipeline}
 

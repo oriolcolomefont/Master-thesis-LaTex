@@ -1,21 +1,8 @@
 \section{Music Structure Analysis as downstream task}
 
-Let's pick a core MIR task as a sample to display such complexity: Music Structure Analysis (MSA), an interdisciplinary field that aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. However, due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}. 
+While the usefulness of deep audio embeddings can be evaluated in several tasks, we have chosen a core MIR task for its popularity and complexity: Music Structure Analysis (MSA). This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. However, due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}. 
 
-The main principles of MSA were initially defined as homogeneity, novelty, and repetition, with the addition of regularity. The checkerboard kernel technique is a simple and effective method for MSA based on the homogeneity principle. The kernel, with a checkerboard-like structure, is convolved over the main diagonal of a Self-Similarity Matrix (SSM) such as $S_{ij}$ is the similarity between time frames $i$ and $j$, $\vec{x}_i$ is the vector representation of time frame $i$, and $\left| \vec{x}_i \right|$ is the Euclidean norm of vector $\vec{x}_i$. The dot product of two vectors $\vec{x}_i$ and $\vec{x}_j$ is denoted by $\vec{x}_i \cdot \vec{x}_j$.
-
-\input{introduction/subsections/equations/SSM equation}
-
-This yields a novelty curve highlighting sudden changes in the selected musical features from which to extract the segment boundaries.
-
-\input{introduction/subsections/equations/Novelty equation}
-
-Mathematical operations are used on predefined principles such as homogeneity and repetition to analyze a musical structure. It explores features extracted from a musical signal and identifies peaks in a novelty curve to extract segment boundaries. In contrast, human aural skills rely on the perception and interpretation of music by human listeners based on cultural and academic background. They can capture subtle nuances of musical structure, but those still are subjective and can vary across listeners.
-
-Combining technical tasks, aural skills, and music perception is challenging due to the complexity and subjectivity of musical perception, discrepancies between the features extracted by DSP techniques and the features perceived by humans, and the variability of musical signals and individual differences in musical perception. 
-
-Purely mathematical approaches may not always reflect how humans perceive music and may not capture the subtle variations in timing or harmonic relationships critical to musical perception. Variability in musical signals due to instrumentation, genre, and performance style further complicates the development of these techniques that can be generalized to different musical contexts.
-
+The main principles of MSA were initially defined as homogeneity, novelty, and repetition, with the addition of regularity. 
 
 \input{figures/neural networks/r128 sphere}
 
@@ -41,7 +28,7 @@ Transcription Approach: This involves recording musical parameters like chord pa
 
 \section{\textit{Embeddiogram} custom feature}
 
-Features extracted from audio files play a vital role in characterizing and differentiating sound and music. One such feature, known as the \textit{Embeddiogram}, offers a unique and powerful representation of an audio signal. The Embeddiogram is derived by applying a pre-trained neural network model to windowed segments of an audio signal, generating a sequence of embedding vectors. These embedding vectors collectively form a high-dimensional description of the audio signal's structure and content.
+Features extracted from audio files play a vital role in characterizing and differentiating sound and music. One such feature, the \textit{Embeddiogram}, offers a unique and powerful representation of an audio signal. The Embeddiogram is derived by applying a pre-trained neural network model to windowed segments of an audio signal, generating a sequence of embedding vectors. These embedding vectors collectively form a high-dimensional description of the audio signal's structure and content.
 
 Below is a detailed explanation of computing the Embeddiogram from a given audio signal. This process comprises five key steps, including loading the audio data, slicing the audio data into windowed segments, processing each window using a pre-trained model to produce an embedding, collecting these embeddings, and finally normalizing the Embeddiogram. 
 
@@ -69,3 +56,10 @@ In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account
 E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
 \end{equation}
 \end{enumerate}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/images/embeddiogram_SALAMI_track_2.png}
+    \caption[Embeddiogram]{Caption}
+    \label{fig:embeddiogram}
+\end{figure}
