@@ -1,10 +1,8 @@
-\section{Music Structure Analysis as downstream task}
+\section{Music Structure Analysis (MSA) as downstream task}
 
 While the usefulness of deep audio embeddings can be evaluated in several tasks, we have chosen a core MIR task for its popularity and complexity: Music Structure Analysis (MSA). This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. However, due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}. 
 
 The main principles of MSA were initially defined as homogeneity, novelty, and repetition, with the addition of regularity. 
-
-\input{figures/neural networks/r128 sphere}
 
 \section{SALAMI dataset}
 \subsection{Overview}
@@ -33,7 +31,7 @@ Features extracted from audio files play a vital role in characterizing and diff
 Below is a detailed explanation of computing the Embeddiogram from a given audio signal. This process comprises five key steps, including loading the audio data, slicing the audio data into windowed segments, processing each window using a pre-trained model to produce an embedding, collecting these embeddings, and finally normalizing the Embeddiogram. 
 
 \begin{enumerate}
-\item \textbf{Load the audio data}: The audio data is loaded into memory as a one-dimensional array, denoted as $\text{input\_audio}$, of length $N$.
+\item \textbf{Load the audio data}: The audio data is loaded into memory as a one-dimensional array of length $N$.
 
 \item \textbf{Slice the audio data}: The audio data is segmented into overlapping windows. Each window contains $w$ samples, and consecutive windows are separated by $h$. This gives a total of $H$ windows, defined as:
 \begin{equation}

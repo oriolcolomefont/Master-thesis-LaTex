@@ -2,9 +2,6 @@
 
 This section delves into the systematic process of developing, training and evaluating algorithms, which empower data-driven learning, predictions, and decisions. This process encompasses selecting an appropriate algorithm, designing the model architecture, preprocessing and transforming data, and extracting relevant features. By iteratively adjusting the model's parameters, we aim to minimize the prediction error. The choice of techniques, such as supervised, unsupervised, or reinforcement learning, is dictated by the specific problem and data structure. Model evaluation, fine-tuning, and deployment are essential to ensure the model generalizes well to new data and performs effectively in real-world applications.
 
-\input{figures/neural networks/pipeline}
-
-
 \subsection{Model architecture and training strategy}
 
 I advocate for exposure as the primary method of learning music, emphasizing the importance of immersing oneself in various musical experiences to foster a holistic understanding of music as an art form. Individuals can cultivate well-rounded musical expertise by engaging with different styles, genres, techniques, and learning approaches, ultimately promoting creativity and experimentation.
@@ -181,7 +178,7 @@ This adaptation of the original architecture incorporates an average pooling ste
 \begin{equation}
 y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 \end{equation}
-\caption{\small{Representation of the Average Pooling operation. Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the 2D input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.}}
+\caption[Average Pooling operation]{\small{Representation of the Average Pooling operation. Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the 2D input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.}}
 \end{figure}
 
 
@@ -196,7 +193,7 @@ Finally, a linear layer with 512 input features and 128 output dimension feature
 \subsection{Audio augmentation and transformation pipeline}
 
 \subsubsection{Positive sample generation}
-Given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top. 
+Given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of the chain. 
 
 Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
 
@@ -224,7 +221,7 @@ These effect selections behave and affect the signal in several domains, adding 
 
 \item \textbf{Frequency-domain effects:} Frequency domain manipulation alters the frequency content or pitch of the signal.
 \begin{itemize}
-    \item Pitch shift: Changes the signal's pitch by $\Delta p \in [-1200, 1200]$ cents.
+    \item Pitch shift: Changes the signal's pitch by $\Delta p \in [-1200, 1200]$ cents. Two-octave range, one octave higher to one octave lower.
 \end{itemize}
 
 \item \textbf{Nonlinear effects:} Nonlinear transformations to the audio signal, resulting in harmonic distortion or other complex changes.
@@ -252,45 +249,35 @@ These effect selections behave and affect the signal in several domains, adding 
 \subsubsection{Negative sample generation}
 
 \begin{enumerate}
-\item Calculate the minimum and maximum chunk lengths in samples:
+\item Calculate the minimum and maximum audio chunk lengths in samples:
 2\begin{equation}
 l_{min} = t_{min} \times S
 \end{equation}
 \begin{equation}
 l_{max} = t_{max} \times S
 \end{equation}
-\item Generate random chunk lengths $l_1, l_2, \ldots, l_{n-1}$ from the uniform distribution on the interval $[l_{min}, l_{max}]$. Calculate the final chunk length as:
+\item Generate random audio chunk lengths $l_1, l_2, \ldots, l_{n-1}$ from the uniform distribution on the interval $[l_{min}, l_{max}]$. Calculate the final audio chunk length as:
 \begin{equation}
 l_n = L_A - \sum_{i=1}^{n-1} l_i
 \end{equation}
 where $L_A$ is the length of the anchor signal in samples.
-\item Split the anchor signal $A$ into chunks $C_1, C_2, \ldots, C_n$ according to the calculated chunk lengths.
-\item Shuffle the chunks randomly to get the permuted chunks $C_{\sigma(1)}, C_{\sigma(2)}, \ldots, C_{\sigma(n)}$, where $\sigma$ is a random permutation of indices from $1$ to $n$.
-\item Concatenate the shuffled chunks to generate the negative signal:
+\item Split the anchor signal $A$ into audio chunks $C_1, C_2, \ldots, C_n$ according to the calculated audio chunk lengths.
+\item Shuffle the audio chunks randomly to get the permuted slices $C_{\sigma(1)}, C_{\sigma(2)}, \ldots, C_{\sigma(n)}$, where $\sigma$ is a random permutation of indices from $1$ to $n$.
+\item Concatenate the shuffled audio chunks to generate the negative signal:
 \begin{equation}\label{eq:negative_signal}
 N = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 \end{equation}
 \end{enumerate}
 
-Ensure that the length of the anchor and negative signals are the same, i.e.,
-
-\begin{equation}
-L_A = L_N,
-\end{equation}
-
-where $L_N$ is the length of the negative signal in samples.
-
 \subsection{Loss function}
 
-Schroff, F., Kalenichenko, D. and Philbin, J. at Google initially proposed and used triplet loss to learn face recognition of the same person at different poses and angles. \cite{Schroff2015FaceNet:Clustering}
-
-A triplet loss function with a variable margin can be written as follows:
+Schroff, F., Kalenichenko, D., and Philbin, J. at Google initially proposed and used triplet loss to learn face recognition of the same person at different poses and angles. \cite{Schroff2015FaceNet:Clustering}
 
 \begin{equation}
 \mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n}) = \sum_{i=1}^{N} \max \left(0, \left| \mathbf{a}_i - \mathbf{p}_i \right|_2^2 - \left| \mathbf{a}_i - \mathbf{n}_i \right|_2^2 + m \right)
 \end{equation}
 
-In this equation:
+In this equation, triplet loss function with a variable margin:
 
 $\mathcal{L}$ is the triplet loss function.
 $\mathbf{a}_i$, $\mathbf{p}_i$, and $\mathbf{n}_i$ are the anchor, positive, and negative embedding vectors, respectively, for the $i$-th sample.
