@@ -14,7 +14,7 @@ Using the proposed triple siamese network and online triplet mining, we aim to t
 
 Self-supervised learning (SSL) is a subfield of machine learning where models learn to generate representations of data by finding patterns and structures within the data without relying on external labels or annotations. In other words, the model learns by creating its supervision signal from the raw, unlabeled data.\cite{audioselfsupsurvey}
 
-This approach to learning is inspired by the way humans and animals learn from their environment, where a great deal of knowledge is acquired through observation and interaction without explicit instruction. 
+This approach to learning is inspired by the way humans and animals learn from their environment, where a great deal of knowledge is acquired through observation and interaction without explicit instruction. Self-supervised learning is a machine learning process where the model trains itself to learn one part of the input from another part of the input. In this process, the unsupervised problem is transformed into a supervised problem by auto-generating the labels.
 
 Some of the main advantages of SSL include:
 
@@ -25,8 +25,6 @@ Some of the main advantages of SSL include:
 
 Further understanding of the cognitive processes in music can be obtained through Jean Piaget's theory of cognitive development. Piaget suggests that children acquire knowledge through sensory and motor experiences in their early stages, with reasoning gradually evolving toward abstract ideas and deductive logic through the development of schemas—cognitive structures that underlie human knowledge and skill \cite{Huitt2003PiagetsDevelopment}. These schemas evolve through an equilibration mechanism that incorporates new information with pre-existing knowledge, involving processes of assimilation and accommodation \cite{audioselfsupsurvey}.
 
-Although there are resemblances between assimilation and accommodation in Piaget's theory and backpropagation in Deep Learning (DL), these processes occur in distinct mechanisms and contexts. Assimilation and accommodation modify mental structures to incorporate new information, while backpropagation adjusts neural network weights to enhance output predictions.
-
 \subsubsection{Known and unknown invariance}
 
 In pattern recognition, \textit{invariance} refers to the property of a model to be robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
@@ -34,22 +32,13 @@ In pattern recognition, \textit{invariance} refers to the property of a model to
 
 
 \begin{definition}[Known invariance]
-Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. This can include the input data's rotations, translations, scaling, or other known perturbations. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
+Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
 \end{definition}
 
 \begin{definition}[Unknown invariance]
 
-Unknown invariance: Unknown invariances are transformations the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. For example, a deep learning model might automatically learn to be invariant to certain lighting conditions or other factors not explicitly specified in its design.
+Unknown invariances are transformations the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. 
 \end{definition}
-
-\begin{equation}
-\label{eq:invariance_to_particular_transformation_function}
-\forall x \in X, \forall y \in Y, \forall \rho \in \mathcal{T}, f(x) = f(y) \implies f(\rho(x)) = f(\rho(y))
-\end{equation}
-
-In expression \ref{eq:invariance_to_particular_transformation_function}, $X$ and $Y$ represent sets of input data, $\rho$ represents a transformation function, and $f$ represents a machine learning model. The expression states that for all inputs $x$ and $y$ in $X$ and $Y$, if $f(x) = f(y)$, then $f(\rho(x)) = f(\rho(y))$.
-
-The expression specifies that a model is invariant to a particular transformation function $\rho$ if it produces the same output for both the original and transformed input.
 
 \subsection{Contrastive Learning of Musical Representations (CLMR)}
 
@@ -213,23 +202,23 @@ These effect selections behave and affect the signal in several domains, adding 
     \item Gain: Adjusts the overall amplitude of the signal by a constant factor $g \in [-12, 0]$ dB.
 \end{itemize}
 
-\item \textbf{Time-domain effects:} Time-domain manipulation alters the signal's timing or duration.
+\item \textbf{Time-domain effects:} Alters the signal's timing or duration.
 \begin{itemize}
     \item Speed change: Alters the playback speed of the signal by a factor $\alpha \in [0.9, 1.1]$.
     \item Stretch: Changes the signal duration without affecting its pitch by a factor $\beta \in [0.9, 1.1]$.
 \end{itemize}
 
-\item \textbf{Frequency-domain effects:} Frequency domain manipulation alters the frequency content or pitch of the signal.
+\item \textbf{Frequency-domain effects:} Alters the frequency content or pitch of the signal.
 \begin{itemize}
     \item Pitch shift: Changes the signal's pitch by $\Delta p \in [-1200, 1200]$ cents. Two-octave range, one octave higher to one octave lower.
 \end{itemize}
 
-\item \textbf{Nonlinear effects:} Nonlinear transformations to the audio signal, resulting in harmonic distortion or other complex changes.
+\item \textbf{Nonlinear effects:} Harmonic distortion or other complex changes.
 \begin{itemize}
     \item Overdrive: Adds harmonic distortion to the signal based on the parameter $d \in [0, 30]$.
 \end{itemize}
 
-\item \textbf{Modulation effects:} Audio signal modulation using a low-frequency oscillator or control signal.
+\item \textbf{Modulation effects:} Modulation using a low-frequency oscillator or control signal.
 \begin{itemize}
     \item Chorus: Applies a varying time delay to the signal, resulting in a richer, thicker sound. The specified ranges determine the chorus parameters.
     \item Tremolo: Modulates the signal's amplitude at a modulation frequency $f_m \in [0.1, 100]$ Hz and depth $d_m \in [1, 101]$.
@@ -240,7 +229,7 @@ These effect selections behave and affect the signal in several domains, adding 
     \item Reverb: Applies an impulse response $h_R[n]$ that simulates the reverberation of space with parameters in the range $[0, 100]$.
 \end{itemize}
 
-\item \textbf{Noise effects:} These effects add noise or other random elements to the audio signal.
+\item \textbf{Noise effects:}
 \begin{itemize}
     \item Additive noise: Adds a noise signal $N[n]$ with a specific signal-to-noise ratio (SNR) in the range $[12, 100]$.
 \end{itemize}
