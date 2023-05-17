@@ -1,20 +1,9 @@
 \section{Introduction}
 
-In this chapter, we present the methodology employed in this study.
-
-We provide an overview of the Machine Learning (ML) and Deep Learning techniques that have played a pivotal role in advancing the MIR field. We then discuss the importance of feature extraction and selection in MIR and how automatic feature learning has facilitated the development of more robust models.
-
-Subsequently, we delve into the concept of musically motivated neural network architectures, which incorporate domain-specific knowledge and musical ideas into the design of neural networks. We explore techniques proposed in the literature for blending musical concepts and perceptual approaches.
-
-We then outline the specific MIR tasks that our study focuses on and discuss the evaluation metrics used to assess the performance of the proposed models. Finally, we present the experimental setup, including the datasets used for training and validation, the preprocessing steps, and the training parameters.
-
 Throughout this chapter, we aim to provide a comprehensive understanding of the methodology employed in our research, laying the foundation for the presentation and discussion of the results in the following chapters.
 
 \section{Artificial Neural Networks (ANNs)}
-A neural network, formally known as an Artificial Neural Network (ANN), is a computational model inspired by the structure and functionality of biological neural networks. It is a mathematical framework designed to process information and perform tasks like pattern recognition, classification, and regression by mimicking how biological neurons and synapses operate. ANNs comprise interconnected layers of artificial neurons or nodes, each performing a mathematical transformation on the input data to generate an output. The connections between these neurons, often called "weights," are adjusted during learning to optimize the network's performance on a given task.
-
-\subsection{About ANNs}
-The concept of neural networks can be traced back to the mid-20th century, with the pioneering work of Warren McCulloch and Walter Pitts in 1943. They proposed a mathematical model of a neuron known as the McCulloch-Pitts neuron, which provided a foundation for future research in artificial intelligence. However, Frank Rosenblatt's invention of the perceptron in 1957 marked the beginning of modern neural networks. The perceptron is a single-layer neural network capable of learning linearly separable patterns.
+Artificial Neural Networks (ANNs) are computational models inspired by biological neural systems. They use interconnected layers of artificial neurons to process information and perform tasks like pattern recognition, classification, and regression. ANNs adjust the connections, or "weights," between neurons during learning to improve performance. The concept of neural networks emerged in the mid-20th century with the work of Warren McCulloch and Walter Pitts. Still, modern neural networks began with Frank Rosenblatt's perceptron in 1957, a single-layer network able to learn linearly separable patterns.
 
 %Single neuron
 \input{figures/neural networks/Single Neuron}
@@ -22,7 +11,7 @@ The concept of neural networks can be traced back to the mid-20th century, with 
 %NN
 \input{figures/neural networks/Network_graph}
 
-In a more technical description, an ANN consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. The output of the last layer represents the prediction or classification result.
+It consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. The output of the last layer represents the prediction or classification result.
 
 %Activation equation
 \input{figures/neural networks/activation}
