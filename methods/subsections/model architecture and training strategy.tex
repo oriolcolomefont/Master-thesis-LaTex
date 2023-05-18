@@ -1,16 +1,80 @@
 \section{Machine Learning Modeling}
 
-This section delves into the systematic process of developing, training and evaluating algorithms, which empower data-driven learning, predictions, and decisions. This process encompasses selecting an appropriate algorithm, designing the model architecture, preprocessing and transforming data, and extracting relevant features. By iteratively adjusting the model's parameters, we aim to minimize the prediction error. The choice of techniques, such as supervised, unsupervised, or reinforcement learning, is dictated by the specific problem and data structure. Model evaluation, fine-tuning, and deployment are essential to ensure the model generalizes well to new data and performs effectively in real-world applications.
+This section outlines the methodical procedure of creating, training and assessing algorithms that enable data-driven learning and decision-making. The process involves algorithm selection, model architecture design, data preprocessing and transformation, and feature extraction. The objective is to minimize prediction error by iteratively fine-tuning the model's parameters. The selection between supervised, unsupervised, or reinforcement learning techniques depends on the problem's specifics and data structure. Evaluating, refining, and deploying the model to ensure its effective performance with new data in real-world applications is crucial.
 
-\subsection{Model architecture and training strategy}
+I advocate for exposure as the primary method of learning music, highlighting the importance of various musical experiences for a comprehensive understanding of the art form. Engagement with diverse musical styles, genres, techniques, and learning methods fosters well-rounded musical proficiency, encouraging creativity and experimentation.
 
-I advocate for exposure as the primary method of learning music, emphasizing the importance of immersing oneself in various musical experiences to foster a holistic understanding of music as an art form. Individuals can cultivate well-rounded musical expertise by engaging with different styles, genres, techniques, and learning approaches, ultimately promoting creativity and experimentation.
+Considering the task at hand, we suggest using a Triple Siamese Network, an architecture proven efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. The goal is to minimize the loss function between an anchor, positive, and negative sample, achieved through online triplet mining \cite{Sikaroudi2020OfflinePatches}. 
 
-Given the nature of our task, we propose using a Triple Siamese Network. This model architecture has been proven efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. Specifically, we aim to minimize the loss function between an anchor, a positive, and a negative sample by using online triplet mining \cite{Sikaroudi2020OfflinePatches}.
+Using the proposed triple siamese network, and online triplet mining in a self-supervised setting, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
 
-Using the proposed triple siamese network and online triplet mining, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
+\subsection{Contrastive Learning of Musical Representations (CLMR)}
 
-\subsection{Self-Supervised Learning (SSL)}
+Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} aims to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly generated pieces, CLMR models can effectively capture the underlying known invariances that are explicitly incorporated into the design of a model to improve its robustness and generalization.
+
+In contrast, the model learns unknown invariances from the data without explicit instruction.
+
+The CLMR methodology involves the following steps:
+
+\begin{enumerate}
+\item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
+\item \textbf{Contrastive Learning:} Train by minimizing a contrastive loss function, encouraging the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
+\item\textbf{Latent Representation:} Utilize the learned representations for various Music Information Retrieval (MIR) downstream tasks, such as music genre classification or similarity, both in the symbolic and time domains.
+\end{enumerate}
+
+By following these steps, CLMR models can learn meaningful and robust representations of music, potentially enhancing their performance in various MIR tasks and reducing the need for labeled data.
+
+\subsection{Encoder: SampleCNN}
+
+The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
+
+The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation across the temporal dimension.
+
+%%%%%BATCH NORM%%%%%%%%%%
+
+The maximum array length in the batch is given by:
+
+\begin{equation}
+L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
+\end{equation}
+
+This adaptation of the original architecture incorporates an average pooling step at the end.
+
+\begin{figure}[ht]
+\centering
+\begin{equation}
+y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
+\end{equation}
+\caption[Average Pooling operation]{\small{Representation of the Average Pooling operation. Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the 2D input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.}}
+\end{figure}
+
+\input{figures/neural networks/dropout}
+
+\input{figures/my model/SampleCNN}
+
+%Colour CNN
+\input{figures/neural networks/colour CNN}
+
+
+\subsection{Siamese Networks}
+
+A Siamese Network, a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}, is designed explicitly for tasks involving similarity or comparison between two input instances. Its name derives from the structure, which consists of two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing for more efficient memory usage and computational complexity. 
+
+This design is particularly effective for learning from limited or imbalanced datasets, as it focuses on learning the similarity metric rather than specific features of individual classes.
+
+Each subnetwork processes an input independently, and its outputs are combined and further processed to yield a single similarity score. The shared weights during training enable the model to learn an invariant representation for the input instances, improving its efficiency in comparing and contrasting them. Siamese Networks employ specialized loss functions, such as contrastive or triplet loss, which minimize the distance between similar input pairs and maximize the distance between dissimilar ones. This approach encourages the network to learn a meaningful similarity metric.
+
+
+\subsubsection{Triplet Siamese Networks}
+
+Triplet Siamese Networks, an extension of the Siamese Network architecture, involve comparing three input instances instead of two, aiming to learn an embedding space where similar instances are close and dissimilar instances are distant. The input consists of an anchor, a positive instance (same class as the anchor), and a negative instance (different class). An identical subnetwork with shared architecture, weights, and hyperparameters processes each instance.
+
+The triplet loss function guides learning, minimizing the distance between the anchor and positive instances while maximizing the distance between the anchor and negative instances. A margin parameter in the loss function ensures a minimum separation between positive and negative instances in the embedding space.
+
+Due to shared weights, Triplet Siamese Networks offer efficient memory usage and computational complexity.
+
+
+\subsubsection{Self-Supervised Learning (SSL)}
 
 Self-supervised learning (SSL) is a subfield of machine learning where models learn to generate representations of data by finding patterns and structures within the data without relying on external labels or annotations. In other words, the model learns by creating its supervision signal from the raw, unlabeled data.\cite{audioselfsupsurvey}
 
@@ -33,148 +97,12 @@ Known invariances are transformations or changes that the model or algorithm is 
 Unknown invariances are transformations the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. 
 \end{definition}
 
-\subsection{Contrastive Learning of Musical Representations (CLMR)}
-
-Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} aims to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly generated pieces, CLMR models can effectively capture the underlying known invariances that are explicitly incorporated into the design of a model to improve its robustness and generalization.
-
-In contrast, the model learns unknown invariances from the data without explicit instruction.
-
-The CLMR methodology involves the following steps:
-
-\begin{enumerate}
-\item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
-\item \textbf{Contrastive Learning:} Train by minimizing a contrastive loss function, encouraging the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
-\item\textbf{Latent Representation:} Utilize the learned representations for various Music Information Retrieval (MIR) downstream tasks, such as music genre classification or similarity, both in the symbolic and time domains.
-\end{enumerate}
-
-By following these steps, CLMR models can learn meaningful and robust representations of music, potentially enhancing their performance in various MIR tasks and reducing the need for labeled data.
-
-\subsection{Siamese Networks}
-
-A Siamese Network, a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}, is designed explicitly for tasks involving similarity or comparison between two input instances. Its name derives from the structure, which consists of two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing for more efficient memory usage and computational complexity. 
-
-This design is particularly effective for learning from limited or imbalanced datasets, as it focuses on learning the similarity metric rather than specific features of individual classes.
-
-Each subnetwork processes an input independently, and its outputs are combined and further processed to yield a single similarity score. The shared weights during training enable the model to learn an invariant representation for the input instances, improving its efficiency in comparing and contrasting them. Siamese Networks employ specialized loss functions, such as contrastive or triplet loss, which minimize the distance between similar input pairs and maximize the distance between dissimilar ones. This approach encourages the network to learn a meaningful similarity metric.
-
-
-\subsubsection{Triplet Siamese Networks}
-
-Triplet Siamese Networks, an extension of the Siamese Network architecture, involve comparing three input instances instead of two, aiming to learn an embedding space where similar instances are close and dissimilar instances are distant. The input consists of an anchor, a positive instance (same class as the anchor), and a negative instance (different class). An identical subnetwork with shared architecture, weights, and hyperparameters processes each instance.
-
-The triplet loss function guides learning, minimizing the distance between the anchor and positive instances while maximizing the distance between the anchor and negative instances. A margin parameter in the loss function ensures a minimum separation between positive and negative instances in the embedding space.
-
-Triplet Siamese Networks offer several advantages, including learning fine-grained similarity metrics, being well-suited for one-shot learning tasks, and offering efficient memory usage and computational complexity due to shared weights. These networks have been applied to various tasks and domains, such as image recognition, face recognition, speaker recognition, text similarity, and medical imaging for diagnosis or treatment purposes.
-
-
-\subsection{Convolutional Neural Network (CNN)}
-
-A Convolutional Neural Network (CNN) is a deep-learning neural network. The architecture of a CNN is composed of several layers, including:
-
-\begin{itemize}
-
-\item \textbf{Convolutional layers:} These layers apply a convolution operation to the input data. The convolutional layers are designed to effectively learn local patterns and features in the audio data \footnote{For a visual explanation and further understanding of the convolution operation, please refer to this URL: \url{https://youtu.be/KuXjwB4LzSA}}.
-
-Let's consider a 1D input sequence or signal represented as a vector $I = [i_{i}]{n}$ and a filter $K = [k_{j}]_{p}$, where $n$ is the length of the input sequence and $p$ is the length of the filter. The convolution operation is defined as:
-
-\begin{equation}
-(I * K){k} = \sum{j=1}^{p} i_{k+j-1}k_{j}
-\end{equation}
-
-Here, $k$ ranges from $1$ to $n-p+1$. The resulting feature vector after applying the convolution is denoted by $(I * K)_{k}$.
-
-The convolution operation slides the kernel $K$ over the input sequence $I$, performing an element-wise multiplication and sum of the local region centered at element $k$ to compute the value of each element in the output feature vector, $(I * K)_{k}$. This process is repeated for each component $k$, resulting in a new feature vector that captures local patterns in the input sequence.
-
-In simple terms, the filter or kernel is slid across the 1D input data. For each position, we perform an element-wise multiplication of the filter with the portion of the input it currently covers and sums the results. This value becomes the corresponding entry in the output. The process is repeated for each position the filter can occupy.
-
-\item \textbf{Pooling layers:} These layers downsample the data, reducing the input dimensions while retaining important information. A joint pooling operation is the max-pooling, which can be defined as follows: given an input matrix $I$ and a pooling window of size $m \times n$, the max-pooling operation selects the maximum value within each non-overlapping $m \times n$ region of the input matrix. This operation effectively reduces the input's dimensions while retaining the essential information in each area.
-\vspace*{3mm}
-
-\item \textbf{Fully connected layers:} These layers connect every neuron in one layer to every neuron in another, allowing the network to learn non-linear combinations of the features discovered in the previous layers. Mathematically, a fully connected layer can be represented as $Y = XW + b$, where $X$ is the input matrix, $W$ is the weight matrix, $b$ is the bias vector, and $Y$ is the output matrix.
-\vspace*{3mm}
-
-\item \textbf{Output layer:} The output layer produces the final predictions of the network.
-
-\end{itemize}
-
-Compared to a traditional neural network, CNNs are more computationally efficient and have less number of parameters to train. This makes them more feasible for large-scale datasets and real-world problems. On top of that, one of the main advantages of using CNNs for audio analysis is that they can automatically and adaptively learn temporal hierarchies of features from audio data, which traditional audio processing methods may not do effectively. 
-
-%Colour CNN
-\input{figures/neural networks/colour CNN}
-
-
-\subsection{Encoder: SampleCNN}
-
-The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes in 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
-
-After the initial layer, there are nine hidden layers with varying kernel sizes, strides, and channels. Each hidden layer consists of the following:
-
-\begin{itemize}
-    \item A 1D convolutional layer with the specified number of input and output channels, kernel size, a stride of 1, and padding of 1.
-
-    \begin{equation}
-y_{c_o}(n) = \sum_{c_i=1}^{C_{\text{in}}} \sum_{k=-\lfloor K/2 \rfloor}^{\lfloor K/2 \rfloor} x_{c_i}(n - k) \cdot w_{c_o, c_i}(k)
-\end{equation}
-
-Where:
-
-$y_{c_o}(n)$ is the output for the $c_o$-th output channel at position $n$, $C_{\text{in}}$ is the number of input channels, $x_{c_i}(n)$ is the input for the $c_i$-th input channel at position $n$, $w_{c_o, c_i}(k)$ is the kernel weight for the $c_o$-th output channel and $c_i$-th input, channel at position $k$, and $K$ is the kernel size. The stride is set to 1 and padding to 1 (equal padding $\lfloor K/2 \rfloor$ on both sides).
-
-\item Batch normalization. We process a batch of data containing anchor, positive, and negative samples. We pad the waveforms to the same  maximum length among the collection, perform online triplet mining to find the hardest negatives and return the padded anchors, positives, and hardest negatives.
-
-We have intentionally chosen to use zero padding instead of array truncating in our experiment. This decision was based on our belief that preserving the integrity of the music data was more critical, despite the potential trade-off with computational efficiency during the normalization process.
-
-Let $A$, $P$, and $N$ represent the anchor, positive, and negative samples. The maximum array length in the batch is given by:
-
-\begin{equation}
-L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
-\end{equation}
-
-The anchor-positive distance and the anchor-negative distance are computed as the Euclidean distance between the corresponding samples:
-
-\begin{equation}
-D_{\text{AP}} = \sqrt{\sum_{i} (A_i - P_i)^2}
-\end{equation}
-
-The "hardest" negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances:
-
-\begin{equation}
-D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
-\end{equation}
-
-    
-\item ReLU activation. The Rectified Linear Unit (ReLU) activation function is a simple yet highly effective non-linear function used in neural networks. It helps introduce non-linearity to the model and accelerates training due to its computational efficiency.
-
-    
-\item Max pooling with kernel size and stride equal to the stride value of the current layer.
-\end{itemize}
-
-After the hidden layers, there's another 1D convolutional layer with 512 input channels, 512 output channels, a kernel size of 3, a stride of 1, and padding of 1. This is followed by batch normalization and ReLU activation.
-
-The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation across the temporal dimension.
-
-This adaptation of the original architecture incorporates an average pooling step at the end.
-
-\begin{figure}[ht]
-\centering
-\begin{equation}
-y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
-\end{equation}
-\caption[Average Pooling operation]{\small{Representation of the Average Pooling operation. Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the 2D input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.}}
-\end{figure}
-
-
-If the model is "supervised", dropout with a rate of 0.5 is applied; a regularization technique randomly drops out neurons during training to prevent overfitting, with a 0.5 rate meaning half of the neurons are dropped out.
-
-\input{figures/neural networks/dropout}
-
-Finally, a linear layer with 512 input features and 128 output dimension features is applied to generate the embeddings.
-
-\input{figures/my model/SampleCNN}
-
 \subsection{Audio augmentation and transformation pipeline}
 
 \subsubsection{Positive sample generation}
+
+While useful audio transformations tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0}
+
 Given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of the chain. 
 
 Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
@@ -275,3 +203,17 @@ The final form of the loss function is obtained by averaging the loss over a min
 \end{equation}
 
 Here, $N$ is the number of triplets in the mini-batch, and $L(anchor_i, positive_i, negative_i)$ represents the loss function computed for the i-th triplet in the batch.
+
+\subsubsection{Triplet mining}
+
+The anchor-positive distance and the anchor-negative distance are computed as the Euclidean distance between the corresponding samples:
+
+\begin{equation}
+D_{\text{AP}} = \sqrt{\sum_{i} (A_i - P_i)^2}
+\end{equation}
+
+The "hardest" negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances:
+
+\begin{equation}
+D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
+\end{equation}
