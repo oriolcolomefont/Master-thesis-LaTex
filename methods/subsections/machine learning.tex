@@ -2,7 +2,31 @@
 
 Throughout this chapter, we aim to provide a comprehensive understanding of the methodology employed in our research, laying the foundation for the presentation and discussion of the results in the following chapters.
 
-\section{Artificial Neural Networks (ANNs)}
+\section{Machine Learning Modeling}
+
+This section outlines the methodical procedure of creating, training and assessing algorithms that enable data-driven learning and decision-making. The process involves algorithm selection, model architecture design, data preprocessing and transformation, and feature extraction. The objective is to minimize prediction error by iteratively fine-tuning the model's parameters. The selection between supervised, unsupervised, or reinforcement learning techniques depends on the problem's specifics and data structure. It is crucial to evaluate, refine, and deploy the model to ensure its effective performance with new data in real-world applications.
+
+I advocate for exposure as the primary method of learning music, highlighting the importance of various musical experiences for a comprehensive understanding of the art form. Engagement with diverse musical styles, genres, techniques, and learning methods fosters well-rounded musical proficiency, encouraging creativity and experimentation.
+
+Considering the task at hand, we suggest using a Triple Siamese Network, an architecture proven efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. The goal is to minimize the loss function between an anchor, positive, and negative sample, achieved through online triplet mining \cite{Sikaroudi2020OfflinePatches}. 
+
+Using the proposed triple siamese network and online triplet mining in a self-supervised setting, we aim to train a model that can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture.
+
+At a superficial level, our approach could be described as cognitive modeling, given that it seeks to approximate human problem-solving and mental processing through a computerized model.
+
+\section{Deep Learning (DL)}
+
+
+Deep learning is a subfield of machine learning that employs deep neural networks to learn hierarchical data representations, enabling computational models with multiple processing layers to learn data abstractions across numerous levels. These methods have dramatically advanced the state-of-the-art in various domains, including speech recognition, visual object recognition, object detection, drug discovery, genomics, and more \cite{LeCun2015DeepLearning}. The effectiveness of deep learning arises from its nonlinear modeling capabilities and scalability with large datasets.
+
+A central algorithm in deep learning is backpropagation, which uses the forward and backward pass process to efficiently compute gradients of the loss function concerning the network's parameters. The forward pass involves propagating input data through the network to generate predictions. In contrast, the backward pass calculates the error between predictions and ground truth and subsequently returns it through the network. This procedure updates the network's parameters using gradient descent, minimizing the loss function and enhancing the model's performance.
+
+Deep learning has led to breakthroughs in processing complex, high-dimensional data, including images, video, speech, and audio, primarily due to deep convolutional nets. Simultaneously, recurrent nets have illuminated sequential data analysis such as text and speech. Deep learning discovers intricate structures in large datasets, improving our understanding and processing capabilities across various applications.
+
+%Backpropagation
+\input{figures/neural networks/Back_propagation}
+
+\subsection{Artificial Neural Networks (ANNs)}
 Artificial Neural Networks (ANNs) are computational models inspired by biological neural systems. They use interconnected layers of artificial neurons to process information and perform tasks like pattern recognition, classification, and regression. ANNs adjust the connections, or "weights," between neurons during learning to improve performance. The concept of neural networks emerged in the mid-20th century with the work of Warren McCulloch and Walter Pitts. Still, modern neural networks began with Frank Rosenblatt's perceptron in 1957, a single-layer network able to learn linearly separable patterns.
 
 %Single neuron
@@ -18,18 +42,6 @@ It consists of an input layer, one or more hidden layers, and an output layer. E
 
 %Multi-layer_NN
 \input{figures/neural networks/Multi-layer_NN}
-
-\section{Deep Learning (DL)}
-
-
-Deep learning is a subfield of machine learning that employs deep neural networks to learn hierarchical data representations, enabling computational models with multiple processing layers to learn data abstractions across numerous levels. These methods have dramatically advanced the state-of-the-art in various domains, including speech recognition, visual object recognition, object detection, drug discovery, genomics, and more \cite{LeCun2015DeepLearning}. The effectiveness of deep learning arises from its nonlinear modeling capabilities and scalability with large datasets.
-
-A central algorithm in deep learning is backpropagation, which uses the forward and backward pass process to efficiently compute gradients of the loss function concerning the network's parameters. The forward pass involves propagating input data through the network to generate predictions. In contrast, the backward pass calculates the error between predictions and ground truth and subsequently returns it through the network. This procedure updates the network's parameters using gradient descent, minimizing the loss function and enhancing the model's performance.
-
-Deep learning has led to breakthroughs in processing complex, high-dimensional data, including images, video, speech, and audio, primarily due to deep convolutional nets. Simultaneously, recurrent nets have illuminated sequential data analysis such as text and speech. Deep learning discovers intricate structures in large datasets, improving our understanding and processing capabilities across various applications.
-
-%Backpropagation
-\input{figures/neural networks/Back_propagation}
 
 \newpage
 
