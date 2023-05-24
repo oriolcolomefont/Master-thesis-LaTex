@@ -1,20 +1,32 @@
 \subsection{Contrastive Learning of Musical Representations (CLMR)}
 
-Contrastive Learning of Musical Representations (CLMR) \cite{CLMR2021} aims to learn discriminative and valuable representations of music without relying on explicit labels. By leveraging the structure and content of music and contrasting different augmentations or transformations of the same musical piece against randomly generated pieces, CLMR models can effectively capture the underlying known invariances that are explicitly incorporated into the design of a model to improve its robustness and generalization.
+Piaget's theory of cognitive development suggests children acquire knowledge through sensory experiences, gradually developing abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by integrating new information through assimilation and accommodation \cite{audioselfsupsurvey}.
 
-In contrast, the model learns unknown invariances from the data without explicit instruction.
+In pattern recognition, models are designed to be robust against known invariances—input data transformations—allowing consistent output. Conversely, unknown invariances not considered in the model's design can still be handled due to its learning capacity.
+
+Contrastive Learning of Musical Representations (CLMR) learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR works under a machine learning subset called Self-Supervised Learning (SSL), where models self-learn from unlabeled data, creating their supervisory signal \cite{audioselfsupsurvey}. This mimics human learning from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. The benefits of SSL include reduced reliance on labeled data, making data representation more robust and generalizable.
 
 The CLMR methodology involves the following steps:
 
 \begin{enumerate}
 \item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
 \item \textbf{Contrastive Learning:} Train by minimizing a contrastive loss function, encouraging the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
-\item\textbf{Latent Representation:} Utilize the learned representations for various Music Information Retrieval (MIR) downstream tasks, such as music genre classification or similarity, both in the symbolic and time domains.
 \end{enumerate}
 
-By following these steps, CLMR models can learn meaningful and robust representations of music, potentially enhancing their performance in various MIR tasks and reducing the need for labeled data.
 
-\subsection{Encoder: SampleCNN}
+\subsection{Siamese and Triplet Siamese Networks}
+
+For this task, a Triple Siamese Network is suggested, a model architecture proved efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}, intending to minimize the loss function between an anchor, positive, and negative sample, achieved through online triplet mining \cite{Sikaroudi2020OfflinePatches}. The overarching aim is to train a model in a self-supervised setting, which can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture. 
+
+A Siamese Network is a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}. This architecture is explicitly designed for tasks requiring comparing or assessing similarity between two input instances. It comprises two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing more efficient memory usage and computational complexity.
+
+Siamese Networks are especially effective for learning from limited or imbalanced datasets, as they focus on learning a similarity metric rather than the specific features of individual classes. Each subnetwork processes an input independently, and its outputs are then combined and further processed to yield a single similarity score. The shared weights during training enable the model to learn an invariant representation for the input instances, thereby enhancing its efficiency in comparing and contrasting them. To achieve this, Siamese Networks employ specialized loss functions, such as contrastive or triplet loss, which aim to minimize the distance between similar input pairs and maximize the distance between dissimilar ones.
+
+An extension of this architecture is the Triplet Siamese Network, which involves comparing three input instances instead of two. This network aims to learn an embedding space in which similar instances are close to each other and dissimilar instances are distant. The input to this network consists of an anchor, a positive instance (from the same class as the anchor), and a negative instance (from a different class). Each instance is processed by an identical subnetwork that shares its architecture, weights, and hyperparameters with the others.
+
+The triplet loss function used in this network guides the learning process. It seeks to minimize the distance between the anchor and positive instances while maximizing the distance between the anchor and the negative instances. A margin parameter is included in the loss function to ensure a minimum separation between positive and negative instances in the embedding space. Due to the shared weights among the subnetworks, Triplet Siamese Networks also offer efficient memory usage and computational complexity.
+
+\subsubsection{Encoder: SampleCNN}
 
 The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
 
@@ -30,13 +42,12 @@ L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text
 
 This adaptation of the original architecture incorporates an average pooling step at the end.
 
-\begin{figure}[ht]
-\centering
+
 \begin{equation}
 y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 \end{equation}
-\caption[Average Pooling operation]{\small{Representation of the Average Pooling operation. Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the 2D input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.}}
-\end{figure}
+
+Representation of the Average Pooling operation. Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the 2D input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.
 
 \input{figures/neural networks/dropout}
 
@@ -45,57 +56,15 @@ y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 %Colour CNN
 \input{figures/neural networks/colour CNN}
 
-
-\subsection{Siamese and Triplet Siamese Networks}
-
-A Siamese Network is a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}. This architecture is explicitly designed for tasks requiring comparing or assessing similarity between two input instances. Its name is derived from the network structure, which consists of two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing more efficient memory usage and computational complexity.
-
-Siamese Networks are especially effective for learning from limited or imbalanced datasets, as they focus on learning a similarity metric rather than the specific features of individual classes. Each subnetwork processes an input independently, and its outputs are then combined and further processed to yield a single similarity score. The shared weights during training enable the model to learn an invariant representation for the input instances, thereby enhancing its efficiency in comparing and contrasting them. To achieve this, Siamese Networks employ specialized loss functions, such as contrastive or triplet loss, which aim to minimize the distance between similar input pairs and maximize the distance between dissimilar ones.
-
-An extension of this architecture is the Triplet Siamese Network, which involves comparing three input instances instead of two. This network aims to learn an embedding space in which similar instances are close to each other and dissimilar instances are distant. The input to this network consists of an anchor, a positive instance (from the same class as the anchor), and a negative instance (from a different class). Each instance is processed by an identical subnetwork that shares its architecture, weights, and hyperparameters with the others.
-
-The triplet loss function used in this network guides the learning process. It seeks to minimize the distance between the anchor and positive instances while maximizing the distance between the anchor and the negative instances. A margin parameter is included in the loss function to ensure a minimum separation between positive and negative instances in the embedding space. Due to the shared weights among the subnetworks, Triplet Siamese Networks also offer efficient memory usage and computational complexity.
-
-\subsubsection{Self-Supervised Learning (SSL)}
-
-Self-supervised learning (SSL) is a subfield of machine learning where models learn to generate representations of data by finding patterns and structures within the data without relying on external labels or annotations. In other words, the model learns by creating its supervision signal from the raw, unlabeled data.\cite{audioselfsupsurvey}
-
-This approach to learning is inspired by the way humans and animals learn from their environment, where a great deal of knowledge is acquired through observation and interaction without explicit instruction. Self-supervised learning is a machine learning process where the model trains itself to learn one part of the input from another part of the input. In this process, the unsupervised problem is transformed into a supervised problem by auto-generating the labels.
-
-SSL's main advantages include reducing dependency on labeled data, which can be expensive and time-consuming to collect and annotate. Also, encourages more generalizable and robust representations of the data since they capture the inherent structure and properties of the data rather than relying on human-provided labels.
-
-Further understanding of the cognitive processes in music can be obtained through Jean Piaget's theory of cognitive development. Piaget suggests that children acquire knowledge through sensory and motor experiences in their early stages, with reasoning gradually evolving toward abstract ideas and deductive logic through the development of schemas—cognitive structures that underlie human knowledge and skill \cite{Huitt2003PiagetsDevelopment}. These schemas evolve through an equilibration mechanism that incorporates new information with pre-existing knowledge, involving processes of assimilation and accommodation \cite{audioselfsupsurvey}.
-
-\subsubsection{Known and unknown invariance}
-
-In pattern recognition, \textit{invariance} refers to the property of a model to be robust to certain transformations or changes in the input data. In other words, an invariant model should produce the same or similar output for different instances of the same object, even if they have undergone some changes.
-
-\begin{definition}[Known invariance]
-Known invariances are transformations or changes that the model or algorithm is explicitly designed to be robust against. By incorporating these invariances into the model's design, the algorithm is better equipped to generalize and recognize patterns in the presence of these transformations.
-\end{definition}
-
-\begin{definition}[Unknown invariance]
-
-Unknown invariances are transformations the model has not been explicitly designed to handle. However, it still manages to be robust due to its learning capabilities. These invariances can emerge from the data and may not be known a priori. 
-\end{definition}
-
 \subsection{Audio augmentation and transformation pipeline}
 
-\subsubsection{Positive sample generation}
+\subsubsection{Positive sample generation chain}
 
-While useful audio transformations tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0}
+The positive image in our study should preserve its intelligible content when subjected to temporal transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
 
-Given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of the chain. 
+While the MIR community has access to helpful audio transformation tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0}, the specific requirements of our experiments necessitated the development of our transformation chain: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
 Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
-
-The positive signal $P[n]$ is generated as follows:
-
-\begin{equation}\label{eq:positive_signal}
-P[n] = A[n] \ast h_{G}[n] \ast h_{C}[n] \ast h_{D}[n] \ast h_{P_t}[n] \ast h_{R}[n] \ast h_{S}[n] \ast h_{T}[n] \ast h_{T_m}[n] + N[n]
-\end{equation}
-
-where $\ast$ denotes convolution, $h_{G}[n] = g \delta[n]$, $h_{D}[n]$ is the impulse response of the overdrive effect, $h_{P_t}[n]$ is the impulse response of the pitch shift effect, $h_{S}[n]$ represents the impulse response of the speed change effect, $h_{T}[n]$ is the impulse response of the stretch effect, and $h_{T_m}[n] = (1 - d_m \cos(2 \pi f_m n))\delta[n]$ is the impulse response of the tremolo effect. The noise signal $N[n]$ is added with a specific signal-to-noise ratio (SNR) in the range $[12, 100]$ in decibels.
 
 These effect selections behave and affect the signal in several domains, adding aggressive transformations while preserving high-level musical content.
 
@@ -138,11 +107,21 @@ These effect selections behave and affect the signal in several domains, adding 
 \end{itemize}
 \end{itemize}
 
+The positive signal $P[n]$ is generated as follows:
+
+\begin{equation}\label{eq:positive_signal}
+P[n] = A[n] \ast h_{G}[n] \ast h_{C}[n] \ast h_{D}[n] \ast h_{P_t}[n] \ast h_{R}[n] \ast h_{S}[n] \ast h_{T}[n] \ast h_{T_m}[n] + N[n]
+\end{equation}
+
+where $\ast$ denotes convolution, $h_{G}[n] = g \delta[n]$, $h_{D}[n]$ is the impulse response of the overdrive effect, $h_{P_t}[n]$ is the impulse response of the pitch shift effect, $h_{S}[n]$ represents the impulse response of the speed change effect, $h_{T}[n]$ is the impulse response of the stretch effect, and $h_{T_m}[n] = (1 - d_m \cos(2 \pi f_m n))\delta[n]$ is the impulse response of the tremolo effect. The noise signal $N[n]$ is added with a specific signal-to-noise ratio (SNR) in the range $[12, 100]$ in decibels.
+
 \subsubsection{Negative sample generation}
+
+We posit that high-level musical content unfolds over time; therefore, we argue that the temporal structure of the negative images related to our anchor should be disrupted. While maintaining similar sonic qualities, the content should be rendered unintelligible.
 
 \begin{enumerate}
 \item Calculate the minimum and maximum audio chunk lengths in samples:
-2\begin{equation}
+\begin{equation}
 l_{min} = t_{min} \times S
 \end{equation}
 \begin{equation}
@@ -188,13 +167,13 @@ Here, $N$ is the number of triplets in the mini-batch, and $L(anchor_i, positive
 
 \subsubsection{Triplet mining}
 
-The anchor-positive distance and the anchor-negative distance are computed as the Euclidean distance between the corresponding samples:
+The anchor-positive and anchor-negative distances are computed as the Euclidean distances between the corresponding samples.
 
 \begin{equation}
 D_{\text{AP}} = \sqrt{\sum_{i} (A_i - P_i)^2}
 \end{equation}
 
-The "hardest" negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances:
+The "hardest" negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances \cite{XuanImprovedMining}.
 
 \begin{equation}
 D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
