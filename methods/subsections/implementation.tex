@@ -1,3 +1,4 @@
+\section{Implementation details}
 \subsection{Contrastive Learning of Musical Representations (CLMR)}
 
 Piaget's theory of cognitive development suggests children acquire knowledge through sensory experiences, gradually developing abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by integrating new information through assimilation and accommodation \cite{audioselfsupsurvey}.
@@ -37,15 +38,6 @@ y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 \end{equation}
 
 Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.
-
-%%%%%BATCH NORM%%%%%%%%%%
-
-In implementing batch normalization, it is necessary to standardize the audio lengths across all elements in the minibatch. We opted to zero-pad all clips to the length of the longest clip, valuing data integrity and completeness over potential performance trade-offs. Thus, the length of the longest array in the batch, which sets the standard for all others, is as follows:
-
-\begin{equation}
-L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
-\end{equation}
-
 
 \subsection{Audio augmentation and transformation pipeline}
 
@@ -176,3 +168,14 @@ D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
     \caption[]{Caption}
     \label{fig:my_label}
 \end{figure}
+
+
+
+%%%%%BATCH NORM%%%%%%%%%%
+
+In implementing batch normalization, it is necessary to standardize the audio lengths across all elements in the minibatch. We opted to zero-pad all clips to the length of the longest clip, valuing data integrity and completeness over potential performance trade-offs. Thus, the length of the longest array in the batch, which sets the standard for all others, is as follows:
+
+\begin{equation}
+L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
+\end{equation}
+\newpage
