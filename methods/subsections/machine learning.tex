@@ -7,30 +7,25 @@ Our approach could be broadly categorized as cognitive modeling, as it strives t
 
 \section{Deep Learning Modeling}
 
+Deep learning (DL), a subset of machine learning, employs deep neural networks to decipher hierarchical data representations, allowing models with multiple processing layers to abstract data across numerous levels \cite{LeCun2015DeepLearning}. DL models have significantly improved various domains due to their nonlinear modeling capabilities and scalability with large datasets.
 
-Deep learning (DL) is a subfield of machine learning that employs deep neural networks to learn hierarchical data representations, enabling computational models with multiple processing layers to learn data abstractions across numerous levels. These methods have dramatically advanced the state-of-the-art in various domains, including speech recognition, visual object recognition, object detection, drug discovery, genomics, and more \cite{LeCun2015DeepLearning}. The effectiveness of deep learning arises from its nonlinear modeling capabilities and scalability with large datasets.
-
-A central algorithm in deep learning is backpropagation, which uses the forward and backward pass process to compute gradients of the loss function concerning the network's parameters. The forward pass involves propagating input data through the network to generate predictions. In contrast, the backward pass calculates the error between predictions and ground truth and returns it through the network. This procedure updates the network's parameters minimizing the loss function and enhancing the model's performance.
+They leverage the central algorithm, backpropagation, which calculates gradients of the loss function related to network parameters through forward and backward pass processes, thereby optimizing model performance.
 
 %Backpropagation
 \input{figures/neural networks/Back_propagation}
 
-\subsection{Artificial Neural Networks (ANNs)}
-Artificial Neural Networks (ANNs) are computational models inspired by biological neural systems. They use interconnected layers of artificial neurons to process information and perform tasks like pattern recognition, classification, and regression. ANNs adjust the connections or weights between neurons during learning to improve performance. The concept of neural networks emerged in the mid-20th century with the work of Warren McCulloch and Walter Pitts. Still, modern neural networks began with Frank Rosenblatt's perceptron in 1957, a single-layer network able to learn linearly separable patterns.
+Deep Neural Networks (DNNs), computational models rooted in biological neural systems, utilize layers of artificial neurons for tasks such as pattern recognition, classification, and regression. DNNs evolve by adjusting connections between neurons during learning, a concept initiated in the mid-20th century but modernized with Frank Rosenblatt's single-layer perceptron in 1957, capable of learning linearly separable patterns.
 
-%Single neuron
-\input{figures/neural networks/Single Neuron}
+%Multi-layer_NN
+\input{figures/neural networks/Multi-layer_NN}
 
-%NN
-\input{figures/neural networks/Network_graph}
-
-It consists of an input layer, one or more hidden layers, and an output layer. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. The output of the last layer represents the prediction or classification result.
+Another crucial component in the operation of DNNs is the activation function. This function is applied to a neuron's inputs, transforming the input's summed product and weights into an output passed onto the next layer. It introduces non-linearity into the network, enabling it to learn complex patterns and relationships from the data.
 
 %Activation equation
 \input{figures/neural networks/activation}
 
-%Multi-layer_NN
-\input{figures/neural networks/Multi-layer_NN}
+%Colour CNN
+\input{figures/neural networks/colour CNN}
 
 \newpage
 

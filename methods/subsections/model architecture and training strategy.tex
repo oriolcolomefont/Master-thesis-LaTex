@@ -30,31 +30,22 @@ The triplet loss function used in this network guides the learning process. It s
 
 The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
 
-The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation across the temporal dimension.
-
-%%%%%BATCH NORM%%%%%%%%%%
-
-The maximum array length in the batch is given by:
-
-\begin{equation}
-L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
-\end{equation}
-
-This adaptation of the original architecture incorporates an average pooling step at the end.
-
+The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation at the end.
 
 \begin{equation}
 y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 \end{equation}
 
-Representation of the Average Pooling operation. Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the 2D input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.
+Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.
 
-\input{figures/neural networks/dropout}
+%%%%%BATCH NORM%%%%%%%%%%
 
-\input{figures/my model/SampleCNN}
+In implementing batch normalization, it is necessary to standardize the audio lengths across all elements in the minibatch. We opted to zero-pad all clips to the length of the longest clip, valuing data integrity and completeness over potential performance trade-offs. Thus, the length of the longest array in the batch, which sets the standard for all others, is as follows:
 
-%Colour CNN
-\input{figures/neural networks/colour CNN}
+\begin{equation}
+L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
+\end{equation}
+
 
 \subsection{Audio augmentation and transformation pipeline}
 
@@ -178,3 +169,10 @@ The "hardest" negative index for each anchor-positive pair is determined by maxi
 \begin{equation}
 D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
 \end{equation}
+
+\begin{figure}
+    \centering
+    \includegraphics[clip,width=\columnwidth]{figures/images/Triplet Network.jpeg}
+    \caption[]{Caption}
+    \label{fig:my_label}
+\end{figure}
