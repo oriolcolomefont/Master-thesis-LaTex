@@ -31,7 +31,10 @@ The triplet loss function used in this network guides the learning process. It s
 
 The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes 1D input data with a single channel and follows the next architecture:
 
-\begin{tabular}{|p{4.5cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|X|X|X|X|X|}
 \hline
 \textbf{Layer Type} & \textbf{In Channels} & \textbf{Out Channels} & \textbf{Kernel Size} & \textbf{Stride} \\
 \hline
@@ -55,7 +58,10 @@ Dropout (optional) & - & - & - & - \\
 \hline
 Linear (Fully Connected) & 512 & 128 & - & - \\
 \hline
-\end{tabular}
+\end{tabularx}
+\caption{Layer specifications for SampleCNN model}
+\label{tab:samplecnn}
+\end{table}
 
 
 The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation at the end.
