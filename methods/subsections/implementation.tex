@@ -29,7 +29,34 @@ The triplet loss function used in this network guides the learning process. It s
 
 \subsubsection{Encoder: SampleCNN}
 
-The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes 1D input data with a single channel. The first layer is a 1D convolutional layer with a kernel size of 3, a stride of 3, and 128 output channels. It is followed by batch normalization and ReLU activation.
+The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes 1D input data with a single channel and follows the next architecture:
+
+\begin{tabular}{|p{4.5cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+\hline
+\textbf{Layer Type} & \textbf{In Channels} & \textbf{Out Channels} & \textbf{Kernel Size} & \textbf{Stride} \\
+\hline
+Conv1d + BatchNorm1d + ReLU & 1 & 128 & 3 & 3 \\
+\hline
+\multicolumn{5}{|c|}{The following layers are repeated depending on the strides and hidden parameters} \\
+\hline
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 128 & 128 & `<stride>` & `<stride>` \\
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 128 & 128 & `<stride>` & `<stride>` \\
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 128 & 256 & `<stride>` & `<stride>` \\
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 & `<stride>` & `<stride>` \\
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 & `<stride>` & `<stride>` \\
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 & `<stride>` & `<stride>` \\
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 & `<stride>` & `<stride>` \\
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 & `<stride>` & `<stride>` \\
+Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 512 & `<stride>` & `<stride>` \\
+\hline
+Conv1d + BatchNorm1d + ReLU & 512 & 512 & 3 & 1 \\
+\hline
+Dropout (optional) & - & - & - & - \\
+\hline
+Linear (Fully Connected) & 512 & 128 & - & - \\
+\hline
+\end{tabular}
+
 
 The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation at the end.
 
@@ -38,6 +65,8 @@ y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 \end{equation}
 
 Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.
+
+\subsubsection{Optimizer}
 
 \subsection{Audio augmentation and transformation pipeline}
 
