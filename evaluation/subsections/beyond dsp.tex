@@ -1,31 +1,20 @@
 \section{Music Structure Analysis as downstream task}
 
-While the usefulness of deep audio embeddings can be evaluated in several scenarios, we have chosen a core MIR task for its popularity and complexity: Music Structure Analysis (MSA). This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. However, due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}. 
+While the usefulness of deep audio embeddings can be evaluated in countless downstream tasks, we have chosen Music Structure Analysis (MSA) for its popularity, complexity, and product-compelling nature. This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}. 
 
 The main principles of MSA were initially defined as homogeneity, novelty, and repetition, with the addition of regularity. 
 
 \subsection{SALAMI dataset}
 
-SALAMI (Structural Analysis of Large Amounts of Music Information) \cite{Smith2011DESIGNANNOTATIONS} aims to conduct massive structural analyses of different types of music. The project covers diverse music, from Western pop to Indian classical and from live to studio recordings.
+SALAMI (Structural Analysis of Large Amounts of Music Information) aims to conduct massive structural analyses of different types of music \cite{Smith2011DESIGNANNOTATIONS}. The project covers diverse music, from Western pop to Indian classical and from live to studio recordings.
 
-\subsubsection{Formal analysis definition and approaches}
-Formal analysis, in this context, doesn't refer to classifying the piece into a formal type (e.g., sonata, song, or canon) or reducing it into its Ursatz as in Schenkerian analysis. Instead, it means organizing and dividing the piece into specific sections and understanding how they relate.
-
-The proposed method integrates aspects of three approaches: perceptual, functional, and transcription, enabling a comprehensive analysis of a wide range of music pieces using a limited vocabulary. 
-
-It considers the hierarchical nature of music structure and employs markers to partially address the challenge of determining the appropriate timescale for analysis. 
-
-The perceptual approach involves segmenting and labeling sections based on harmonic or rhythmic boundaries, although it may not accurately reflect the structural roles of similar-sounding sections. 
-
-The functional approach categorizes the song into components like verses and choruses, potentially leading to varied labels for identical music or identical labels for different musical ideas based on their function. 
-
-The transcription approach records musical parameters directly, such as chord patterns and instrumentation, providing a less subjective method, but it might not capture the complete structure of the piece.
+The authors propose a unique music analysis approach that segments pieces into sections rather than traditional forms. Their method combines perceptual, functional, and transcription analyses, considers music's hierarchical nature, and uses markers to determine analysis timescales. While providing a comprehensive investigation, each analysis approach has limitations in accurately reflecting musical structure, labeling identical or different music sections, and capturing the complete structural framework. This innovative approach aims for a more nuanced, holistic music analysis.
 
 \section{\textit{Embeddiogram} feature}
 
-The Embeddiogram is derived by applying a pre-trained neural network model to windowed segments of an audio signal, generating a sequence of embedding vectors. These embedding vectors collectively form a high-dimensional description of the audio signal's structure and content.
+The \textit{embeddiogram} is derived by applying our pre-trained neural network model to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively high-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
 
-Below is a detailed explanation of computing the Embeddiogram from a given audio signal. This process comprises five key steps, including loading the audio data, slicing the audio data into windowed segments, processing each window using a pre-trained model to produce an embedding, collecting these embeddings, and finally normalizing the Embeddiogram. 
+Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal. This process comprises five key steps, including loading the audio data, slicing the audio data into windowed segments, processing each window using a pre-trained model to produce an embedding, collecting these embeddings, and finally normalizing the Embeddiogram. 
 
 \begin{enumerate}
 \item \textbf{Load the audio data}: The audio data is loaded into memory as a one-dimensional array of length $N$.
@@ -41,43 +30,56 @@ In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account
 \text{embedding}_i = \text{model}(w_i)
 \end{equation}
 
-\item \textbf{Collect the embeddings}: The embedding vectors are collected and stacked together. Each row represents a feature vector for a given time frame to form the \textit{Embeddiogram}, denoted as $\text{embeddiogram}$:
+\item \textbf{Collect the embeddings}: The embedding vectors are collected and stacked together. Each row represents a feature vector for a given time frame to form the \textit{embeddiogram}, denoted as $\text{e}$:
 \begin{equation}
-\text{embeddiogram} = \begin{bmatrix} \text{embedding}_1 \\ \text{embedding}_2 \\ \vdots \\ \text{embedding}_H \end{bmatrix}
+\text{e} = \begin{bmatrix} \text{embedding}_1 \\ \text{embedding}_2 \\ \vdots \\ \text{embedding}_H \end{bmatrix}
 \end{equation}
 
-\item \textbf{Normalize the Embeddiogram}: The Embeddiogram is normalized to have a minimum value of 0 and a maximum value of 1. The normalization process is given by:
+\item \textbf{Normalize the \textit{embeddiogram}}: The \textit{embeddiogram} is normalized to have a minimum value of 0 and a maximum value of 1. The normalization process is given by:
 \begin{equation}
 E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
 \end{equation}
 \end{enumerate}
 
-%\begin{figure}
-    %\centering
-    %\includegraphics[width=\textwidth]{figures/images/embeddiogram SALAMI 3.png}
-    %\caption[Embeddiogram]{Embeddiogram computed from...}
-    %\label{fig:embeddiogram}
-%\end{figure}
+\begin{figure}[ht]
+  \centering
+  \begin{minipage}[b]{.8\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/images/salami_391_embeddiogram.png}
+    \caption[]{Caption for image1}
+    \label{fig:image1}
+  \end{minipage}
 
+  \begin{minipage}[b]{.8\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/images/samali_391_novelty_curve_peaks.png}
+    \caption[]{Caption for image2}
+    \label{fig:image2}
+  \end{minipage}
+\end{figure}
 
-%\begin{figure}
-    %\centering
-    %\includegraphics[width=\textwidth]{figures/images/noveltypeaks_SALAMI_track_2.png}
-    %\caption[Novelty curve]{Caption}
-    %\label{fig:embeddiogram}
-%\end{figure}
 
 \begin{figure}[ht]
     \centering
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/images/recurrence plot SALAMI 3.png} % first figure itself
-        \caption{first figure}
+        \includegraphics[width=0.9\textwidth]{figures/images/salami_391_R matrix after Gaussian smoothing.png} % first figure itself
+        \caption[]{first figure}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
-        \includegraphics[width=0.9\textwidth]{figures/images/Rec_matrix_smooth_SALAMI_track_2.png} % second figure itself
-        \caption{second figure}
+        \includegraphics[width=0.9\textwidth]{figures/images/salami_391_Lag matrix after Gaussian smoothing.png} % second figure itself
+        \caption[]{second figure}
+    \end{minipage}
+    \vfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/images/salami_391_Q_matrix.png} % third figure itself
+        \caption[]{third figure}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/images/salami_391_binary transitive matrix.png} % fourth figure itself
+        \caption[]{fourth figure}
     \end{minipage}
 \end{figure}
-

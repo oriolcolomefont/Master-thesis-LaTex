@@ -1,5 +1,5 @@
 \section{Implementation details}
-\subsection{Contrastive Learning of Musical Representations (CLMR)}
+\subsection{Contrastive Learning of Musical Representations}
 
 Piaget's theory of cognitive development suggests children acquire knowledge through sensory experiences, gradually developing abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by integrating new information through assimilation and accommodation \cite{audioselfsupsurvey}.
 
@@ -7,15 +7,10 @@ In pattern recognition, models are designed to be robust against known invarianc
 
 Contrastive Learning of Musical Representations (CLMR) learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR works under a machine learning subset called Self-Supervised Learning (SSL), where models self-learn from unlabeled data, creating their supervisory signal \cite{audioselfsupsurvey}. This mimics human learning from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. The benefits of SSL include reduced reliance on labeled data, making data representation more robust and generalizable.
 
-The CLMR methodology involves the following steps:
-
-\begin{enumerate}
-\item \textbf{Data Augmentation:} Create different augmentations or transformations of the same musical piece as positive pairs and use other randomly selected pieces as antagonistic pairs.
-\item \textbf{Contrastive Learning:} Train by minimizing a contrastive loss function, encouraging the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
-\end{enumerate}
+The CLMR methodology involves creating different augmentations of the same musical piece as positive pairs and using others as antagonistic pairs. Then, training by minimizing a contrastive loss function encourages the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
 
 
-\subsection{Siamese and Triplet Siamese Networks}
+\subsection{Triplet Siamese Networks}
 
 For this task, a Triple Siamese Network is suggested, a model architecture proved efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}, intending to minimize the loss function between an anchor, positive, and negative sample, achieved through online triplet mining \cite{Sikaroudi2020OfflinePatches}. The overarching aim is to train a model in a self-supervised setting, which can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture. 
 
@@ -25,37 +20,44 @@ Siamese Networks are especially effective for learning from limited or imbalance
 
 An extension of this architecture is the Triplet Siamese Network, which involves comparing three input instances instead of two. This network aims to learn an embedding space in which similar instances are close to each other and dissimilar instances are distant. The input to this network consists of an anchor, a positive instance (from the same class as the anchor), and a negative instance (from a different class). Each instance is processed by an identical subnetwork that shares its architecture, weights, and hyperparameters with the others.
 
-The triplet loss function used in this network guides the learning process. It seeks to minimize the distance between the anchor and positive instances while maximizing the distance between the anchor and the negative instances. A margin parameter is included in the loss function to ensure a minimum separation between positive and negative instances in the embedding space. Due to the shared weights among the subnetworks, Triplet Siamese Networks also offer efficient memory usage and computational complexity.
-
 \subsubsection{Encoder: SampleCNN}
 
 The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes 1D input data with a single channel and follows the next architecture:
 
+
 \begin{table}[h]
 \centering
 \small
-\begin{tabularx}{\textwidth}{|>{\hsize=1.6\hsize}X|>{\hsize=0.6\hsize}X|>{\hsize=0.6\hsize}X|}
-\hline
-\textbf{Layer Type} & \textbf{In Channels} & \textbf{Out Channels} \\
-\hline
-Conv1d + BatchNorm1d + ReLU & 1 & 128 \\
-\hline
-\multicolumn{3}{|c|}{The following layers are repeated depending on the strides and hidden parameters} \\
-\hline
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 128 & 128 \\
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 128 & 128 \\
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 128 & 256 \\
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 \\
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 \\
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 \\
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 \\
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 256 \\
-Conv1d + BatchNorm1d + ReLU + MaxPool1d & 256 & 512 \\
-\hline
-Conv1d + BatchNorm1d + ReLU & 512 & 512 \\
-\hline
-Fully connected representation layer & 512 & 128 \\
-\hline
+\begin{tabularx}{\textwidth}{>{\hsize=1.6\hsize}X>{\hsize=0.6\hsize}X>{\hsize=0.6\hsize}X}
+\toprule
+\thead{\textbf{Layer Type}} & \thead{\textbf{In Channels}} & \thead{\textbf{Out Channels}} \\
+\midrule
+Conv + ReLU & 1 & 128 \\
+\addlinespace
+\multicolumn{3}{c}{The following layers are repeated depending on the strides and hidden parameters:} \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 128 & 128 \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 128 & 128 \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 128 & 256 \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+\addlinespace
+Conv + BatchNorm + ReLU + MaxPool & 256 & 512 \\
+\addlinespace
+Conv + BatchNorm + ReLU + AvgPool & 512 & 512 \\
+\addlinespace
+Fully connected (representation layer) & 512 & 128 \\
+\bottomrule
 \end{tabularx}
 \caption{Layer specifications for SampleCNN model}
 \label{tab:samplecnn}
@@ -74,11 +76,19 @@ Here, $y_i$ is the output tensor after the average pooling process. Each element
 
 \subsection{Audio augmentation and transformation pipeline}
 
+We believe our experiments can benefit from time-domain processing because it allows more natural handling of temporal patterns and sequences in the data while avoiding windowing artifacts.
+
+Mel-spectrogram-based approaches have proved useful in numerous audio-related machine-learning tasks using CNN, as their frequency-domain summarization is efficient and not easily learnable through data-driven approaches \cite{Kim2020OneStrategies}. That being said,  they exhibit limitations concerning their representation of perceptual similarity: the spectrogram of an audio signal, denoted as $\phi(x)$ for audio signal $x$ and $\phi(y)$ for audio signal $y$, captures the distribution of frequencies as they vary over time. A small difference between $\phi(x)$ and $\phi(y)$ generally signifies high perceptual similarity from a human listener's perspective. In other words, if two audio signals have similar spectrograms, they are likely to sound alike when heard.
+
+However, the inverse is not consistently true. There exist instances where two audio signals can have significantly different spectrograms, i.e., a high spectrogram distance between $\phi(x)$ and $\phi(y)$, but are still perceived as musically similar by human listeners. This discrepancy is due to the complexity of human auditory perception that goes beyond just the distribution of frequencies over time \cite{Mesostructures2023}.
+
+Our perception of sound involves several other factors, including temporal patterns, phase relationships between frequencies, and even higher-level musical structures. Therefore, even if two sounds have very different spectrograms, they might still be perceived as similar if they share these other characteristics. This underlines the inherent limitation of using only spectrogram distance to measure high-level music similarity, as it may not always produce results consistent with human perceptual judgments.
+
 \subsubsection{Positive sample generation chain}
 
-The positive image in our study should preserve its intelligible content when subjected to temporal transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
+The positive image in our study must preserve its intelligible content when subjected to temporal (or any) transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
 
-While the MIR community has access to helpful audio transformation tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0}, the specific requirements of our experiments necessitated the development of our transformation chain: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
+While we have experimented with helpful audio augmentation tools such as \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0} and \cite{Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio} \cite{Yang2021TorchAudio:Processing}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
 Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
 
@@ -160,45 +170,46 @@ N = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 
 Schroff, F., Kalenichenko, D., and Philbin, J. at Google initially proposed and used triplet loss to learn face recognition of the same person at different poses and angles. \cite{Schroff2015FaceNet:Clustering}
 
+The triplet loss function used in Siamese networks guides the learning process. It seeks to minimize the distance between the anchor and positive instances while maximizing the distance between the anchor and the negative instances. A margin parameter is included in the loss function to ensure a minimum separation between positive and negative instances in the embedding space.
+
+The triplet loss function $\mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n})$ aims to ensure that an anchor vector $\mathbf{a}_i$ is closer in the embedding space to a positive vector $\mathbf{p}_i$ (representing an example of the same class) than to a negative vector $\mathbf{n}_i$ (representing an example of a different class) by at least a margin $m$. It is calculated by summing the losses overall $N$ triplets in the dataset, where the equation gives the loss for each triplet:
+
 \begin{equation}
 \mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n}) = \sum_{i=1}^{N} \max \left(0, \left| \mathbf{a}_i - \mathbf{p}_i \right|_2^2 - \left| \mathbf{a}_i - \mathbf{n}_i \right|_2^2 + m \right)
 \end{equation}
 
-$\mathcal{L}$ is the triplet loss function.
-$\mathbf{a}_i$, $\mathbf{p}_i$, and $\mathbf{n}_i$ are the anchor, positive, and negative embedding vectors, respectively, for the $i$-th sample.
-$\left| \cdot \right|_2^2$ denotes the squared Euclidean distance between two points.
-$m$ is the margin, a hyperparameter that helps ensure that the anchor-positive distance is smaller than the anchor-negative distance by at least a margin.
-The summation $\sum_{i=1}^{N}$ is over all $N$ triplets in the dataset.
-The goal of the triplet loss is to minimize the distance between the anchor and the positive sample while maximizing the distance between the anchor and the negative sample. This encourages the model to learn embeddings that are similar for the same class and dissimilar for different classes.
-
-The final form of the loss function is obtained by averaging the loss over a mini-batch of triplets. 
+The final loss used for model training is then the average loss over a mini-batch of $N$ triplets:
 
 \begin{equation}
-\mathcal{L} = \frac{1}{N} \sum_{i=1}^{N} L(anchor_i, positive_i, negative_i)
+\mathcal{L} = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(\mathbf{a}_i, \mathbf{p}_i, \mathbf{n}_i)
 \end{equation}
 
-Here, $N$ is the number of triplets in the mini-batch, and $L(anchor_i, positive_i, negative_i)$ represents the loss function computed for the i-th triplet in the batch.
+The goal of minimizing this loss function is to learn discriminative embeddings, where similar examples are grouped closely together and dissimilar examples are placed farther apart in the embedding space.
 
-\subsubsection{Triplet mining}
+\subsection{Online triplet mining and batch normalization}
 
-The anchor-positive and anchor-negative distances are computed as the Euclidean distances between the corresponding samples.
+Online triplet mining is beneficial for managing large datasets by dynamically selecting the most informative triplets during training, focusing on each mini-batch. This strategy makes the process memory-efficient by negating the need to store all possible triplet combinations. Still, it also enhances model performance through quicker convergence by focusing on challenging examples based on the current model state.
+
+This hard triplet mining selects triplets $(a, p, n)$ to maximize the Euclidean distance between the anchor and positive samples and the anchor and negative samples. These distances, $D_{\text{AP}}$ and $D_{\text{AN}}$, are computed respectively as:
+
+
+\begin{align}
+D_{\text{AP}} &= \sqrt{\sum_{i} (A_i - P_i)^2} & D_{\text{AN}} &= \sqrt{\sum_{i} (A_i - N_i)^2}
+\end{align}
+
+
+\subsubsection{Batch normalization}
+
+In implementing the batch normalization step, it is necessary to standardize the audio lengths across all elements in the minibatch. We opted to zero-pad all clips to the length of the longest clip, valuing data integrity and completeness over potential performance trade-offs. Thus, the length of the longest array in the batch, which sets the standard for all others, is as follows:
 
 \begin{equation}
-D_{\text{AP}} = \sqrt{\sum_{i} (A_i - P_i)^2}
+L_{\text{max}} = \max_{i \in I} \left( \max \left( |A_i|, |P_i|, |N_i| \right) \right)
 \end{equation}
 
-The "hardest" negative index for each anchor-positive pair is determined by maximizing the difference between the anchor-negative and anchor-positive distances \cite{Sikaroudi2020OfflinePatches}\cite{XuanImprovedMining}.
+\begin{itemize}
+    \item $I$ represents the set of all items in the batch.
+    \item $|A_i|$, $|P_i|$, and $|N_i|$ denote the lengths of the anchor, positive, and negative embedding vectors for the $i$-th item, respectively.
+    \item The $\max$ function is applied to find the longest of these three lengths for each item, and then the maximum of these maximum lengths is taken over all items in the batch. This gives the maximum length, $L_{\text{max}}$, of any vector in the batch.
+    \end{itemize}
 
-\begin{equation}
-D_{\text{AN}} = \sqrt{\sum_{i} (A_i - N_i)^2}
-\end{equation}
-
-
-%%%%%BATCH NORM%%%%%%%%%%
-
-In implementing batch normalization, it is necessary to standardize the audio lengths across all elements in the minibatch. We opted to zero-pad all clips to the length of the longest clip, valuing data integrity and completeness over potential performance trade-offs. Thus, the length of the longest array in the batch, which sets the standard for all others, is as follows:
-
-\begin{equation}
-L_{\text{max}} = \max_{\text{item} \in \text{batch}}(\max(\text{length}(A_{\text{item}}), \text{length}(P_{\text{item}}), \text{length}(N_{\text{item}})))
-\end{equation}
 \newpage

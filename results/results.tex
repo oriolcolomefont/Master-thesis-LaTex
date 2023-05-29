@@ -8,6 +8,39 @@ XXXXXXXXXXXXXXXXX
 
 XXXXXXXXXXXXXXXXX
 
+Extend table by \cite{Hernandez-Olivan2021MusicFeatures}
+
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{|X|X|X|X|X|X|X|X|}
+\hline
+Year & Authors & Ref. & Algorithm & Input & Method & Supervised? & F-measure SALAMI \\
+\hline
+2009 & Paulus \& Klapuri & [24] & PK & MFCCs, chromas & Fitness function & No & - \\
+2010 & Mauch et al. & [25] & MND1 & MFCCs, Discrete Cepstrum & HMM & No & - \\
+2011 & Sargent et al. & [26] & SB-VRS1 & Chords estimation & Viterbi & No & - \\
+2012 & Kaiser et al. & [27] & KSP2 & SSM & Novelty measure & No & 0.286 \\
+2013 & McFee \& Ellis & [20] & MP2 & MLS & Fisher’s Linear Discriminant & No & 0.317 \\
+2014 & Nieto \& Bello & [28] & NB1 & MFCCs + chromas & Checkerboard-like kernel & No & 0.299 \\
+2015 & Cannam et al. & [29] & CC1 & Timbre-type histograms & HMM & No & 0.213 \\
+2016 & Nieto & [30] & ON2 & Constant-Q Transform Spectrogram & Linear Discriminant Analysis & No & 0.299 \\
+2017 & Cannam et al. & [29] & CC1 & Timbre-type histograms & HMM & No & 0.212 \\
+2014 & Schlüter et al. & [31] & SUG1 & MLS & CNN & Yes & 0.529 \\
+2015 & Grill \& Schlüter & [32] & GS1 & MLS + SSLMs & CNN & Yes & 0.541 \\
+2007 & Turnbull et al. & [19] & - & MFCCs, chromas, spectrogram & Boosted Decision Stump & No & 0.378 \\
+2011 & Sargent et al. & [34] & - & MFCCs, chromas & Viterbi & No & 0.356 \\
+2014 & Ullrich et. al & [22] & - & MLS & CNN & No & 0.465 \\
+2015 & Grill \& Schlüter & [4] & - & MLS + SSLMs & CNN & No & 0.523 \\
+2015 & Grill \& Schlüter & [5] & - & MLS + PCPs + SSLMs & CNN & No & 0.508 \\
+2017 & Hadria \& Peeters & [35] & - & MLS + SSLMs & CNN & No & 0.291 \\
+\hline
+\end{tabularx}
+\caption{Your Caption}
+\label{tab:my_label}
+\end{table}
+
+
 \begin{figure}[!ht]
 \includegraphics[clip,width=\columnwidth]{figures/PlotTimeSeriesResult}% 
 \caption[Graph.]{This is an example of a figure and its caption.}
