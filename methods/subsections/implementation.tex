@@ -63,7 +63,6 @@ Fully connected (representation layer) & 512 & 128 \\
 \label{tab:samplecnn}
 \end{table}
 
-
 The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation at the end.
 
 \begin{equation}
@@ -71,6 +70,9 @@ y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
 \end{equation}
 
 Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.
+
+%Colour CNN
+\input{figures/neural networks/colour CNN}
 
 \subsubsection{Optimizer}
 
@@ -88,7 +90,7 @@ Our perception of sound involves several other factors, including temporal patte
 
 The positive image in our study must preserve its intelligible content when subjected to temporal (or any) transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
 
-While we have experimented with helpful audio augmentation tools such as \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0} and \cite{Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio} \cite{Yang2021TorchAudio:Processing}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
+While we have experimented with helpful audio augmentation tools such as \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0} and \cite{Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio's} \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
 Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
 
