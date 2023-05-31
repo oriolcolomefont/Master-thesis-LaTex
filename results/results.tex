@@ -1,75 +1,23 @@
 \chapter{Results}
 
-XXXXXXXXXXXXXXXXX
+\input{results/subsections/tables}
 
-\section{Tables and graphics}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/images/first results.png}
+    \caption{Caption}
+    \label{fig:boxplotmetrics}
+\end{figure}
 
-XXXXXXXXXXXXXXXXX
-
-Extend table by Hernandez-Olivan, C., Beltran, J. R. \& Diaz-Guerra, D. 
-\cite{Hernandez-Olivan2021MusicFeatures}
-
-\begin{table}[h]
-\centering
-\small
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{5cm}XXXXX}
-\toprule
-\thead{\textbf{Year, Authors, Ref}} & \thead{\textbf{Algorithm}} & \thead{\textbf{Input}} & \thead{\textbf{Method}} & \thead{\textbf{F-measure SALAMI}} \\
-\midrule
-\addlinespace
-2009, Paulus \& Klapuri, [24] & PK & MFCCs, chromas & Fitness function  & - \\
-\addlinespace
-2010, Mauch et al., [25] & MND1 & MFCCs, Discrete Cepstrum & HMM  & - \\
-\addlinespace
-2011, Sargent et al., [26]& SB-VRS1 & Chords estimation & Viterbi  & - \\
-\addlinespace
-2012, Kaiser et al., [27]& KSP2 & SSM & Novelty measure  & 0.286 \\
-\addlinespace
-2013, McFee \& Ellis, [20] & MP2 & MLS & Fisher’s Linear Discriminant  & 0.317 \\
-\addlinespace
-2014, Nieto \& Bello, [28] & NB1 & MFCCs + chromas & Checkerboard-like kernel  & 0.299 \\
-\addlinespace
-2015, Cannam et al., [29] & CC1 & Timbre-type histograms & HMM  & 0.213 \\
-\addlinespace
-2016, Nieto, [30] & ON2 & Constant-Q Transform Spectrogram & Linear Discriminant Analysis  & 0.299 \\
-\addlinespace
-2017, Cannam et al., [29] & CC1 & Timbre-type histograms & HMM  & 0.212 \\
-\addlinespace
-2007, Turnbull et al., [19] & - & MFCCs, chromas, spectrogram & Boosted Decision Stump  & 0.378 \\
-\addlinespace
-2011, Sargent et al., [34] & - & MFCCs, chromas & Viterbi  & 0.356 \\
-\addlinespace
-2014, Ullrich et. al, [22] & - & MLS & CNN  & 0.465 \\
-\addlinespace
-2015, Grill \& Schlüter, [4] & - & MLS + SSLMs & CNN  & 0.523 \\
-\addlinespace
-2015, Grill \& Schlüter, [5] & - & MLS + PCPs + SSLMs & CNN  & 0.508 \\
-\addlinespace
-2017, Hadria \& Peeters, [35] & - & MLS + SSLMs & CNN  & 0.291 \\
-\bottomrule
-\end{tabularx}
-\caption{Your Caption}
-\label{tab:my_label}
-\end{table}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/images/f-measure.png}
+    \caption{Caption}
+    \label{fig:boxplotfmeasure}
+\end{figure}
 
 
-\begin{table}[!ht]
-\renewcommand{\arraystretch}{1.50}
-\caption[Table]{This is an example of a table and its caption.}
-\label{tablePCA}
-\centering
-\begin{tabular}{| c | c | c | c | c |}
-\hline
-\bfseries PCA & \bfseries Residual mean & \bfseries XXX & \bfseries XXX & \bfseries XXX \\
-\hline\hline
-Original PCA & 0.1267 & XXX & XXX & XXX  \\
-\hline
-PCA on Centroid 1 & 0.1249 & XXX & XXX  & XXX\\
-\hline
-PCA on Centroid 2 & 0.1214  & XXX & XXX  & XXX\\
-\hline
-\end{tabular}
-\end{table}
+The F-measure is a widely used boundary detection metric computed by comparing the predicted and ground truth boundaries. This metric, ranging from 0 to 1, represents the harmonic mean of precision and recall, providing a balanced view of under-segmentation and over-segmentation. Precision calculates the percentage of correctly detected boundaries, whereas recall assesses the percentage of actual boundaries detected correctly. Given the potential inaccuracies in human annotations and prediction errors, the F-measure tolerates minor discrepancies between predicted and ground truth boundaries. This tolerance level can be adjusted, enabling the metric to consider a predicted boundary as correct if it's within the set tolerance window of a ground truth boundary \cite{Turnbull2007ABOOSTING}.
 
 \newpage
 

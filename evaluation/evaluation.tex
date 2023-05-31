@@ -68,23 +68,23 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/salami_391_R matrix after Gaussian smoothing.png} % first figure itself
-        \caption[]{first figure}
+        \caption[self-similarity matrix]{Self-similarity matrix visualizes the similarity of different parts of the audio feature to each other. It illustrates how each point in the feature space correlates with every other point, providing insights into structural patterns or repetitions in the audio.}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/salami_391_Lag matrix after Gaussian smoothing.png} % second figure itself
-        \caption[]{second figure}
+        \caption[Self-similarity lag matrix]{A self-similarity lag matrix represents how similar each point in the feature space is with its 'lagged' or time-shifted versions. This provides insights into periodicity and temporal patterns within the audio data.}
     \end{minipage}
     \vfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/salami_391_Q_matrix.png} % third figure itself
-        \caption[]{third figure}
+        \caption[Q-matrix]{The cumulative matrix uses a recursive process that maximizes previous values and adds the current value from the recurrence plot. The Q-matrix acts as a global similarity measure by considering all aligned sample matches throughout the time series without penalizing local disruptions or mismatches.}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/salami_391_binary transitive matrix.png} % fourth figure itself
-        \caption[]{fourth figure}
+        \caption[Transitive Binary Similarity Matrix]{Transitive Binary Similarity Matrix identifies similarity relationships between different segments or points in the feature. This matrix aids in discovering recurrent patterns or structures within the audio feature.}
     \end{minipage}
 \end{figure}
 
