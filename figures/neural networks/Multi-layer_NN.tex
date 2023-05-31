@@ -1,7 +1,7 @@
 \begin{figure}[ht]
 	\centering
 	% NEURAL NETWORK with coefficients, shifted
-\begin{tikzpicture}[x=2.2cm,y=1.4cm]
+\begin{tikzpicture}[x=2.0cm,y=1.2cm]
   \message{^^JNeural network, shifted}
   \readlist\Nnod{4,5,5,5,3} % array of number of nodes per layer
   \readlist\Nstr{n,m,m,m,k} % array of string number of nodes per layer
@@ -39,6 +39,6 @@
   
 \end{tikzpicture}
 	\caption[Network graph for perceptron.]{\small{Network graph of a perceptron with $D$ input units and $C$ output units. The $l^{\text{th}}$ hidden layer contains $m^{(l)}$ hidden units. Each neuron in a layer receives input from the previous layer and computes an output value using an activation function. The output of the last layer represents the prediction or classification result.
-}}
+} \cite{tikz}}
 	\label{fig: multilayer color perceptron}
 \end{figure}

@@ -1,4 +1,7 @@
 \section{Implementation details}
+
+Our approach could be broadly categorized as cognitive modeling, as it strives to mimic human cognitive processes and problem-solving through a computerized model. We champion exposure-based learning in music and active engagement with an array of musical styles, genres, techniques, and learning methods to foster well-rounded musical proficiency and efficient performance with novel data in practical applications.
+
 \subsection{Contrastive Learning of Musical Representations}
 
 Piaget's theory of cognitive development suggests children acquire knowledge through sensory experiences, gradually developing abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by integrating new information through assimilation and accommodation \cite{audioselfsupsurvey}.
@@ -12,7 +15,7 @@ The CLMR methodology involves creating different augmentations of the same music
 
 \subsection{Triplet Siamese Networks}
 
-For this task, a Triple Siamese Network is suggested, a model architecture proved efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}, intending to minimize the loss function between an anchor, positive, and negative sample, achieved through online triplet mining \cite{Sikaroudi2020OfflinePatches}. The overarching aim is to train a model in a self-supervised setting, which can effectively distinguish between similar and dissimilar samples while considering their underlying composition and production texture. 
+For this task, a Triple Siamese Network is suggested, a model architecture proved efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}, intending to minimize the loss function between an anchor, positive, and negative sample, achieved through online triplet mining \cite{Sikaroudi2020OfflinePatches}. The overarching aim is to train a model in a self-supervised setting, which can effectively distinguish between similar and dissimilar samples. 
 
 A Siamese Network is a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}. This architecture is explicitly designed for tasks requiring comparing or assessing similarity between two input instances. It comprises two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing more efficient memory usage and computational complexity.
 
@@ -22,8 +25,9 @@ An extension of this architecture is the Triplet Siamese Network, which involves
 
 \subsubsection{Encoder: SampleCNN}
 
-The SampleCNN model \cite{Lee2018SampleCNN:Classification} takes 1D input data with a single channel and follows the next architecture:
+The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for raw waveform audio data, treating each audio sample as an independent channel and applying 1-dimensional convolution along the temporal axis. Its implementation is an adaptation of \cite{CLMR2021} using PyTorch \cite{Paszke2019PyTorch:Library} and PyTorch Lightning \cite{PyTorchDocumentation}.
 
+This fully convolutional model reduces computational requirements and learns features at different scales through its multi-resolution architecture \ref{tab:samplecnn}.
 
 \begin{table}[h]
 \centering
@@ -63,28 +67,23 @@ Fully connected (representation layer) & 512 & 128 \\
 \label{tab:samplecnn}
 \end{table}
 
+
 The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation at the end.
-
-\begin{equation}
-y_i = \frac{1}{N} \sum_{j=1}^{N} x_{ij}
-\end{equation}
-
-Here, $y_i$ is the output tensor after the average pooling process. Each element $x_{ij}$ is part of the input tensor. $N$ is the count of elements in the second dimension of the input tensor, while $i$ and $j$ are used to iterate over the first and second dimensions of the tensors, respectively.
 
 %Colour CNN
 \input{figures/neural networks/colour CNN}
 
-\subsubsection{Optimizer}
+\subsection{Optimizer and learning rate}
+
+In our research, we've employed the AdamW optimizer \cite{Loshchilov2017DecoupledRegularization}, an optimized variant of the widely-used Adam optimizer for training neural networks. AdamW adeptly balances the learning rate across network weights, providing an efficient strategy for weight decay management by isolating it from gradient updates. 
+
+\subsubsection{Learning rate}
+
+The learning rate, set at 0.003, is a pivotal parameter dictating the step size at each iteration towards loss function minimization. It's a delicate balancing act— a high rate promises swift convergence with a risk of minimum overshoot, while a lower rate provides careful convergence but necessitates more iterations.
 
 \subsection{Audio augmentation and transformation pipeline}
 
-We believe our experiments can benefit from time-domain processing because it allows more natural handling of temporal patterns and sequences in the data while avoiding windowing artifacts.
-
-Mel-spectrogram-based approaches have proved useful in numerous audio-related machine-learning tasks using CNN, as their frequency-domain summarization is efficient and not easily learnable through data-driven approaches \cite{Kim2020OneStrategies}. That being said,  they exhibit limitations concerning their representation of perceptual similarity: the spectrogram of an audio signal, denoted as $\phi(x)$ for audio signal $x$ and $\phi(y)$ for audio signal $y$, captures the distribution of frequencies as they vary over time. A small difference between $\phi(x)$ and $\phi(y)$ generally signifies high perceptual similarity from a human listener's perspective. In other words, if two audio signals have similar spectrograms, they are likely to sound alike when heard.
-
-However, the inverse is not consistently true. There exist instances where two audio signals can have significantly different spectrograms, i.e., a high spectrogram distance between $\phi(x)$ and $\phi(y)$, but are still perceived as musically similar by human listeners. This discrepancy is due to the complexity of human auditory perception that goes beyond just the distribution of frequencies over time \cite{Mesostructures2023}.
-
-Our perception of sound involves several other factors, including temporal patterns, phase relationships between frequencies, and even higher-level musical structures. Therefore, even if two sounds have very different spectrograms, they might still be perceived as similar if they share these other characteristics. This underlines the inherent limitation of using only spectrogram distance to measure high-level music similarity, as it may not always produce results consistent with human perceptual judgments.
+Our experiments can benefit from incorporating time-domain processing, which allows for more natural handling of temporal patterns and sequences in the data while avoiding windowing artifacts. While mel-spectrogram-based approaches have proven useful in various audio-related machine-learning tasks, their limitations lie in their representation of perceptual similarity. Spectrograms capture the distribution of frequencies over time, and small differences in spectrograms generally indicate high perceptual similarity from a human listener's perspective. However, there are cases where two audio signals can have significantly different spectrograms but still be perceived as musically similar. This discrepancy is due to the complexity of human auditory perception, which encompasses temporal patterns, phase relationships between frequencies, and higher-level musical structures. Therefore, relying solely on spectrogram distance to measure high-level music similarity may not consistently align with human perceptual judgments \cite{Kim2020OneStrategies}\cite{Mesostructures2023}.
 
 \subsubsection{Positive sample generation chain}
 
@@ -92,56 +91,27 @@ The positive image in our study must preserve its intelligible content when subj
 
 While we have experimented with helpful audio augmentation tools such as \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0} and \cite{Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio's} \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
-Let $g \in [-12, 0]$ represent the gain, $\Delta p \in [-1200, 1200]$ the pitch shift, $h_R[n]$ the impulse response of the reverb with parameters in $[0, 100]$, $h_C[n]$ the impulse response of the chorus with parameters determined by the specified ranges, $d \in [0, 30]$ the overdrive parameter, $\alpha \in [0.9, 1.1]$ the speed change factor, $\beta \in [0.9, 1.1]$ the stretch factor, $f_m \in [0.1, 100]$ the modulation frequency of the tremolo, and $d_m \in [1, 101]$ the depth of the tremolo. 
+In this analysis, various parameters represent different effects on the signal. We use $g \in [-12, 0]$ for gain, $\Delta p \in [-1200, 1200]$ for pitch shift, $h_R[n]$ for the reverb impulse response, $h_C[n]$ for the chorus impulse response, $d \in [0, 30]$ for overdrive, $\alpha \in [0.9, 1.1]$ for speed change, $\beta \in [0.9, 1.1]$ for stretch factor, $f_m \in [0.1, 100]$ for tremolo's modulation frequency, and $d_m \in [1, 101]$ for tremolo's depth. Each effect is applied aggressively but does not disrupt the high-level musical content.
 
-These effect selections behave and affect the signal in several domains, adding aggressive transformations while preserving high-level musical content.
+\textbf{Amplitude effects}, like gain, modify the signal's overall amplitude with a constant factor $g$. 
 
-\begin{itemize}
-\item \textbf{Amplitude effects:} Amplitude or gain modification.
-\begin{itemize}
-    \item Gain: Adjusts the overall amplitude of the signal by a constant factor $g \in [-12, 0]$ dB.
-\end{itemize}
+\textbf{Time-domain effects} such as speed change and stretch alter the signal's playback speed and duration without changing its pitch, respectively. The speed and stretch factors are $\alpha$ and $\beta$.
 
-\item \textbf{Time-domain effects:} Alters the signal's timing or duration.
-\begin{itemize}
-    \item Speed change: Alters the playback speed of the signal by a factor $\alpha \in [0.9, 1.1]$.
-    \item Stretch: Changes the signal duration without affecting its pitch by a factor $\beta \in [0.9, 1.1]$.
-\end{itemize}
+\textbf{Frequency-domain effects} adjust the frequency content or pitch of the signal, as in pitch shifting, which alters the pitch by $\Delta p$. 
 
-\item \textbf{Frequency-domain effects:} Alters the frequency content or pitch of the signal.
-\begin{itemize}
-    \item Pitch shift: Changes the signal's pitch by $\Delta p \in [-1200, 1200]$ cents. Two-octave range, one octave higher to one octave lower.
-\end{itemize}
+\textbf{Nonlinear effects} such as overdrive add harmonic distortion using the parameter $d$.
 
-\item \textbf{Nonlinear effects:} Harmonic distortion or other complex changes.
-\begin{itemize}
-    \item Overdrive: Adds harmonic distortion to the signal based on the parameter $d \in [0, 30]$.
-\end{itemize}
+\textbf{Modulation effects}, including chorus and tremolo, use a control signal or low-frequency oscillator. The specified ranges determine the chorus parameters, and the tremolo's amplitude modulation frequency and depth are $f_m$ and $d_m$.
 
-\item \textbf{Modulation effects:} Modulation using a low-frequency oscillator or control signal.
-\begin{itemize}
-    \item Chorus: Applies a varying time delay to the signal, resulting in a richer, thicker sound. The specified ranges determine the chorus parameters.
-    \item Tremolo: Modulates the signal's amplitude at a modulation frequency $f_m \in [0.1, 100]$ Hz and depth $d_m \in [1, 101]$.
-\end{itemize}
+\textbf{Reverberation effects} simulate physical space's acoustic reflections and reverberations, like reverb that applies an impulse response $h_R[n]$. Finally, \textbf{Noise effects} add a noise signal $N[n]$ with a signal-to-noise ratio (SNR) in the range $[12, 100]$.
 
-\item \textbf{Reverberation effects:} Acoustic reflections simulation and reverberations of physical space.
-\begin{itemize}
-    \item Reverb: Applies an impulse response $h_R[n]$ that simulates the reverberation of space with parameters in the range $[0, 100]$.
-\end{itemize}
-
-\item \textbf{Noise effects:}
-\begin{itemize}
-    \item Additive noise: Adds a noise signal $N[n]$ with a specific signal-to-noise ratio (SNR) in the range $[12, 100]$.
-\end{itemize}
-\end{itemize}
-
-The positive signal $P[n]$ is generated as follows:
+The positive signal $P[n]$ is generated according to the equation given below, where the symbols denote specific effects as indicated:
 
 \begin{equation}\label{eq:positive_signal}
 P[n] = A[n] \ast h_{G}[n] \ast h_{C}[n] \ast h_{D}[n] \ast h_{P_t}[n] \ast h_{R}[n] \ast h_{S}[n] \ast h_{T}[n] \ast h_{T_m}[n] + N[n]
 \end{equation}
 
-where $\ast$ denotes convolution, $h_{G}[n] = g \delta[n]$, $h_{D}[n]$ is the impulse response of the overdrive effect, $h_{P_t}[n]$ is the impulse response of the pitch shift effect, $h_{S}[n]$ represents the impulse response of the speed change effect, $h_{T}[n]$ is the impulse response of the stretch effect, and $h_{T_m}[n] = (1 - d_m \cos(2 \pi f_m n))\delta[n]$ is the impulse response of the tremolo effect. The noise signal $N[n]$ is added with a specific signal-to-noise ratio (SNR) in the range $[12, 100]$ in decibels.
+The $\ast$ symbol represents convolution, and the various $h$ symbols indicate the impulse responses of specific effects. The noise signal $N[n]$ is included with a specific SNR.
 
 \subsubsection{Negative sample generation}
 
@@ -172,7 +142,7 @@ N = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 
 Schroff, F., Kalenichenko, D., and Philbin, J. at Google initially proposed and used triplet loss to learn face recognition of the same person at different poses and angles. \cite{Schroff2015FaceNet:Clustering}
 
-The triplet loss function used in Siamese networks guides the learning process. It seeks to minimize the distance between the anchor and positive instances while maximizing the distance between the anchor and the negative instances. A margin parameter is included in the loss function to ensure a minimum separation between positive and negative instances in the embedding space.
+The triplet loss function used in Siamese-like networks guides the learning process. It seeks to minimize the distance between the anchor and positive instances while maximizing the distance between the anchor and the negative instances. A margin parameter is included in the loss function to ensure a minimum separation between positive and negative instances in the embedding space.
 
 The triplet loss function $\mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n})$ aims to ensure that an anchor vector $\mathbf{a}_i$ is closer in the embedding space to a positive vector $\mathbf{p}_i$ (representing an example of the same class) than to a negative vector $\mathbf{n}_i$ (representing an example of a different class) by at least a margin $m$. It is calculated by summing the losses overall $N$ triplets in the dataset, where the equation gives the loss for each triplet:
 
@@ -186,7 +156,7 @@ The final loss used for model training is then the average loss over a mini-batc
 \mathcal{L} = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(\mathbf{a}_i, \mathbf{p}_i, \mathbf{n}_i)
 \end{equation}
 
-The goal of minimizing this loss function is to learn discriminative embeddings, where similar examples are grouped closely together and dissimilar examples are placed farther apart in the embedding space.
+As previously stated, the goal of minimizing this loss function is to learn discriminative embeddings, where similar examples are grouped closely together while dissimilar examples are placed farther apart in the embedding space.
 
 \subsection{Online triplet mining and batch normalization}
 

@@ -14,7 +14,7 @@ SALAMI (Structural Analysis of Large Amounts of Music Information) aims to condu
 
 The authors propose a unique music analysis approach that segments pieces into sections rather than traditional forms. Their method combines perceptual, functional, and transcription analyses, considers music's hierarchical nature, and uses markers to determine analysis timescales. While providing a comprehensive investigation, each analysis approach has limitations in accurately reflecting musical structure, labeling identical or different music sections, and capturing the complete structural framework. This innovative approach aims for a more nuanced, holistic music analysis.
 
-\section{\textit{Embeddiogram} feature}
+\section{The \textit{embeddiogram} audio feature representation}
 
 The \textit{embeddiogram} is derived by applying our pre-trained neural network model to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively high-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
 
@@ -68,23 +68,23 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/salami_391_R matrix after Gaussian smoothing.png} % first figure itself
-        \caption[self-similarity matrix]{Self-similarity matrix visualizes the similarity of different parts of the audio feature to each other. It illustrates how each point in the feature space correlates with every other point, providing insights into structural patterns or repetitions in the audio.}
+        \caption[Track 391 (SALAMI dataset) Self-similarity matrix]{Self-similarity matrix. Track 391 (SALAMI dataset).}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/salami_391_Lag matrix after Gaussian smoothing.png} % second figure itself
-        \caption[Self-similarity lag matrix]{A self-similarity lag matrix represents how similar each point in the feature space is with its 'lagged' or time-shifted versions. This provides insights into periodicity and temporal patterns within the audio data.}
+        \caption[Track 391 (SALAMI dataset) Self-similarity lag matrix]{Self-similarity lag matrix. Track 391 (SALAMI dataset).}
     \end{minipage}
     \vfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/salami_391_Q_matrix.png} % third figure itself
-        \caption[Q-matrix]{The cumulative matrix uses a recursive process that maximizes previous values and adds the current value from the recurrence plot. The Q-matrix acts as a global similarity measure by considering all aligned sample matches throughout the time series without penalizing local disruptions or mismatches.}
+        \caption[Track 391 (SALAMI dataset). Q-matrix]{Cumulative matrix. Track 391 (SALAMI dataset).}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/salami_391_binary transitive matrix.png} % fourth figure itself
-        \caption[Transitive Binary Similarity Matrix]{Transitive Binary Similarity Matrix identifies similarity relationships between different segments or points in the feature. This matrix aids in discovering recurrent patterns or structures within the audio feature.}
+        \caption[Track 391 (SALAMI dataset). Transitive Binary Similarity Matrix]{Transitive Binary Matrix. Track 391 (SALAMI dataset).}
     \end{minipage}
 \end{figure}
 
