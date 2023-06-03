@@ -1,6 +1,6 @@
 \section{Implementation details}
 
-Our approach could be broadly categorized as cognitive modeling, as it strives to mimic human cognitive processes and problem-solving through a computerized model. We champion exposure-based learning in music and active engagement with an array of musical styles, genres, techniques, and learning methods to foster well-rounded musical proficiency and efficient performance with novel data in practical applications.
+Our approach could be broadly categorized as cognitive modeling, as it strives to mimic human cognitive processes and problem-solving through a computerized model. We champion exposure-based learning in music and active engagement with musical styles, genres, techniques, and learning methods to foster well-rounded musical proficiency and efficient performance with novel data in practical applications.
 
 \subsection{Contrastive Learning of Musical Representations}
 
@@ -81,9 +81,14 @@ In our research, we've employed the AdamW optimizer \cite{Loshchilov2017Decouple
 
 The learning rate, set at 0.003, is a pivotal parameter dictating the step size at each iteration towards loss function minimization. It's a delicate balancing act— a high rate promises swift convergence with a risk of minimum overshoot, while a lower rate provides careful convergence but necessitates more iterations.
 
+
 \subsection{Audio augmentation and transformation pipeline}
 
-Our experiments can benefit from incorporating time-domain processing, which allows for more natural handling of temporal patterns and sequences in the data while avoiding windowing artifacts. While mel-spectrogram-based approaches have proven useful in various audio-related machine-learning tasks, their limitations lie in their representation of perceptual similarity. Spectrograms capture the distribution of frequencies over time, and small differences in spectrograms generally indicate high perceptual similarity from a human listener's perspective. However, there are cases where two audio signals can have significantly different spectrograms but still be perceived as musically similar. This discrepancy is due to the complexity of human auditory perception, which encompasses temporal patterns, phase relationships between frequencies, and higher-level musical structures. Therefore, relying solely on spectrogram distance to measure high-level music similarity may not consistently align with human perceptual judgments \cite{Kim2020OneStrategies}\cite{Mesostructures2023}.
+Conventional transformations, such as log-scaled Mel spectrograms or Mel Frequency Cepstral Coefficients, capture key features but may obscure some information inherent in raw audio data.
+
+Raw audio data offers unique advantages. Primarily, it ensures the retention of the original signal, which could reveal novel findings, and facilitates the direct extraction of features through advanced deep learning models \cite{learning}. However, it is not without challenges: high sample rates result in high dimensionality, demanding substantial computational resources. Additionally, raw audio is noise-sensitive, complicating the extraction process. Features derived from raw audio also often lack the interpretability of traditional ones \cite{Schindler2020DeepTutorial}. Hence, the choice of input data depends on the specific task, available computational resources, and the balance between data preservation and computational efficiency.
+
+Time-domain processing, a feature of our experiments, naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although Mel-spectrogram-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Spectrograms capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures—means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music similarity may not always align with human perceptions \cite{Kim2020OneStrategies}\cite{Mesostructures2023}.
 
 \subsubsection{Positive sample generation chain}
 
@@ -115,7 +120,7 @@ The $\ast$ symbol represents convolution, and the various $h$ symbols indicate t
 
 \subsubsection{Negative sample generation}
 
-We posit that high-level musical content unfolds over time; therefore, we argue that the temporal structure of the negative images related to our anchor should be disrupted. While maintaining similar sonic qualities, the content should be rendered unintelligible.
+Circling back to our premises and assumptions, we posit that high-level musical content unfolds over time; therefore, we argue that the temporal structure of the negative images, in contrast to our anchor, should be disrupted. While maintaining similar sonic qualities, the content should be rendered unintelligible.
 
 \begin{enumerate}
 \item Calculate the minimum and maximum audio chunk lengths in samples:
@@ -125,6 +130,9 @@ l_{min} = t_{min} \times S
 \begin{equation}
 l_{max} = t_{max} \times S
 \end{equation}
+
+The minimum duration $t_{min}$ is set to 0.05 seconds, and the maximum duration $t_{max}$ is set to 1 second. This range is chosen thoughtfully to strike a balance between the two factors. On the one hand, it is above the just noticeable difference (JND) threshold, the smallest change in a stimulus that can be perceived. On the other hand, it is short enough to maintain a reasonably-sized window to avoid discernible musical content \cite{Fastl2007Just-NoticeableChanges}.
+
 \item Generate random audio chunk lengths $l_1, l_2, \ldots, l_{n-1}$ from the uniform distribution on the interval $[l_{min}, l_{max}]$. Calculate the final audio chunk length as:
 \begin{equation}
 l_n = L_A - \sum_{i=1}^{n-1} l_i
@@ -156,7 +164,9 @@ The final loss used for model training is then the average loss over a mini-batc
 \mathcal{L} = \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(\mathbf{a}_i, \mathbf{p}_i, \mathbf{n}_i)
 \end{equation}
 
-As previously stated, the goal of minimizing this loss function is to learn discriminative embeddings, where similar examples are grouped closely together while dissimilar examples are placed farther apart in the embedding space.
+As previously stated, the goal of minimizing this loss function is to learn discriminative embeddings, where similar examples are grouped closely together. In contrast, dissimilar examples are placed farther apart in the embedding space.
+
+While some packages can be found in the MIR literature \cite{auraloss}, we wrote our own PyTorch \cite{Paszke2019PyTorch:Library} implementation for the sake of our experiments.
 
 \subsection{Online triplet mining and batch normalization}
 

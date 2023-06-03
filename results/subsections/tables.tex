@@ -1,3 +1,30 @@
+
+METRICS
+
+\begin{itemize}
+    \item \textbf{Precision}: Precision measures the proportion of correctly detected boundaries out of the total estimated boundaries. It quantifies the accuracy of the boundary detection algorithm. It is calculated as:
+    
+    \[
+    \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}}
+    \]
+    
+    High precision indicates a low rate of false positives, meaning the algorithm correctly identifies boundaries without many incorrect detections.
+    
+    \item \textbf{Recall}: Recall measures the proportion of correctly detected boundaries out of the total reference boundaries. It quantifies the completeness or sensitivity of the boundary detection algorithm. It is calculated as:
+    
+    \[
+    \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}}
+    \]
+    
+    High recall indicates a low rate of false negatives, meaning that the algorithm successfully detects most of the true boundaries without missing many.
+    
+    \item \textbf{F-measure}: The F-measure is a widely used boundary detection metric computed by comparing the predicted and ground truth boundaries. This metric, ranging from 0 to 1, represents the harmonic mean of precision and recall, providing a balanced view of under-segmentation and over-segmentation. Precision calculates the percentage of correctly detected boundaries, whereas recall assesses the percentage of actual boundaries detected correctly \cite{Turnbull2007ABOOSTING}. The F-measure is calculated as follows:
+    
+    \[
+    \text{F-measure} = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+    \]
+\end{itemize}
+
 Extend table by Hernandez-Olivan, C., Beltran, J. R. \& Diaz-Guerra, D. 
 \cite{Hernandez-Olivan2021MusicFeatures}
 
@@ -6,7 +33,7 @@ Extend table by Hernandez-Olivan, C., Beltran, J. R. \& Diaz-Guerra, D.
 \small
 \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.5cm}XXXXX}
 \toprule
-\thead{\centering\textbf{Year, Authors, Ref}} & \thead{\centering\textbf{Algorithm}} & \thead{\centering\textbf{Input}} & \thead{\centering\textbf{Method}} & \thead{\centering\textbf{F-measure \footnote{The F-measure is a widely used boundary detection metric computed by comparing the predicted and ground truth boundaries. This metric, ranging from 0 to 1, represents the harmonic mean of precision and recall, providing a balanced view of under-segmentation and over-segmentation. Precision calculates the percentage of correctly detected boundaries, whereas recall assesses the percentage of actual boundaries detected correctly. Given the potential inaccuracies in human annotations and prediction errors, the F-measure tolerates minor discrepancies between predicted and ground truth boundaries. This tolerance level can be adjusted, enabling the metric to consider a predicted boundary as correct if it's within the set tolerance window of a ground truth boundary \cite{Turnbull2007ABOOSTING}.}}} \\
+\thead{\centering\textbf{Year, Authors, Ref}} & \thead{\centering\textbf{Algorithm}} & \thead{\centering\textbf{Input}} & \thead{\centering\textbf{Method}} & \thead{\centering\textbf{F-measure}} \\
 \midrule
 \addlinespace
 2012, Kaiser et al., [27]& KSP2 & SSM & Novelty measure  & 0.286 \\
@@ -34,6 +61,6 @@ Extend table by Hernandez-Olivan, C., Beltran, J. R. \& Diaz-Guerra, D.
 2017, Hadria \& Peeters, [35] & - & MLS, SSLMs & CNN  & 0.291 \\
 \bottomrule
 \end{tabularx}
-\caption{Your Caption}
+\caption[Baseline. State of the art table.]{Your Caption. Given the potential inaccuracies in human annotations and prediction errors, the F-measure tolerates minor discrepancies between predicted and ground truth boundaries. This tolerance level can be adjusted, enabling the metric to consider a predicted boundary as correct if it's within the set tolerance window of a ground truth boundary.}
 \label{tab:my_label}
 \end{table}
