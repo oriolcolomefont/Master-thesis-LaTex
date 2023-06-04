@@ -92,9 +92,9 @@ Time-domain processing, a feature of our experiments, naturally handles temporal
 
 \subsubsection{Positive sample generation chain}
 
-The positive image in our study must preserve its intelligible content when subjected to temporal (or any) transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
+The positive image in our study must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
 
-While we have experimented with helpful audio augmentation tools such as \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0} and \cite{Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio's} \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
+While we have experimented with helpful audio augmentation tools such as \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0} and \cite{Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our own transformation chain using \textit{torchaudio's} \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
 In this analysis, various parameters represent different effects on the signal. We use $g \in [-12, 0]$ for gain, $\Delta p \in [-1200, 1200]$ for pitch shift, $h_R[n]$ for the reverb impulse response, $h_C[n]$ for the chorus impulse response, $d \in [0, 30]$ for overdrive, $\alpha \in [0.9, 1.1]$ for speed change, $\beta \in [0.9, 1.1]$ for stretch factor, $f_m \in [0.1, 100]$ for tremolo's modulation frequency, and $d_m \in [1, 101]$ for tremolo's depth. Each effect is applied aggressively but does not disrupt the high-level musical content.
 
@@ -122,8 +122,10 @@ The $\ast$ symbol represents convolution, and the various $h$ symbols indicate t
 
 Circling back to our premises and assumptions, we posit that high-level musical content unfolds over time; therefore, we argue that the temporal structure of the negative images, in contrast to our anchor, should be disrupted. While maintaining similar sonic qualities, the content should be rendered unintelligible.
 
+The computation goes as follows:
+
 \begin{enumerate}
-\item Calculate the minimum and maximum audio chunk lengths in samples:
+\item We first calculate the minimum and maximum audio chunk lengths in samples:
 \begin{equation}
 l_{min} = t_{min} \times S
 \end{equation}
@@ -133,18 +135,23 @@ l_{max} = t_{max} \times S
 
 The minimum duration $t_{min}$ is set to 0.05 seconds, and the maximum duration $t_{max}$ is set to 1 second. This range is chosen thoughtfully to strike a balance between the two factors. On the one hand, it is above the just noticeable difference (JND) threshold, the smallest change in a stimulus that can be perceived. On the other hand, it is short enough to maintain a reasonably-sized window to avoid discernible musical content \cite{Fastl2007Just-NoticeableChanges}.
 
-\item Generate random audio chunk lengths $l_1, l_2, \ldots, l_{n-1}$ from the uniform distribution on the interval $[l_{min}, l_{max}]$. Calculate the final audio chunk length as:
+\item We then generate random audio chunk lengths $l_1, l_2, \ldots, l_{n-1}$ from the uniform distribution on the interval $[l_{min}, l_{max}]$. Calculate the final audio chunk length as:
 \begin{equation}
 l_n = L_A - \sum_{i=1}^{n-1} l_i
 \end{equation}
 where $L_A$ is the length of the anchor signal in samples.
-\item Split the anchor signal $A$ into audio chunks $C_1, C_2, \ldots, C_n$ according to the calculated audio chunk lengths.
-\item Shuffle the audio chunks randomly to get the permuted slices $C_{\sigma(1)}, C_{\sigma(2)}, \ldots, C_{\sigma(n)}$, where $\sigma$ is a random permutation of indices from $1$ to $n$.
+
+\item The third step is to split the anchor signal $A$ into audio chunks $C_1, C_2, \ldots, C_n$ according to the calculated audio chunk lengths in the previous step.
+
+\item Shuffle the audio chunks randomly to get the permuted slices $C_{\sigma(1)}, C_{\sigma(2)}, \ldots, C_{\sigma(n)}$, where $\sigma$ is a random permutation of indices from $1$ to $n$. 
+
 \item Concatenate the shuffled audio chunks to generate the negative signal:
 \begin{equation}\label{eq:negative_signal}
 N = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 \end{equation}
 \end{enumerate}
+
+Again, the whole purpose of it is to disturb the time domain.
 
 \subsection{Loss function}
 
