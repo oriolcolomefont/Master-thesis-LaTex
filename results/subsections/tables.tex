@@ -18,7 +18,7 @@ METRICS
     
     High recall indicates a low rate of false negatives, meaning that the algorithm successfully detects most of the true boundaries without missing many.
     
-    \item \textbf{F-measure}: The F-measure is a widely used boundary detection metric computed by comparing the predicted and ground truth boundaries. This metric, ranging from 0 to 1, represents the harmonic mean of precision and recall, providing a balanced view of under-segmentation and over-segmentation. Precision calculates the percentage of correctly detected boundaries, whereas recall assesses the percentage of actual boundaries detected correctly \cite{Turnbull2007ABOOSTING}. The F-measure is calculated as follows:
+    \item \textbf{F-measure}: The F-measure is a widely used boundary detection metric computed by comparing the predicted and ground truth boundaries. This metric, ranging from 0 to 1, represents the harmonic mean of precision and recall, providing a balanced view of under-segmentation and over-segmentation. Given the potential inaccuracies in human annotations and prediction errors, the F-measure tolerates minor discrepancies between predicted and ground truth boundaries. This tolerance level can be adjusted, enabling the metric to consider a predicted boundary as correct if it's within the set tolerance window of a ground truth boundary \cite{Turnbull2007ABOOSTING}. The F-measure is calculated as follows:
     
     \[
     \text{F-measure} = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
@@ -61,6 +61,6 @@ Extend table by Hernandez-Olivan, C., Beltran, J. R. \& Diaz-Guerra, D.
 2017, Hadria \& Peeters, [35] & - & MLS, SSLMs & CNN  & 0.291 \\
 \bottomrule
 \end{tabularx}
-\caption[Baseline. State of the art table.]{Your Caption. Given the potential inaccuracies in human annotations and prediction errors, the F-measure tolerates minor discrepancies between predicted and ground truth boundaries. This tolerance level can be adjusted, enabling the metric to consider a predicted boundary as correct if it's within the set tolerance window of a ground truth boundary.}
+\caption[Baseline. State of the art table.]{Your Caption.}
 \label{tab:my_label}
 \end{table}

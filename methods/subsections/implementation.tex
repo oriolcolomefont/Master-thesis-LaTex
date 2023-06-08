@@ -8,10 +8,13 @@ Piaget's theory of cognitive development suggests children acquire knowledge thr
 
 In pattern recognition, models are designed to be robust against known invariances—input data transformations—allowing consistent output. Conversely, unknown invariances not considered in the model's design can still be handled due to its learning capacity.
 
-Contrastive Learning of Musical Representations (CLMR) learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR works under a machine learning subset called Self-Supervised Learning (SSL), where models self-learn from unlabeled data, creating their supervisory signal \cite{audioselfsupsurvey}. This mimics human learning from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. The benefits of SSL include reduced reliance on labeled data, making data representation more robust and generalizable.
+Contrastive Learning of Musical Representations (CLMR) learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR works under a machine learning subset called self-supervised learning (SSL), where models self-learn from unlabeled data, creating their supervisory signal \cite{audioselfsupsurvey}. This mimics human learning from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. The benefits of SSL include reduced reliance on labeled data, making data representation more robust and generalizable. 
 
 The CLMR methodology involves creating different augmentations of the same musical piece as positive pairs and using others as antagonistic pairs. Then, training by minimizing a contrastive loss function encourages the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
 
+Although SSL has been proven effective in speech and audio, its
+application to music audio has yet to be thoroughly explored. This is primarily due
+to the distinctive challenges associated with modeling musical knowledge, particularly tonal and pitched characteristics of music \cite{Li2023MERT:Training}.
 
 \subsection{Triplet Siamese Networks}
 
@@ -76,8 +79,6 @@ The original model has been modified slightly to serve our specific needs: the o
 \subsection{Optimizer and learning rate}
 
 In our research, we've employed the AdamW optimizer \cite{Loshchilov2017DecoupledRegularization}, an optimized variant of the widely-used Adam optimizer for training neural networks. AdamW adeptly balances the learning rate across network weights, providing an efficient strategy for weight decay management by isolating it from gradient updates. 
-
-\subsubsection{Learning rate}
 
 The learning rate, set at 0.003, is a pivotal parameter dictating the step size at each iteration towards loss function minimization. It's a delicate balancing act— a high rate promises swift convergence with a risk of minimum overshoot, while a lower rate provides careful convergence but necessitates more iterations.
 
@@ -186,8 +187,6 @@ This hard triplet mining selects triplets $(a, p, n)$ to maximize the Euclidean 
 D_{\text{AP}} &= \sqrt{\sum_{i} (A_i - P_i)^2} & D_{\text{AN}} &= \sqrt{\sum_{i} (A_i - N_i)^2}
 \end{align}
 
-
-\subsubsection{Batch normalization}
 
 In implementing the batch normalization step, it is necessary to standardize the audio lengths across all elements in the minibatch. We opted to zero-pad all clips to the length of the longest clip, valuing data integrity and completeness over potential performance trade-offs. Thus, the length of the longest array in the batch, which sets the standard for all others, is as follows:
 

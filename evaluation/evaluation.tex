@@ -14,11 +14,11 @@ SALAMI (Structural Analysis of Large Amounts of Music Information) aims to condu
 
 The authors propose a unique music analysis approach that segments pieces into sections rather than traditional forms. Their method combines perceptual, functional, and transcription analyses, considers music's hierarchical nature, and uses markers to determine analysis timescales. While providing a comprehensive investigation, each analysis approach has limitations in accurately reflecting musical structure, labeling identical or different music sections, and capturing the complete structural framework. This innovative approach aims for a more nuanced, holistic music analysis.
 
-\section{The \textit{embeddiogram} audio feature representation}
+\section{The \textit{embeddiogram}, an audio feature embedding representation}
 
-The \textit{embeddiogram} is derived by applying our pre-trained neural network model to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively high-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
+The \textit{embeddiogram} is derived by applying our pre-trained neural network model to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
 
-Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal. This process comprises five key steps, including loading the audio data, slicing the audio data into windowed segments, processing each window using a pre-trained model to produce an embedding, collecting these embeddings, and finally normalizing the Embeddiogram. 
+Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal of length $N$. This process comprises loading the audio data, slicing the audio data into windowed segments, processing each window using a pre-trained model to produce an embedding, collecting and stacking these embeddings, and finally normalizing the \textit{embeddiogram}. 
 
 \begin{enumerate}
 \item \textbf{Load the audio data}: The audio data is loaded into memory as a one-dimensional array of length $N$.
