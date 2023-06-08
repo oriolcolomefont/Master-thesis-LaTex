@@ -85,31 +85,31 @@ The learning rate, set at 0.003, is a pivotal parameter dictating the step size 
 
 \subsection{Audio augmentation and transformation pipeline}
 
-Conventional transformations, such as log-scaled Mel spectrograms or Mel Frequency Cepstral Coefficients, capture key features but may obscure some information inherent in raw audio data.
+Features derived from raw audio often lack the interpretability of traditional ones \cite{Schindler2020DeepTutorial}. Hence, the choice of input data depends on the specific task, available computational resources, and the balance between data preservation and computational efficiency.
 
-Raw audio data offers unique advantages. Primarily, it ensures the retention of the original signal, which could reveal novel findings, and facilitates the direct extraction of features through advanced deep learning models \cite{learning}. However, it is not without challenges: high sample rates result in high dimensionality, demanding substantial computational resources. Additionally, raw audio is noise-sensitive, complicating the extraction process. Features derived from raw audio also often lack the interpretability of traditional ones \cite{Schindler2020DeepTutorial}. Hence, the choice of input data depends on the specific task, available computational resources, and the balance between data preservation and computational efficiency.
+While previous studies have used CNNs and various features as input like Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}, raw audio data offers unique advantages: it ensures the retention of the original signal, which could reveal novel findings, and facilitates the direct extraction of features through advanced deep learning models \cite{learning}. However, it is not without challenges: high sample rates result in high dimensionality, demanding substantial computational resources. Additionally, raw audio is noise-sensitive, complicating the extraction process. 
 
-Time-domain processing, a feature of our experiments, naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although Mel-spectrogram-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Spectrograms capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures—means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music similarity may not always align with human perceptions \cite{Kim2020OneStrategies}\cite{Mesostructures2023}.
+Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although Mel-spectrogram-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Spectrograms capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures—means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music similarity may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
 
 \subsubsection{Positive sample generation chain}
 
-The positive image in our study must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
+The positive image in every triplet of input data must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
 
-While we have experimented with helpful audio augmentation tools such as \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0} and \cite{Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our own transformation chain using \textit{torchaudio's} \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
+While we have experimented with helpful audio augmentation tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0, Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio}'s \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
-In this analysis, various parameters represent different effects on the signal. We use $g \in [-12, 0]$ for gain, $\Delta p \in [-1200, 1200]$ for pitch shift, $h_R[n]$ for the reverb impulse response, $h_C[n]$ for the chorus impulse response, $d \in [0, 30]$ for overdrive, $\alpha \in [0.9, 1.1]$ for speed change, $\beta \in [0.9, 1.1]$ for stretch factor, $f_m \in [0.1, 100]$ for tremolo's modulation frequency, and $d_m \in [1, 101]$ for tremolo's depth. Each effect is applied aggressively but does not disrupt the high-level musical content.
+\textbf{Amplitude effects}, like gain, modify the signal's amplitude with a constant factor $g$. We use $g \in [-12, 0]$.
 
-\textbf{Amplitude effects}, like gain, modify the signal's overall amplitude with a constant factor $g$. 
+\textbf{Time-domain effects} such as speed change and stretch alter the signal's playback speed and duration without changing its pitch, respectively. The speed and stretch factors are $\alpha \in [0.9, 1.1]$ for speed change and $\beta \in [0.9, 1.1]$ for the stretch factor.
 
-\textbf{Time-domain effects} such as speed change and stretch alter the signal's playback speed and duration without changing its pitch, respectively. The speed and stretch factors are $\alpha$ and $\beta$.
+\textbf{Frequency-domain effects} adjust the frequency content or pitch of the signal, as in pitch shifting, which alters the pitch by $\Delta p \in [-1200, 1200]$.
 
-\textbf{Frequency-domain effects} adjust the frequency content or pitch of the signal, as in pitch shifting, which alters the pitch by $\Delta p$. 
+\textbf{Nonlinear effects} such as overdrive add harmonic distortion using the parameter $d \in [0, 30]$ for overdrive
 
-\textbf{Nonlinear effects} such as overdrive add harmonic distortion using the parameter $d$.
+\textbf{Modulation effects}, including chorus and tremolo, use a control signal or low-frequency oscillator. The specified ranges determine the chorus parameters and the tremolo's amplitude modulation frequency and depth $f_m \in [0.1, 100]$ for the tremolo's modulation frequency and $d_m \in [1, 101]$ for the tremolo's depth
 
-\textbf{Modulation effects}, including chorus and tremolo, use a control signal or low-frequency oscillator. The specified ranges determine the chorus parameters, and the tremolo's amplitude modulation frequency and depth are $f_m$ and $d_m$.
+\textbf{Reverberation effects} simulate physical space's acoustic reflections and reverberations, like reverb that applies an impulse response $h_R[n]$. 
 
-\textbf{Reverberation effects} simulate physical space's acoustic reflections and reverberations, like reverb that applies an impulse response $h_R[n]$. Finally, \textbf{Noise effects} add a noise signal $N[n]$ with a signal-to-noise ratio (SNR) in the range $[12, 100]$.
+Finally, \textbf{Noise effects} add a noise signal $N[n]$ with a signal-to-noise ratio (SNR) in the range $[12, 100]$.
 
 The positive signal $P[n]$ is generated according to the equation given below, where the symbols denote specific effects as indicated:
 
@@ -134,7 +134,7 @@ l_{min} = t_{min} \times S
 l_{max} = t_{max} \times S
 \end{equation}
 
-The minimum duration $t_{min}$ is set to 0.05 seconds, and the maximum duration $t_{max}$ is set to 1 second. This range is chosen thoughtfully to strike a balance between the two factors. On the one hand, it is above the just noticeable difference (JND) threshold, the smallest change in a stimulus that can be perceived. On the other hand, it is short enough to maintain a reasonably-sized window to avoid discernible musical content \cite{Fastl2007Just-NoticeableChanges}.
+The minimum duration $t_{min}$ is set to 0.05 seconds, and the maximum duration $t_{max}$ is set to 1 second. This range is chosen thoughtfully to strike a balance between two factors: on the one hand, it is above the just noticeable difference (JND) threshold, the smallest change in a stimulus that can be perceived. On the other hand, it is short enough to maintain a reasonably-sized window to avoid discernible musical content \cite{Fastl2007Just-NoticeableChanges}.
 
 \item We then generate random audio chunk lengths $l_1, l_2, \ldots, l_{n-1}$ from the uniform distribution on the interval $[l_{min}, l_{max}]$. Calculate the final audio chunk length as:
 \begin{equation}
@@ -146,7 +146,7 @@ where $L_A$ is the length of the anchor signal in samples.
 
 \item Shuffle the audio chunks randomly to get the permuted slices $C_{\sigma(1)}, C_{\sigma(2)}, \ldots, C_{\sigma(n)}$, where $\sigma$ is a random permutation of indices from $1$ to $n$. 
 
-\item Concatenate the shuffled audio chunks to generate the negative signal:
+\item We finally concatenate the shuffled audio chunks to generate the negative signal:
 \begin{equation}\label{eq:negative_signal}
 N = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 \end{equation}
