@@ -8,12 +8,6 @@ All the evaluation experiments have been wrapped around MSAF \cite{NietoMSAF:FRA
 
 All the evaluation metrics have been computed using the mir-eval package \cite{RaffelMir_eval:METRICS}.
 
-\subsection{SALAMI dataset}
-
-SALAMI (Structural Analysis of Large Amounts of Music Information) aims to conduct massive structural analyses of different types of music \cite{Smith2011DESIGNANNOTATIONS}. The project covers diverse music, from Western pop to Indian classical and from live to studio recordings.
-
-The authors propose a unique music analysis approach that segments pieces into sections rather than traditional forms. Their method combines perceptual, functional, and transcription analyses, considers music's hierarchical nature, and uses markers to determine analysis timescales. While providing a comprehensive investigation, each analysis approach has limitations in accurately reflecting musical structure, labeling identical or different music sections, and capturing the complete structural framework. This innovative approach aims for a more nuanced, holistic music analysis.
-
 \section{The \textit{embeddiogram}, a deep audio feature representation}
 
 The \textit{embeddiogram} is derived by applying our pre-trained neural network model to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
