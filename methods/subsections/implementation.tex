@@ -146,13 +146,13 @@ where $L_A$ is the length of the anchor signal in samples.
 
 \item Shuffle the audio chunks randomly to get the permuted slices $C_{\sigma(1)}, C_{\sigma(2)}, \ldots, C_{\sigma(n)}$, where $\sigma$ is a random permutation of indices from $1$ to $n$. 
 
-\item We finally concatenate the shuffled audio chunks to generate the negative signal:
+\item We finally concatenate the shuffled audio chunks to generate the negative signal that will have similar production while the content is completely ruined:
 \begin{equation}\label{eq:negative_signal}
 N = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 \end{equation}
 \end{enumerate}
 
-Again, the whole purpose of it is to disturb the time domain.
+The whole purpose of this process is to disturb the content unfolding in the time domain.
 
 \subsection{Loss function}
 

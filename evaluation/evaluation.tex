@@ -1,8 +1,8 @@
 \chapter{Evaluation}
 
-\section{Music Structure Analysis as downstream task}
+\section{Music boundary detection as downstream task}
 
-While the usefulness of deep audio embeddings can be evaluated in countless downstream tasks, we have chosen Music Structure Analysis (MSA) for its popularity, complexity, and product-compelling nature. This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}.  
+While the usefulness of deep audio embeddings can be evaluated in countless downstream tasks \cite{Li2023MERT:Training, Kim2020OneStrategies}, we have chosen music boundary detection, a subset of Music Structure Analysis (MSA) for its popularity, complexity, and product-compelling nature. This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}.  
 
 All the evaluation experiments have been wrapped around MSAF \cite{NietoMSAF:FRAMEWORK}, a popular framework for Music Structure Analysis.
 
@@ -14,7 +14,7 @@ SALAMI (Structural Analysis of Large Amounts of Music Information) aims to condu
 
 The authors propose a unique music analysis approach that segments pieces into sections rather than traditional forms. Their method combines perceptual, functional, and transcription analyses, considers music's hierarchical nature, and uses markers to determine analysis timescales. While providing a comprehensive investigation, each analysis approach has limitations in accurately reflecting musical structure, labeling identical or different music sections, and capturing the complete structural framework. This innovative approach aims for a more nuanced, holistic music analysis.
 
-\section{The \textit{embeddiogram}, an audio feature embedding representation}
+\section{The \textit{embeddiogram}, a deep audio feature representation}
 
 The \textit{embeddiogram} is derived by applying our pre-trained neural network model to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
 
@@ -29,7 +29,7 @@ H = 1 + \left\lfloor \frac{N - w}{h} \right\rfloor
 \end{equation}
 In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account for the final, potentially smaller, window.
 
-\item \textbf{Process each window}: Each window of audio data is processed independently, passed through the pre-trained neural network model and transformed into an embedding vector. Formally, for each window $w_i$ of audio data, we have:
+\item \textbf{Process each window}: Each window of audio data is processed independently, passed through the pre-trained neural network model, and transformed into an embedding vector. Formally, for each window $w_i$ of audio data, we have:
 \begin{equation}
 \text{embedding}_i = \text{model}(w_i)
 \end{equation}
@@ -39,7 +39,7 @@ In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account
 \text{e} = \begin{bmatrix} \text{embedding}_1 \\ \text{embedding}_2 \\ \vdots \\ \text{embedding}_H \end{bmatrix}
 \end{equation}
 
-\item \textbf{Normalize the \textit{embeddiogram}}: The \textit{embeddiogram} is normalized to have a minimum value of 0 and a maximum value of 1. The normalization process is given by:
+\item \textbf{Normalize the \textit{embeddiogram}}: The \textit{embeddiogram} is normalized to have a minimum value of 0 and a maximum value of 1 per dimension. The normalization process is given by:
 \begin{equation}
 E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
 \end{equation}
