@@ -1,20 +1,16 @@
 \section{Implementation details}
 
-Our approach could be broadly categorized as cognitive modeling, as it strives to mimic human cognitive processes and problem-solving through a computerized model. We champion exposure-based learning in music and active engagement with musical styles, genres, techniques, and learning methods to foster well-rounded musical proficiency and efficient performance with novel data in practical applications.
+Our approach falls broadly under cognitive modeling, which seeks to simulate human cognitive processes and problem-solving through a computerized model. We advocate for exposure-based learning in music, encouraging active engagement with various musical styles, genres, techniques, and learning methods. This approach promotes comprehensive musical proficiency and efficient performance when encountering novel data in practical applications.
 
-\subsection{Contrastive Learning of Musical Representations}
+According to Piaget's theory of cognitive development, children gain knowledge through sensory experiences and gradually develop abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by incorporating new information through processes of assimilation and accommodation \cite{audioselfsupsurvey}.
 
-Piaget's theory of cognitive development suggests children acquire knowledge through sensory experiences, gradually developing abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by integrating new information through assimilation and accommodation \cite{audioselfsupsurvey}.
+In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Interestingly, even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
 
-In pattern recognition, models are designed to be robust against known invariances—input data transformations—allowing consistent output. Conversely, unknown invariances not considered in the model's design can still be handled due to its learning capacity.
+Contrastive Learning of Musical Representations (CLMR) is a method that learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a subset of machine learning called self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn independently from unlabeled data to create their supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, turning unsupervised problems into supervised ones by auto-generating labels. Benefits of SSL include reduced dependence on labeled data, which contributes to more robust and generalizable data representations.
 
-Contrastive Learning of Musical Representations (CLMR) learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR works under a machine learning subset called self-supervised learning (SSL), where models self-learn from unlabeled data, creating their supervisory signal \cite{audioselfsupsurvey}. This mimics human learning from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. The benefits of SSL include reduced reliance on labeled data, making data representation more robust and generalizable. 
+The methodology of CLMR involves generating different augmentations of the same musical piece to serve as positive pairs while using other pieces as antagonistic pairs. The training process, which minimizes a contrastive loss function, encourages the model to produce similar representations for positive and dissimilar ones for antagonistic pairs.
 
-The CLMR methodology involves creating different augmentations of the same musical piece as positive pairs and using others as antagonistic pairs. Then, training by minimizing a contrastive loss function encourages the model to produce similar representations for positive pairs and dissimilar representations for antagonistic pairs.
-
-Although SSL has been proven effective in speech and audio, its
-application to music audio has yet to be thoroughly explored. This is primarily due
-to the distinctive challenges associated with modeling musical knowledge, particularly tonal and pitched characteristics of music \cite{Li2023MERT:Training}.
+Although SSL has proven effective in speech and audio, its application to music audio remains relatively unexplored. This is primarily due to the unique challenges associated with modeling musical knowledge, especially when it comes to music's tonal and pitched characteristics \cite{Li2023MERT:Training}.
 
 \subsection{Triplet Siamese Networks}
 
@@ -97,7 +93,7 @@ The positive image in every triplet of input data must preserve its intelligible
 
 While we have experimented with helpful audio augmentation tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0, Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio}'s \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
-\textbf{Amplitude effects}, like gain, modify the signal's amplitude with a constant factor $g$. We use $g \in [-12, 0]$.
+\textbf{Amplitude effects}, we use gain to modify the signal's amplitude with a constant factor $g \in [-12, 0]$.
 
 \textbf{Time-domain effects} such as speed change and stretch alter the signal's playback speed and duration without changing its pitch, respectively. The speed and stretch factors are $\alpha \in [0.9, 1.1]$ for speed change and $\beta \in [0.9, 1.1]$ for the stretch factor.
 
