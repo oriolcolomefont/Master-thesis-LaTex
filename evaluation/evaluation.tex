@@ -10,9 +10,9 @@ All the evaluation metrics have been computed using the mir-eval package \cite{R
 
 \section{The \textit{embeddiogram}, a deep audio feature representation}
 
-The \textit{embeddiogram} is derived by applying our pre-trained neural network model to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
+The \textit{embeddiogram}, a deep audio feature representation, is derived by applying our pre-trained neural network to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
 
-Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal of length $N$. This process comprises loading the audio data, slicing the audio data into windowed segments, processing each window using a pre-trained model to produce an embedding, collecting and stacking these embeddings, and finally normalizing the \textit{embeddiogram}. 
+Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal of length $N$. This process comprises loading the audio data, slicing the audio data into windowed segments, processing each window using a pre-trained model to produce an embedding per window/time-frame, collecting and stacking these embeddings, and finally normalizing the resulting matrix or as we like to call it, \textit{embeddiogram}. 
 
 \begin{enumerate}
 \item \textbf{Load the audio data}: The audio data is loaded into memory as a one-dimensional array of length $N$.

@@ -4,7 +4,7 @@ SALAMI (Structural Analysis of Large Amounts of Music Information) is a project 
 METRICS
 
 \begin{itemize}
-    \item \textbf{Precision}: Precision measures the proportion of correctly detected boundaries out of the total estimated boundaries. It quantifies the accuracy of the boundary detection algorithm. It is calculated as:
+    \item \textbf{Precision}: Precision measures the proportion of correctly detected boundaries out of the total estimated boundaries. It quantifies the accuracy of the boundary detection algorithm.
     
     \[
     \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}}
@@ -12,7 +12,7 @@ METRICS
     
     High precision indicates a low rate of false positives, meaning the algorithm correctly identifies boundaries without many incorrect detections.
     
-    \item \textbf{Recall}: Recall measures the proportion of correctly detected boundaries out of the total reference boundaries. It quantifies the completeness or sensitivity of the boundary detection algorithm. It is calculated as:
+    \item \textbf{Recall}: Recall measures the proportion of correctly detected boundaries out of the total reference boundaries. It quantifies the completeness or sensitivity of the boundary detection algorithm.
     
     \[
     \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}}
@@ -20,15 +20,40 @@ METRICS
     
     High recall indicates a low rate of false negatives, meaning that the algorithm successfully detects most of the true boundaries without missing many.
     
-    \item \textbf{F-measure}: The F-measure is a widely used boundary detection metric computed by comparing the predicted and ground truth boundaries. This metric, ranging from 0 to 1, represents the harmonic mean of precision and recall, providing a balanced view of under-segmentation and over-segmentation. Given the potential inaccuracies in human annotations and prediction errors, the F-measure tolerates minor discrepancies between predicted and ground truth boundaries. This tolerance level can be adjusted, enabling the metric to consider a predicted boundary as correct if it's within the set tolerance window of a ground truth boundary \cite{Turnbull2007ABOOSTING}. The F-measure is calculated as follows:
+    \item \textbf{F-measure}: The F-measure is a widely used boundary detection metric computed by comparing the predicted and ground truth boundaries. This metric, ranging from 0 to 1, represents the harmonic mean of precision and recall, providing a balanced view of under-segmentation and over-segmentation. Given the potential inaccuracies in human annotations and prediction errors, the F-measure tolerates minor discrepancies between predicted and ground truth boundaries. This tolerance level can be adjusted, enabling the metric to consider a predicted boundary as correct if it's within the set tolerance window of a ground truth boundary \cite{Turnbull2007ABOOSTING}. 
     
     \[
     \text{F-measure} = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
     \]
 \end{itemize}
 
-Extend table by Hernandez-Olivan, C., Beltran, J. R. \& Diaz-Guerra, D. 
-\cite{Hernandez-Olivan2021MusicFeatures}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[h]
+\centering
+\begin{tabularx}{\textwidth}{|X|X|X|X|X|}
+\hline
+\textbf{Technique} & \textbf{Training Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F-measure} \\
+\hline
+MFCC & -- & -- & -- & -- \\
+\hline
+Embeddiogram & GTZAN Dataset & -- & -- & -- \\
+\hline
+Embeddiogram & MSD Dataset & -- & -- & -- \\
+\hline
+PCP & -- & -- & -- & -- \\
+\hline
+Tonnetx & -- & -- & -- & -- \\
+\hline
+CQT & -- & -- & -- & -- \\
+\hline
+\end{tabularx}
+\caption{Comparison of precision, recall, and f-measure for different techniques using the SALAMI dataset and the training dataset used for each technique.}
+\label{tab:comparison}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[h]
 \centering
@@ -63,10 +88,6 @@ Grill \& Schlüter \cite{GrillMUSICANNOTATIONS}, 2015 & MLS, PCPs, SSLMs & CNN  
 Hadria \& Peeterss \cite{35}, 2017 & MLS, SSLMs & CNN  & 0.291 \\
 \bottomrule
 \end{tabularx}
-\caption[Baseline. State of the art table.]{Your Caption.
-
-SALAMI dataset
-
-}
+\caption[Baseline. State-of-the-art table.]{\small{Modified table presented by Hernandez-Olivan, C., Beltran, J. R. \& Diaz-Guerra, D. in \cite{Hernandez-Olivan2021MusicFeatures}. Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed.}}
 \label{tab:my_label}
 \end{table}

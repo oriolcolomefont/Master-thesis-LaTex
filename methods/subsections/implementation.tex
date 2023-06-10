@@ -6,25 +6,23 @@ According to Piaget's theory of cognitive development, children gain knowledge t
 
 In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Interestingly, even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
 
-Contrastive Learning of Musical Representations (CLMR) is a method that learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a subset of machine learning called self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn independently from unlabeled data to create their supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, turning unsupervised problems into supervised ones by auto-generating labels. Benefits of SSL include reduced dependence on labeled data, which contributes to more robust and generalizable data representations.
+Contrastive Learning of Musical Representations (CLMR) is a method that learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a subset of ML called self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn independently from unlabeled data to create their supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, turning unsupervised problems into supervised ones by auto-generating labels. Benefits of SSL include reduced dependence on labeled data, which contributes to more robust and generalizable data representations.
 
 The methodology of CLMR involves generating different augmentations of the same musical piece to serve as positive pairs while using other pieces as antagonistic pairs. The training process, which minimizes a contrastive loss function, encourages the model to produce similar representations for positive and dissimilar ones for antagonistic pairs.
 
-Although SSL has proven effective in speech and audio, its application to music audio remains relatively unexplored. This is primarily due to the unique challenges associated with modeling musical knowledge, especially when it comes to music's tonal and pitched characteristics \cite{Li2023MERT:Training}.
+Although SSL has proven effective in speech and audio, its application to music audio remains relatively unexplored. This is primarily due to the unique challenges of modeling musical knowledge, especially regarding music's tonal and pitched characteristics \cite{Li2023MERT:Training}.
 
 \subsection{Triplet Siamese Networks}
 
-For this task, a Triple Siamese Network is suggested, a model architecture proved efficient for music similarity retrieval tasks \cite{contentmusicsimtriplet2020}, intending to minimize the loss function between an anchor, positive, and negative sample, achieved through online triplet mining \cite{Sikaroudi2020OfflinePatches}. The overarching aim is to train a model in a self-supervised setting, which can effectively distinguish between similar and dissimilar samples. 
+This work suggests employing a Triple Siamese Network, a model architecture known for its efficacy in music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. The aim is to minimize the loss function between a triplet of anchor, positive, and negative samples, utilizing online triplet mining for optimizing memory resources \cite{Sikaroudi2020OfflinePatches}. This self-supervised learning (SSL) model aims to distinguish between similar and dissimilar samples effectively.
 
-A Siamese Network is a deep learning architecture introduced by Bromley and LeCun in the early 1990s \cite{Bromley1993SignatureNetwork}. This architecture is explicitly designed for tasks requiring comparing or assessing similarity between two input instances. It comprises two or more identical subnetworks connected in parallel and joined at the output layer. These subnetworks share the same architecture, weights, and hyperparameters, allowing more efficient memory usage and computational complexity.
+Introduced by Bromley and LeCun \cite{Bromley1993SignatureNetwork}, Siamese Networks are deep learning architectures designed for tasks requiring comparison or similarity assessment between instances. The architecture comprises identical subnetworks that share the same parameters, improving memory usage and computational efficiency. Rather than learning specific features of individual classes, they focus on a similarity metric, making them ideal for limited or imbalanced datasets. Each subnetwork processes an input independently, combining the outputs to yield a similarity score. Training with shared weights enables the model to learn invariant input representation, improving comparison efficiency. This is accomplished through specialized loss functions such as contrastive or triplet loss, aiming to minimize the distance between similar inputs and maximize it for dissimilar ones.
 
-Siamese Networks are especially effective for learning from limited or imbalanced datasets, as they focus on learning a similarity metric rather than the specific features of individual classes. Each subnetwork processes an input independently, and its outputs are then combined and further processed to yield a single similarity score. The shared weights during training enable the model to learn an invariant representation for the input instances, thereby enhancing its efficiency in comparing and contrasting them. To achieve this, Siamese Networks employ specialized loss functions, such as contrastive or triplet loss, which aim to minimize the distance between similar input pairs and maximize the distance between dissimilar ones.
+The Triple Siamese Network extends this architecture, comparing three input instances instead of two. It aims to learn an embedding space wherein similar instances are closer and dissimilar ones are distant. The inputs, consisting of an anchor, a positive instance (similar to the anchor), and a negative instance (dissimilar to the anchor), are processed by identical subnetworks sharing the same parameters.
 
-An extension of this architecture is the Triplet Siamese Network, which involves comparing three input instances instead of two. This network aims to learn an embedding space in which similar instances are close to each other and dissimilar instances are distant. The input to this network consists of an anchor, a positive instance (from the same class as the anchor), and a negative instance (from a different class). Each instance is processed by an identical subnetwork that shares its architecture, weights, and hyperparameters with the others.
+\subsubsection{Encoder architecture: SampleCNN}
 
-\subsubsection{Encoder: SampleCNN}
-
-The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for raw waveform audio data, treating each audio sample as an independent channel and applying 1-dimensional convolution along the temporal axis. Its implementation is an adaptation of \cite{CLMR2021} using PyTorch \cite{Paszke2019PyTorch:Library} and PyTorch Lightning \cite{PyTorchDocumentation}.
+The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for raw waveform audio data, treating each audio sample as an independent channel and applying 1-dimensional convolution along the temporal axis. Its implementation is an adaptation of \cite{CLMR2021} using \textit{PyTorch} \cite{Paszke2019PyTorch:Library} and \textit{PyTorch Lightning} \cite{PyTorchDocumentation}.
 
 This fully convolutional model reduces computational requirements and learns features at different scales through its multi-resolution architecture \ref{tab:samplecnn}.
 
@@ -59,37 +57,35 @@ Conv + BatchNorm + ReLU + MaxPool & 256 & 512 \\
 \addlinespace
 Conv + BatchNorm + ReLU + AvgPool & 512 & 512 \\
 \addlinespace
-Fully connected (representation layer) & 512 & 128 \\
+Fully connected or representation layer & 512 & 128 \\
 \bottomrule
 \end{tabularx}
 \caption{Layer specifications for SampleCNN model}
 \label{tab:samplecnn}
 \end{table}
 
-
-The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation at the end.
+The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation.
 
 %Colour CNN
 \input{figures/neural networks/colour CNN}
 
 \subsection{Optimizer and learning rate}
 
-In our research, we've employed the AdamW optimizer \cite{Loshchilov2017DecoupledRegularization}, an optimized variant of the widely-used Adam optimizer for training neural networks. AdamW adeptly balances the learning rate across network weights, providing an efficient strategy for weight decay management by isolating it from gradient updates. 
+We've employed the AdamW optimizer \cite{Loshchilov2017DecoupledRegularization}, an optimized variant of the widely-used Adam optimizer for training neural networks. AdamW adeptly balances the learning rate across network weights, providing an efficient strategy for weight decay management by isolating it from gradient updates. 
 
-The learning rate, set at 0.003, is a pivotal parameter dictating the step size at each iteration towards loss function minimization. It's a delicate balancing act— a high rate promises swift convergence with a risk of minimum overshoot, while a lower rate provides careful convergence but necessitates more iterations.
-
+The learning rate, set at 0.003, is a pivotal parameter dictating the step size at each iteration towards loss function minimization. It's a delicate balancing act— a high rate promises swift convergence with a risk of minimum overshoot, while a lower rate provides careful convergence but necessitates more iterations. Given that delicacy, we set it to a standard number broadly used in the literature.
 
 \subsection{Audio augmentation and transformation pipeline}
 
-Features derived from raw audio often lack the interpretability of traditional ones \cite{Schindler2020DeepTutorial}. Hence, the choice of input data depends on the specific task, available computational resources, and the balance between data preservation and computational efficiency.
+The choice of input data is guided by the task, computational resources, and the need to balance data retention with computational efficiency.
 
-While previous studies have used CNNs and various features as input like Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}, raw audio data offers unique advantages: it ensures the retention of the original signal, which could reveal novel findings, and facilitates the direct extraction of features through advanced deep learning models \cite{learning}. However, it is not without challenges: high sample rates result in high dimensionality, demanding substantial computational resources. Additionally, raw audio is noise-sensitive, complicating the extraction process. 
+Previous research has utilized Convolutional Neural Networks (CNNs) with various features such as Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}. However, features derived from raw audio may lack interpretability in some scenarios \cite{Schindler2020DeepTutorial}, and raw audio presents unique advantages despite being computationally demanding. It ensures the preservation of the original signal, potentially unearthing novel insights, and allows for direct feature extraction via advanced deep learning models \cite{learning}. Nevertheless, it comes with challenges such as high dimensionality due to high sample rates, requiring substantial computational resources. Moreover, it is sensitive to noise, adding complexity to the extraction process.
 
-Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although Mel-spectrogram-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Spectrograms capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures—means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music similarity may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
+Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although Mel-spectrogram-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Spectrograms capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures—means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music content may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
 
 \subsubsection{Positive sample generation chain}
 
-The positive image in every triplet of input data must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or strikingly similar to the original track.
+The positive image in every triplet of input data must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities and artifacts. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or remarkably close to the original track.
 
 While we have experimented with helpful audio augmentation tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0, Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio}'s \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
@@ -190,10 +186,6 @@ In implementing the batch normalization step, it is necessary to standardize the
 L_{\text{max}} = \max_{i \in I} \left( \max \left( |A_i|, |P_i|, |N_i| \right) \right)
 \end{equation}
 
-\begin{itemize}
-    \item $I$ represents the set of all items in the batch.
-    \item $|A_i|$, $|P_i|$, and $|N_i|$ denote the lengths of the anchor, positive, and negative embedding vectors for the $i$-th item, respectively.
-    \item The $\max$ function is applied to find the longest of these three lengths for each item, and then the maximum of these maximum lengths is taken over all items in the batch. This gives the maximum length, $L_{\text{max}}$, of any vector in the batch.
-    \end{itemize}
+$I$ represents the set of all items in the batch, $|A_i|$, $|P_i|$, and $|N_i|$ denote the lengths of the anchor, positive, and negative embedding vectors for the $i$-th item, respectively. The $\max$ function is applied to find the longest of these three lengths for each item, and then the maximum of these maximum lengths is taken over all items in the batch. This gives the maximum length, $L_{\text{max}}$, of any vector in the batch.
 
 \newpage
