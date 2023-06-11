@@ -82,4 +82,28 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
     \end{minipage}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Evaluation dataset and metrics}
+
+The developed model has been evaluated on the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS}. The "Structural Analysis of Large Amounts of Music Information" project aims to execute comprehensive structural analyses on a diverse spectrum of music. In contrast to traditional methods, SALAMI segments musical pieces into distinct sections, integrating perceptual, functional, and transcription analyses. Despite certain limitations, this novel approach offers a comprehensive and nuanced understanding of musical structure.
+
+Three primary metrics have been utilized to assess the model performance: Precision, Recall, and F-measure. Precision quantifies the proportion of accurately identified boundaries relative to all estimated boundaries to indicate the algorithm's accuracy in boundary detection.
+
+\begin{equation}
+\text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}}
+\end{equation}
+
+On the other hand, Recall measures the proportion of accurately detected boundaries against all reference boundaries, indicating the completeness or sensitivity of the algorithm.
+
+\begin{equation}
+\text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}}
+\end{equation}
+
+Lastly, the F-measure offers a harmonized view of precision and recall. A widely adopted boundary detection metric, it compares predicted and ground truth boundaries, outputting a score between 0 and 1. This score is calculated as the harmonic mean of Precision and Recall, effectively considering both under-segmentation and over-segmentation. Given the potential inaccuracies inherent in human annotations and prediction errors, the F-measure permits minor deviations between predicted and actual boundaries. Its tolerance threshold can be adjusted, allowing a predicted boundary to be deemed correct if it is within a predefined window of a ground truth boundary \cite{Turnbull2007ABOOSTING, NietoPerceptualMusicb}.
+
+\begin{equation}
+\text{F-measure} = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+\end{equation}
+
 \newpage
