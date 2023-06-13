@@ -9,20 +9,20 @@ The evaluation results have been obtained using the standard and most commonly u
 \hline
 \textbf{Technique} & \textbf{Training Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F-measure} \\
 \hline
-MFCC & -- & -- & -- & -- \\
+MFCC & -- & 0.173 & 0.185 & 0.172 \\
 \hline
-Embeddiogram & GTZAN Dataset & -- & -- & -- \\
+Embeddiogram & GTZAN Dataset & 0.228 & 0.171 & 0.185 \\
 \hline
-Embeddiogram & MSD Dataset & -- & -- & -- \\
+Embeddiogram & MSD Dataset & \textbf{0.335} & 0.276 & 0.288 \\
 \hline
-PCP & -- & -- & -- & -- \\
+PCP & -- & 0.311 & 0.324 & 0.305 \\
 \hline
-Tonnetz & -- & -- & -- & -- \\
+Tonnetz & -- & 0.312 & 0.312 & 0.300 \\
 \hline
-CQT & -- & -- & -- & -- \\
+CQT & -- & 0.311 & \textbf{0.339} & \textbf{0.312} \\
 \hline
 \end{tabularx}
-\caption{Comparison of precision, recall, and f-measure for different techniques using the SALAMI dataset and the training dataset used for each technique.}
+\caption[Comparison of precision, recall, and f-measure for different audio features]{Comparison of precision, recall, and f-measure for different features using the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}
 \label{tab:comparison}
 \end{table}
 
@@ -55,7 +55,7 @@ Sargent et al. \cite{34}, 2011 & MFCCs, chromas & Viterbi  & 0.356 \\
 \addlinespace
 Ullrich et. al \cite{22}, 2014 & MLS & CNN  & 0.465 \\
 \addlinespace
-Grill \& Schlüter \cite{4}, 2015 & MLS, SSLMs & CNN  & 0.523 \\
+Grill \& Schlüter \cite{4}, 2015 & MLS, SSLMs & CNN  & \textbf{0.523} \\
 \addlinespace
 Grill \& Schlüter \cite{GrillMUSICANNOTATIONS}, 2015 & MLS, PCPs, SSLMs & CNN  & 0.508 \\
 \addlinespace
