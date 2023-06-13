@@ -1,31 +1,5 @@
 
-SALAMI (Structural Analysis of Large Amounts of Music Information) is a project aiming to carry out extensive structural analyses on a wide variety of music \cite{Smith2011DESIGNANNOTATIONS}. Instead of traditional forms, the authors segment pieces into sections, combining perceptual, functional, and transcription analyses. Despite limitations, this approach offers a holistic and nuanced perspective on music structure.
-
-METRICS
-
-\begin{itemize}
-    \item \textbf{Precision}: Precision measures the proportion of correctly detected boundaries out of the total estimated boundaries. It quantifies the accuracy of the boundary detection algorithm.
-    
-    \[
-    \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}}
-    \]
-    
-    High precision indicates a low rate of false positives, meaning the algorithm correctly identifies boundaries without many incorrect detections.
-    
-    \item \textbf{Recall}: Recall measures the proportion of correctly detected boundaries out of the total reference boundaries. It quantifies the completeness or sensitivity of the boundary detection algorithm.
-    
-    \[
-    \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}}
-    \]
-    
-    High recall indicates a low rate of false negatives, meaning that the algorithm successfully detects most of the true boundaries without missing many.
-    
-    \item \textbf{F-measure}: The F-measure is a widely used boundary detection metric computed by comparing the predicted and ground truth boundaries. This metric, ranging from 0 to 1, represents the harmonic mean of precision and recall, providing a balanced view of under-segmentation and over-segmentation. Given the potential inaccuracies in human annotations and prediction errors, the F-measure tolerates minor discrepancies between predicted and ground truth boundaries. This tolerance level can be adjusted, enabling the metric to consider a predicted boundary as correct if it's within the set tolerance window of a ground truth boundary \cite{Turnbull2007ABOOSTING}. 
-    
-    \[
-    \text{F-measure} = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
-    \]
-\end{itemize}
+The evaluation results have been obtained using the standard and most commonly used MIR's tools and frameworks such as MSAF \cite{NietoMSAF:FRAMEWORK} for the segmentation algorithms, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} as evaluation ground truth and $mir_eval$ \cite{RaffelMir_eval:METRICS} for metric computation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -89,5 +63,5 @@ Hadria \& Peeterss \cite{35}, 2017 & MLS, SSLMs & CNN  & 0.291 \\
 \bottomrule
 \end{tabularx}
 \caption[Baseline. State-of-the-art table.]{\small{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. Original source \cite{Hernandez-Olivan2021MusicFeatures}}}
-\label{tab:my_label}
+\label{tab:comparison_table}
 \end{table}

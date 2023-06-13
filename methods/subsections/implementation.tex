@@ -6,9 +6,9 @@ According to Piaget's theory of cognitive development, children gain knowledge t
 
 In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Interestingly, even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
 
-Contrastive Learning of Musical Representations (CLMR) is a method that learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a subset of ML called self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn independently from unlabeled data to create their supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, turning unsupervised problems into supervised ones by auto-generating labels. Benefits of SSL include reduced dependence on labeled data, which contributes to more robust and generalizable data representations.
+Our implementation is a slight tweak to the \textit{contrastive learning of lusical representations} (CLMR), a method that learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a subset of ML called self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn independently from unlabeled data to create their supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, turning unsupervised problems into supervised ones by auto-generating labels. Benefits of SSL include reduced dependence on labeled data, which contributes to more robust and generalizable data representations.
 
-The methodology of CLMR involves generating different augmentations of the same musical piece to serve as positive pairs while using other pieces as antagonistic pairs. The training process, which minimizes a contrastive loss function, encourages the model to produce similar representations for positive and dissimilar ones for antagonistic pairs.
+As stated above, the methodology of CLMR involves generating different augmentations of the same musical piece to serve as positive pairs while using other pieces as antagonistic pairs. The training process, which minimizes a triplet loss function, encourages the model to produce similar representations for positive and dissimilar ones for antagonistic pairs.
 
 Although SSL has proven effective in speech and audio, its application to music audio remains relatively unexplored. This is primarily due to the unique challenges of modeling musical knowledge, especially regarding music's tonal and pitched characteristics \cite{Li2023MERT:Training}.
 
@@ -148,13 +148,11 @@ The whole purpose of this process is to disturb the content unfolding in the tim
 
 \subsection{Loss function}
 
-There are several loss functions used in tasks like feature learning, similarity learning, and dimensionality reduction. 
+Contrastive loss and triplet loss are two prominent loss functions employed in the fields of feature learning, similarity learning, and dimensionality reduction.
 
-Functions such Mean Squared Error (MSE) Loss \cite{Hodson2021MeanDeconstructed}, Cross-Entropy Loss \cite{Zhang2018GeneralizedLabels}, Contrastive Loss \cite{supercontrast} or Triplet Loss are used when training models to understand the difference between various classes or categories.
+Schroff, F., Kalenichenko, D., and Philbin, J. from Google first proposed and applied triplet loss for the learning of facial recognition, catering to varied poses and angles of the same individual \cite{Schroff2015FaceNet:Clustering}.
 
-Schroff, F., Kalenichenko, D., and Philbin, J. at Google initially proposed and used triplet loss to learn face recognition of the same person at different poses and angles. \cite{Schroff2015FaceNet:Clustering}
-
-The triplet loss function guides the learning process. It seeks to minimize the distance between the anchor and positive instances while maximizing the distance between the anchor and the negative instances. A margin parameter is included in the loss function to ensure a minimum separation between positive and negative instances in the embedding space.
+Triplet loss function directs the learning process by endeavoring to minimize the distance between the anchor and positive instances and maximize the distance between the anchor and negative instances. Contrastive loss, on the other hand, works on pairs of instances \cite{supercontrast}. The inclusion of a margin parameter in the loss function guarantees a minimum separation between positive and negative instances in the embedding space. Given the nature of our training needs, we propose to train by using the former.
 
 The triplet loss function $\mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n})$ aims to ensure that an anchor vector $\mathbf{a}_i$ is closer in the embedding space to a positive vector $\mathbf{p}_i$ (representing an example of the same class) than to a negative vector $\mathbf{n}_i$ (representing an example of a different class) by at least a margin $\alpha$. It is calculated by summing the losses overall $N$ triplets in the dataset, where the equation gives the loss for each triplet:
 
