@@ -1,22 +1,6 @@
 \section{Related work}
 
-Prior research underscores the importance of choosing appropriate audio features to differentiate and label distinct music segments for music segmentation tasks. The hurdle lies in procuring annotated data for learning these feature transformations, which can be laborious and costly. To overcome this, scholars have turned to unsupervised deep learning, utilizing accessible music audio \cite{unsupervisedlearndeepfeat, GrillMUSICANNOTATIONS}. This approach has markedly enhanced the generalization ability of machine-listening models in downstream applications, with segmentation algorithms reaping benefits in the form of state-of-the-art outcomes \cite{Hernandez-Olivan2021MusicFeatures, SalamonDeepSegmentation, teacher, Li2023MERT:Training}.
+Related research such as \cite{SalamonDeepSegmentation} and \cite{deepfeaturesegment} explore how the use of audio embeddings learned via unsupervised methods can enhance the performance of music segmentation algorithms leveraging the power of deep learning and data-driven feature learning to improve upon traditional, manually-engineered methods of music segmentation. 
 
-Beyond music structure applications, modern advancements in neural networks have facilitated the creation of condensed numerical representations that capture critical musical characteristics. This progress has streamlined the calculation process for various task-specific elements. Such tasks include:
+Both studies conclude that using deep learning techniques to derive audio embeddings improves the performance of music segmentation algorithms, thus providing a better alternative to traditional manual feature engineering methods.
 
-\begin{itemize}
-\item Developing an audio embedding method that excels across numerous applications without the need for fine-tuning \cite{Turian2022HEAR:Representations}
-\item Enhancing environmental sound classification \cite{Kim2020OneStrategies, CramerLOOKEMBEDDINGS}
-\item Improving vocal-centric music tasks via cross-domain audio embeddings \cite{Kim2021LearningLoss}
-\item Merging task-specific and pre-trained features to improve audio classification \cite{Hung2022Feature-informedClassification}
-\item Designing a music similarity search engine for video producers \cite{epidemic}
-\item Augmenting Music Emotion Recognition (MER) performance \cite{KohComparisonRecognition}
-\item Investigating the efficacy of speaker recognition pre-trained model embeddings \cite{lightweight}
-\item Embedding songs for similarity comparison via artist identification \cite{contentmusicsimtriplet2020}
-\item Addressing the cross-modal text-to-music retrieval issue \cite{WonEmotionStories}
-\item Facilitating automated music rearrangement \cite{Stoller2018IntuitiveTransitions, Plachouras2023MusicSegmentation}
-\end{itemize}
-
-Moreover, deep audio embeddings provide the advantage of transferability, serving as a basis for multiple tasks. This approach conserves computational resources and time compared to training a model from scratch \cite{HamelTransferSimilarity}.
-
-Given their demonstrated effectiveness in the existing literature and their potential for transfer learning, deep audio embeddings hold substantial promise for MIR downstream tasks, and boundary detection is no exception. Nevertheless, it remains uncertain whether a general-purpose audio representation can effectively replicate human hearing \cite{Turian2022HEAR:Representations}, even though some techniques have managed to generalize across up to fourteen music understanding tasks \cite{Li2023MERT:Training}.

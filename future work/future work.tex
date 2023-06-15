@@ -9,6 +9,8 @@ The question as per \cite{Turian2022HEAR:Representations} or \cite{Li2023MERT:Tr
   \item k-fold cross validation
   \item Hyper-params: kernel size $0.005$ times the sample rate
   \item Larger representation layer
+  \item Easy triplet mining \cite{XuanImprovedMining}
+  \item Different boundary detection algorithms \cite{sf} was used because it was the default in MSAF \cite{MSAF}
 \end{itemize}
 
 Loss function margin. A margin of 0.2 can be a starting point, but it might not be the best value for every task. It's recommended to experiment with different values and choose the one that provides the best performance on your validation set.

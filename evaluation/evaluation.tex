@@ -1,11 +1,5 @@
 \chapter{Evaluation}
 
-\section{Music boundary detection as downstream task}
-
-While the usefulness of deep audio embeddings can be evaluated in countless downstream tasks \cite{Li2023MERT:Training, Kim2020OneStrategies}, we have chosen music boundary detection, a subset of Music Structure Analysis (MSA) for its popularity \cite{Smith2013ATask}, complexity, and product-compelling nature. This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}.  
-
-All the evaluation experiments have been wrapped around MSAF \cite{NietoMSAF:FRAMEWORK}, a popular framework for Music Structure Analysis.
-
 \section{The \textit{embeddiogram}, a deep audio feature representation}
 
 The \textit{embeddiogram}, a deep audio feature representation, is derived by applying our pre-trained neural network to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
@@ -82,9 +76,18 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Music boundary detection as downstream task}
+
+While the usefulness of deep audio embeddings can be evaluated in countless downstream tasks \cite{Li2023MERT:Training, Kim2020OneStrategies}, we have chosen music boundary detection, a subset of Music Structure Analysis (MSA) for its popularity \cite{Smith2013ATask}, complexity, and product-compelling nature. This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}.  
+
+All the evaluation experiments have been wrapped around MSAF \cite{NietoMSAF:FRAMEWORK}, a popular framework for Music Structure Analysis.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Evaluation dataset and metrics}
 
-The developed model has been evaluated on the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS}. The "Structural Analysis of Large Amounts of Music Information" project aims to execute comprehensive structural analyses on a diverse spectrum of music. In contrast to traditional methods, SALAMI segments musical pieces into distinct sections, integrating perceptual, functional, and transcription analyses. Despite certain limitations, this novel approach offers a comprehensive and nuanced understanding of musical structure.
+The developed model has been evaluated on the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS}. The \textit{Structural Analysis of Large Amounts of Music Information} project aims to execute comprehensive structural analyses on a diverse spectrum of music. In contrast to traditional methods, SALAMI segments musical pieces into distinct sections, integrating perceptual, functional, and transcription analyses. Despite certain limitations, this novel approach offers a comprehensive and nuanced understanding of musical structure.
 
 Three primary metrics have been utilized to assess the model performance: Precision, Recall, and F-measure. Precision quantifies the proportion of accurately identified boundaries relative to all estimated boundaries to indicate the algorithm's accuracy in boundary detection.
 

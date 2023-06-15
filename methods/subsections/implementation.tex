@@ -4,27 +4,27 @@ Our approach falls broadly under cognitive modeling, which seeks to simulate hum
 
 According to Piaget's theory of cognitive development, children gain knowledge through sensory experiences and gradually develop abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by incorporating new information through processes of assimilation and accommodation \cite{audioselfsupsurvey}.
 
-In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Interestingly, even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
+In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
 
-Our implementation is a slight tweak to the \textit{contrastive learning of lusical representations} (CLMR), a method that learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a subset of ML called self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn independently from unlabeled data to create their supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, turning unsupervised problems into supervised ones by auto-generating labels. Benefits of SSL include reduced dependence on labeled data, which contributes to more robust and generalizable data representations.
+Our implementation is a slight tweak to the \textit{contrastive learning of musical representations} (CLMR), a method that learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a subset of ML called self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn independently from unlabeled data to create their supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, turning unsupervised problems into supervised ones by auto-generating labels. Benefits of SSL include reduced dependence on labeled data, which contributes to more robust and generalizable data representations.
 
-As stated above, the methodology of CLMR involves generating different augmentations of the same musical piece to serve as positive pairs while using other pieces as antagonistic pairs. The training process, which minimizes a triplet loss function, encourages the model to produce similar representations for positive and dissimilar ones for antagonistic pairs.
+As stated above, the methodology of CLMR involves generating different augmentations of the same musical piece to serve as positive pairs while using other pieces as antagonistic pairs. The training process encourages the model to produce similar representations for positive and dissimilar ones for antagonistic pairs.
 
 Although SSL has proven effective in speech and audio, its application to music audio remains relatively unexplored. This is primarily due to the unique challenges of modeling musical knowledge, especially regarding music's tonal and pitched characteristics \cite{Li2023MERT:Training}.
 
-\subsection{Deep Neural Network Architecture}
+\subsection{Deep architecture design}
 
 This work suggests employing a Triple Siamese Network, a model architecture known for its efficacy in music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. The aim is to minimize the loss function between a triplet of anchor, positive, and negative samples, utilizing online triplet mining for optimizing memory resources \cite{Sikaroudi2020OfflinePatches}. This SSL model aims to distinguish between similar and dissimilar samples effectively.
 
-Introduced by Bromley and LeCun \cite{Bromley1993SignatureNetwork}, Siamese Networks are deep learning architectures designed for tasks requiring comparison or similarity assessment between instances. The architecture comprises identical subnetworks that share the same parameters, improving memory usage and computational efficiency. Rather than learning specific features of individual classes, they focus on a similarity metric, making them ideal for limited or imbalanced datasets. Each subnetwork processes an input independently, combining the outputs to yield a similarity score. Training with shared weights enables the model to learn invariant input representation, improving comparison efficiency. This is accomplished through specialized loss functions such as contrastive or triplet loss, aiming to minimize the distance between similar inputs and maximize it for dissimilar ones.
+Introduced by Bromley and LeCun \cite{Bromley1993SignatureNetwork}, Siamese Networks are deep learning architectures designed for tasks requiring comparison or similarity assessment between instances. The architecture comprises identical subnetworks that share the same parameters, improving memory usage and computational efficiency. Rather than learning specific features of individual classes, they focus on a similarity metric, making them ideal for imbalanced datasets. Each subnetwork processes an input independently, combining the outputs to yield a similarity score. Training with shared weights enables the model to learn invariant input representation, improving comparison efficiency. This is accomplished through specialized loss functions such as contrastive or triplet loss, aiming to minimize the distance between similar inputs and maximize it for dissimilar ones.
 
-The Triple Siamese Network extends this architecture, comparing three input instances instead of two. It aims to learn an embedding space wherein similar instances are closer and dissimilar ones are distant. The inputs, consisting of an anchor, a positive instance (similar to the anchor), and a negative instance (dissimilar to the anchor), are processed by identical subnetworks sharing the same parameters.
+The Triple Siamese Network extends a binary contrastive architecture by comparing three input instances instead of two. It aims to learn an embedding space wherein similar instances are closer and dissimilar ones are distant. The inputs, consisting of an anchor, a positive instance (similar to the anchor), and a negative instance (dissimilar to the anchor), are processed by identical subnetworks sharing the same parameters.
 
 \subsubsection{Encoder architecture: SampleCNN}
 
 The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for raw waveform audio data, treating each audio sample as an independent channel and applying 1-dimensional convolution along the temporal axis. Its implementation is an adaptation of \cite{CLMR2021} using \textit{PyTorch} \cite{Paszke2019PyTorch:Library} and \textit{PyTorch Lightning} \cite{PyTorchDocumentation}.
 
-This fully convolutional model reduces computational requirements and learns features at different scales through its multi-resolution architecture \ref{tab:samplecnn}.
+With 2.4 million trainable parameters, this fully convolutional model reduces computational requirements and learns features at different scales through its multi-resolution architecture \ref{tab:samplecnntable}.
 
 \begin{table}[h]
 \centering
@@ -61,7 +61,7 @@ Fully connected or representation layer & 512 & 128 \\
 \bottomrule
 \end{tabularx}
 \caption{Layer specifications for SampleCNN model}
-\label{tab:samplecnn}
+\label{tab:samplecnntable}
 \end{table}
 
 The original model has been modified slightly to serve our specific needs: the output from the final convolutional layer is now subjected to an average pooling operation.
@@ -79,43 +79,45 @@ The learning rate, set at 0.003, is a pivotal parameter dictating the step size 
 
 The choice of input data is guided by the task, computational resources, and the need to balance data retention with computational efficiency.
 
-Previous research has utilized Convolutional Neural Networks (CNNs) with various features such as Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}. However, features derived from raw audio may lack interpretability in some scenarios \cite{Schindler2020DeepTutorial}, and raw audio presents unique advantages despite being computationally demanding. It ensures the preservation of the original signal, potentially unearthing novel insights, and allows for direct feature extraction via advanced deep learning models \cite{learning}. Nevertheless, it comes with challenges such as high dimensionality due to high sample rates, requiring substantial computational resources. Moreover, it is sensitive to noise, adding complexity to the extraction process.
+Previous research has utilized CNNs with various features such as Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}. However, features derived from raw audio may lack interpretability in some scenarios \cite{Schindler2020DeepTutorial}, and raw audio presents unique advantages despite being computationally demanding. It ensures the preservation of the original signal, potentially uncovering novel insights, and allows for direct feature extraction via advanced DL models \cite{learning}. Nevertheless, it comes with challenges, such as high dimensionality requiring substantial computational resources. Moreover, it is sensitive to noise, adding complexity to the extraction process.
 
-Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although Mel-spectrogram-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Spectrograms capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures—means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music content may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
+Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although audio feature-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Mel-Scaled Log-magnitude Spectograms, for example, capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures—means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music content may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
 
 \subsubsection{Positive sample generation chain}
 
-The positive image in every triplet of input data must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities and artifacts. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements identical or remarkably close to the original track.
+The positive image in every triplet of input data must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities and processing artifacts. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements remarkably close to the original track.
 
-While we have experimented with helpful audio augmentation tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0, Kharitonov2020DataDomain}, the specific requirements of our experiments necessitated the development of our transformation chain using \textit{torchaudio}'s \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
+While we have experimented with helpful audio augmentation tools \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0, Kharitonov2020DataDomain}, the specific requirements of our experiments required the development of our transformation chain using \textit{torchaudio}'s \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
-\textbf{Amplitude effects}, we use gain to modify the signal's amplitude with a constant factor $g \in [-12, 0]$.
+\textbf{Amplitude effects}: The signal's amplitude is modified by a constant factor using gain $g \in [-12, 0]$.
 
-\textbf{Time-domain effects} such as speed change and stretch alter the signal's playback speed and duration without changing its pitch, respectively. The speed and stretch factors are $\alpha \in [0.9, 1.1]$ for speed change and $\beta \in [0.9, 1.1]$ for the stretch factor.
+\textbf{Time-domain effects}: The signal's playback speed and duration are altered through speed change and stretching, preserving the perceptual musical relationships. The respective factors are $\alpha \in [0.9, 1.1]$ for speed change and $\beta \in [0.9, 1.1]$ for stretch.
 
-\textbf{Frequency-domain effects} adjust the frequency content or pitch of the signal, as in pitch shifting, which alters the pitch by $\Delta p \in [-1200, 1200]$.
+\textbf{Frequency-domain effects}: The frequency content is adjusted through pitch-shifting, modifying the pitch by $\Delta p \in [-1200, 1200]$ cents.
 
-\textbf{Nonlinear effects} such as overdrive add harmonic distortion using the parameter $d \in [0, 30]$ for overdrive
+\textbf{Nonlinear effects}: Nonlinear distortion is introduced via overdrive with a parameter $d \in [0, 30]$.
 
-\textbf{Modulation effects}, including chorus and tremolo, use a control signal or low-frequency oscillator. The specified ranges determine the chorus parameters and the tremolo's amplitude modulation frequency and depth $f_m \in [0.1, 100]$ for the tremolo's modulation frequency and $d_m \in [1, 101]$ for the tremolo's depth
+\textbf{Modulation effects}: Effects such as chorus and tremolo employ a control signal or low-frequency oscillator. The specified ranges determine the chorus parameters, while the tremolo's amplitude modulation frequency and depth are controlled by $f_m \in [0.1, 100]$ and $d_m \in [1, 101]$, respectively.
 
-\textbf{Reverberation effects} simulate physical space's acoustic reflections and reverberations, like reverb that applies an impulse response $h_R[n]$. 
+\textbf{Reverberation effects}: These effects simulate a physical space's acoustic reflections and reverberations by applying an impulse response $h_R[n]$.
 
-Finally, \textbf{Noise effects} add a noise signal $N[n]$ with a signal-to-noise ratio (SNR) in the range $[12, 100]$.
+\textbf{Noise effects}: A noise signal $Noise[n]$ is added with a signal-to-noise ratio (SNR) in the range $[12, 100]$.
 
-The positive signal $P[n]$ is generated according to the equation given below, where the symbols denote specific effects as indicated:
+The positive signal $P[n]$ is generated according to the expression given below, where the symbols denote specific effects as indicated:
 
 \begin{equation}\label{eq:positive_signal}
-P[n] = A[n] \ast h_{G}[n] \ast h_{C}[n] \ast h_{D}[n] \ast h_{P_t}[n] \ast h_{R}[n] \ast h_{S}[n] \ast h_{T}[n] \ast h_{T_m}[n] + N[n]
+P[n] = A[n] \ast h_{G}[n] \ast h_{C}[n] \ast h_{D}[n] \ast h_{P_t}[n] \ast h_{R}[n] \ast h_{S}[n] \ast h_{T}[n] \ast h_{T_m}[n] + Noise[n]
 \end{equation}
 
 The $\ast$ symbol represents convolution, and the various $h$ symbols indicate the impulse responses of specific effects. The noise signal $N[n]$ is included with a specific SNR.
+
+Random parameter updates within hardcoded ranges generate unique audio $P[n]$ out of $A[n]$ for each run-through. Adding random white noise and varying SNR creates countless noisy waveform variations. Although possible combinations can be estimated by multiplying discrete parameter values, the presence of continuous parameters and randomness in noise generation effectively results in infinite unique audio versions.
 
 \subsubsection{Negative sample generation}
 
 Circling back to our premises and assumptions, we posit that high-level musical content unfolds over time; therefore, we argue that the temporal structure of the negative images, in contrast to our anchor, should be disrupted. While maintaining similar sonic qualities, the content should be rendered unintelligible.
 
-The computation goes as follows:
+The computation for the negative signal $N[n]$ per every $A[n]$ goes as follows:
 
 \begin{enumerate}
 \item We first calculate the minimum and maximum audio chunk lengths in samples:
@@ -140,7 +142,7 @@ where $L_A$ is the length of the anchor signal in samples.
 
 \item We finally concatenate the shuffled audio chunks to generate the negative signal that will have similar production while the content is completely ruined:
 \begin{equation}\label{eq:negative_signal}
-N = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
+N[n] = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 \end{equation}
 \end{enumerate}
 
@@ -148,11 +150,9 @@ The whole purpose of this process is to disturb the content unfolding in the tim
 
 \subsection{Loss function}
 
-Contrastive loss and triplet loss are two prominent loss functions employed in the fields of feature learning, similarity learning, and dimensionality reduction.
-
 Schroff, F., Kalenichenko, D., and Philbin, J. from Google first proposed and applied triplet loss for the learning of facial recognition, catering to varied poses and angles of the same individual \cite{Schroff2015FaceNet:Clustering}.
 
-Triplet loss function directs the learning process by endeavoring to minimize the distance between the anchor and positive instances and maximize the distance between the anchor and negative instances. Contrastive loss, on the other hand, works on pairs of instances \cite{supercontrast}. The inclusion of a margin parameter in the loss function guarantees a minimum separation between positive and negative instances in the embedding space. Given the nature of our training needs, we propose to train by using the former.
+On the contrary of the also popular contrastive loss \cite{supercontrast}, the triplet loss function directs the learning process by minimizing the distance between the anchor and positive instances \textbf{and} maximizing the distance between the anchor and negative instances. Including a margin parameter in the loss function guarantees a minimum separation between positive and negative instances in the embedding space.
 
 The triplet loss function $\mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n})$ aims to ensure that an anchor vector $\mathbf{a}_i$ is closer in the embedding space to a positive vector $\mathbf{p}_i$ (representing an example of the same class) than to a negative vector $\mathbf{n}_i$ (representing an example of a different class) by at least a margin $\alpha$. It is calculated by summing the losses overall $N$ triplets in the dataset, where the equation gives the loss for each triplet:
 
@@ -192,7 +192,9 @@ L_{\text{max}} = \max_{i \in I} \left( \max \left( |A_i|, |P_i|, |N_i| \right) \
 
 $I$ represents the set of all items in the batch, $|A_i|$, $|P_i|$, and $|N_i|$ denote the lengths of the anchor, positive, and negative vectors for the $i$-th item, respectively. The $\max$ function is applied to find the longest of these three lengths for each item, and then the maximum of these maximum lengths is taken over all items in the batch. This gives the maximum length, $L_{\text{max}}$, of any vector in the batch.
 
-\subsubsection{Training strategy}
+\subsubsection{Hardware and training strategy}
+
+The deep learning models were trained on a high-performance cloud computing setup hosted on \href{https://cloud.google.com/}{Google Cloud Platform}. The machine was of type \texttt{n1-standard-32}, equipped with an Intel Skylake processor and four NVIDIA Tesla T4 GPUs. The multiple GPUs allowed for efficient parallel processing, significantly reducing the training time for the deep learning models.
 
 To tackle the computational demands of training models on extensive raw audio data, we incorporated a couple of strategies to optimize efficiency and performance. 
 

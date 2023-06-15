@@ -1,5 +1,24 @@
 \chapter{Introduction}
 
-Music \footnote{In this thesis, "music" refers to the Western tradition, characterized by conventions, practices, and aesthetics that have developed primarily in Europe and North America. This usage does not deny the diversity and richness of other musical traditions worldwide but reflects the present study's focus on a specific cultural context.}, integral to human culture and history, has evolved alongside our societies since ancient times. Its study is complex due to its subjectivity, mutable ground truth, and various styles and cultural contexts.
+Music \footnote{Throughout this thesis, "music" refers to the Western tradition, defined by the conventions, practices, and aesthetics that primarily evolved in Europe and North America. This term's usage does not negate the diversity and richness of other musical traditions worldwide. Instead, it specifies this study's concentration on a particular cultural context.}, a cornerstone of human culture and history, has developed hand in hand with our societies since ancient times. However, the study of music is complex due to its inherent subjectivity, ever-changing ground truth, and the array of styles and cultural contexts it encompasses.
 
-XXXXXXX
+Prior research emphasizes the necessity of selecting suitable audio features to distinguish and label unique music segments for music segmentation tasks. The challenge lies in acquiring annotated data for these feature transformations, which can be time-consuming and expensive. In response, scholars have turned to unsupervised deep learning using readily available music audio \cite{unsupervisedlearndeepfeat, GrillMUSICANNOTATIONS}. This method has substantially improved the generalization capacity of machine-listening models in downstream applications. Among others, segmentation algorithms have seen significant enhancements and delivered state-of-the-art results \cite{Hernandez-Olivan2021MusicFeatures, Li2023MERT:Training}.
+
+Beyond applications in music structure, the evolution of neural networks has empowered the creation of condensed numerical representations encapsulating crucial musical traits. This evolution has simplified the computational process for various task-specific elements, including but not limited to:
+
+\begin{itemize}
+\item Creating an audio embedding method that excels across numerous applications without the necessity for fine-tuning \cite{Turian2022HEAR:Representations}
+\item Boosting the classification of environmental sounds \cite{Kim2020OneStrategies, CramerLOOKEMBEDDINGS}
+\item Enhancing vocal-centric music tasks through cross-domain audio embeddings \cite{Kim2021LearningLoss}
+\item Integrating task-specific and pre-trained features to optimize audio classification \cite{Hung2022Feature-informedClassification}
+\item Developing a music similarity search engine for video production \cite{epidemic}
+\item Improving Music Emotion Recognition (MER) performance \cite{KohComparisonRecognition}
+\item Evaluating the effectiveness of speaker recognition via pre-trained model embeddings \cite{lightweight}
+\item Embedding songs for artist identification to facilitate similarity comparisons \cite{contentmusicsimtriplet2020}
+\item Addressing cross-modal text-to-music retrieval issues \cite{WonEmotionStories}
+\item Enabling automated music rearrangement \cite{Stoller2018IntuitiveTransitions, Plachouras2023MusicSegmentation}
+\end{itemize}
+
+Furthermore, deep audio embeddings offer the benefit of transferability, establishing a foundation for multiple tasks. Compared to training a model from scratch, this approach saves computational resources and time \cite{}.
+
+Given the proven effectiveness of deep audio embeddings in existing research and their potential for transfer learning, they hold considerable promise for Music Information Retrieval (MIR) downstream tasks, including boundary detection. However, it is yet to be determined whether a general-purpose audio representation can successfully emulate human hearing \cite{Turian2022HEAR:Representations}, even though some techniques have demonstrated generalizability across as many as fourteen music-understanding tasks \cite{Li2023MERT:Training}.

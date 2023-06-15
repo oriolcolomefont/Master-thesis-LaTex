@@ -1,5 +1,5 @@
 
-The evaluation results have been obtained using the standard and most commonly used MIR's tools and frameworks such as MSAF \cite{NietoMSAF:FRAMEWORK} for the segmentation algorithms, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} as evaluation ground truth and $mir_eval$ \cite{RaffelMir_eval:METRICS} for metric computation.
+The evaluation results have been obtained using the standard and most commonly used MIR's tools and frameworks such as default values of MSAF \cite{MSAF} for the segmentation algorithms \cite{sf}, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} as evaluation ground truth and $mir_eval$ \cite{RaffelMir_eval:METRICS} for metric computation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -22,7 +22,7 @@ Tonnetz & -- & 0.312 & 0.312 & 0.300 \\
 CQT & -- & 0.311 & \textbf{0.339} & \textbf{0.312} \\
 \hline
 \end{tabularx}
-\caption[Comparison of precision, recall, and f-measure for different audio features]{Comparison of precision, recall, and f-measure for different features using the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}
+\caption[Comparison of precision, recall, and f-measure for different audio features]{Comparison of precision, recall, and f-measure for different features obtained using the SF algorithm \cite{sf} on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}
 \label{tab:comparison}
 \end{table}
 
@@ -62,6 +62,6 @@ Grill \& Schlüter \cite{GrillMUSICANNOTATIONS}, 2015 & MLS, PCPs, SSLMs & CNN  
 Hadria \& Peeterss \cite{35}, 2017 & MLS, SSLMs & CNN  & 0.291 \\
 \bottomrule
 \end{tabularx}
-\caption[Baseline. State-of-the-art table.]{\small{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. Original source \cite{Hernandez-Olivan2021MusicFeatures}}}
+\caption[Baseline. State-of-the-art table.]{\small{Previous studies' boundary detection f-measure results using \textbf{unsupervised} methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. Original source \cite{Hernandez-Olivan2021MusicFeatures}}}
 \label{tab:comparison_table}
 \end{table}
