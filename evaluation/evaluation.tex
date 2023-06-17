@@ -15,7 +15,7 @@ H = 1 + \left\lfloor \frac{N - w}{h} \right\rfloor
 \end{equation}
 In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account for the final, potentially smaller, window.
 
-\item \textbf{Process each window}: Each window of audio data is processed independently, passed through the pre-trained neural network model, and transformed into an embedding vector. Formally, for each window $w_i$ of audio data, we have:
+\item \textbf{Process each window}: Each window of audio data is processed independently, passed through the pre-trained neural network, and transformed into an embedding vector. Formally, for each window $w_i$ of audio data, we have:
 \begin{equation}
 \text{embedding}_i = \text{model}(w_i)
 \end{equation}
@@ -75,6 +75,10 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
+
+Employing such embeddings in a traditional music segmentation algorithm can obtain state-of-the-art performance \cite{deepfeaturesegment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Music boundary detection as downstream task}
 
