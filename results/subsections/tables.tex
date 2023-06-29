@@ -3,28 +3,160 @@ The evaluation results have been obtained using the standard and most commonly u
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{table}[h]
+\newsavebox\mfccSF
+\begin{lrbox}{\mfccSF}
 \centering
-\begin{tabularx}{\textwidth}{|X|X|X|X|X|}
-\hline
-\textbf{Technique} & \textbf{Training Dataset} & \textbf{Precision} & \textbf{Recall} & \textbf{F-measure} \\
-\hline
-MFCC & -- & 0.173 & 0.185 & 0.172 \\
-\hline
-Embeddiogram & GTZAN Dataset & 0.228 & 0.171 & 0.185 \\
-\hline
-Embeddiogram & MSD Dataset & \textbf{0.335} & 0.276 & 0.288 \\
-\hline
-PCP & -- & 0.311 & 0.324 & 0.305 \\
-\hline
-Tonnetz & -- & 0.312 & 0.312 & 0.300 \\
-\hline
-CQT & -- & 0.311 & \textbf{0.339} & \textbf{0.312} \\
-\hline
-\end{tabularx}
-\caption[Metric comparison for different audio features]{Comparison of precision, recall, and f-measure for different features obtained using the SF algorithm \cite{sf} on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}
-\label{tab:comparison}
+   $\begin{aligned}
+     0.173 & \quad 0.185 & \quad 0.172 % SF algorithm
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\mfccFoote
+\begin{lrbox}{\mfccFoote}
+\centering
+   $\begin{aligned}
+     ... & \quad ... & \quad ... % Foote algorithm
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\mfccCNMF
+\begin{lrbox}{\mfccCNMF}
+\centering
+   $\begin{aligned}
+     ... & \quad ... & \quad ... % CNMF algorithm
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\embeddioaSF
+\begin{lrbox}{\embeddioaSF}
+   $\begin{aligned}
+     0.228 & \quad 0.171 & \quad 0.185
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\embeddioaFoote
+\begin{lrbox}{\embeddioaFoote}
+   $\begin{aligned}
+     ... & \quad ... & \quad ...
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\embeddioaCNMF
+\begin{lrbox}{\embeddioaCNMF}
+   $\begin{aligned}
+     ... & \quad ... & \quad ...
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\embeddiobSF
+\begin{lrbox}{\embeddiobSF}
+   $\begin{aligned}
+     \textbf{0.333} & \quad 0.280 & \quad 0.288
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\embeddiobFoote
+\begin{lrbox}{\embeddiobFoote}
+   $\begin{aligned}
+     0.275 & \quad \textbf{0.318} & \quad 0.280
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\embeddiobCNMF
+\begin{lrbox}{\embeddiobCNMF}
+   $\begin{aligned}
+     0.248 & \quad 0.296 & \quad 0.254
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\pcpSF
+\begin{lrbox}{\pcpSF}
+   $\begin{aligned}
+     0.311 & \quad 0.324 & \quad 0.305
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\pcpFoote
+\begin{lrbox}{\pcpFoote}
+   $\begin{aligned}
+     ... & \quad ... & \quad ...
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\pcpCNMF
+\begin{lrbox}{\pcpCNMF}
+   $\begin{aligned}
+     ... & \quad ... & \quad ...
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\tonnetzSF
+\begin{lrbox}{\tonnetzSF}
+   $\begin{aligned}
+     0.312 & \quad 0.312 & \quad 0.300
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\tonnetzFoote
+\begin{lrbox}{\tonnetzFoote}
+   $\begin{aligned}
+     0.272 & \quad 0.317 & \quad 0.280
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\tonnetzCNMF
+\begin{lrbox}{\tonnetzCNMF}
+   $\begin{aligned}
+     0.212 & \quad 0.306 & \quad 0.237
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\cqtSF
+\begin{lrbox}{\cqtSF}
+   $\begin{aligned}
+     0.311 & \quad \textbf{0.339} & \quad \textbf{0.312}
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\cqtFoote
+\begin{lrbox}{\cqtFoote}
+   $\begin{aligned}
+     \textbf{0.570} & \quad 0.311 & \quad \textbf{0.353}
+    \end{aligned} $
+\end{lrbox}
+
+\newsavebox\cqtCNMF
+\begin{lrbox}{\cqtCNMF}
+   $\begin{aligned}
+     \textbf{0.296} & \quad \textbf{0.311} & \quad \textbf{0.287}
+    \end{aligned} $
+\end{lrbox}
+
+%%%%%
+
+\begin{table}
+  \centering
+  \begin{adjustbox}{width=\textwidth}
+  \begin{threeparttable}
+    \begin{tabular}{c|l|c|c|c} 
+\toprule
+     \multicolumn{2}{c|}{\textbf{Training dataset} and \textbf{Feature}}  & \multicolumn{1}{c}{\textbf{SF}} & \multicolumn{1}{c}{\textbf{Foote}} & \multicolumn{1}{c}{\textbf{CNMF}} 
+     \\ \midrule 
+    \multirow{5}{*}{}&   
+         \multirow{1}{*}{MFCC } & \usebox{\mfccSF} & \usebox{\mfccFoote} & \usebox{\mfccCNMF} \\\cline{2-5}
+        & \multirow{1}{*}{PCP} & \usebox{\pcpSF} & \usebox{\pcpFoote} & \usebox{\pcpCNMF} \\\cline{2-5}
+        & \multirow{1}{*}{Tonnetz} & \usebox{\tonnetzSF} & \usebox{\tonnetzFoote} & \usebox{\tonnetzCNMF} \\\cline{2-5} 
+        & \multirow{1}{*}{CQT} & \usebox{\cqtSF} & \usebox{\cqtFoote} & \usebox{\cqtCNMF} \\\cline{1-5} 
+    \multirow{1}{*}{GTZAN}& 
+        \multirow{1}{*}{Embeddiogram} & \usebox{\embeddioaSF} & \usebox{\embeddioaFoote} & \usebox{\embeddioaCNMF} \\\cline{1-5} 
+    \multirow{1}{*}{MSD}& 
+        \multirow{1}{*}{Embeddiogram} & \usebox{\embeddiobSF} & \usebox{\embeddiobFoote} & \usebox{\embeddiobCNMF} \\\bottomrule
+    \end{tabular}
+    \caption[Metric comparison for different audio features]{Comparison of precision, recall, and f-measure for different features obtained using the SF, Foote, and CNMF algorithms \cite{sf} \cite{foote} \cite{cnmf} on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}\label{ta:results}
+  \end{threeparttable}
+  \end{adjustbox}
 \end{table}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
