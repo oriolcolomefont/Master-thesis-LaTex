@@ -1,5 +1,5 @@
 
-The evaluation results have been obtained using the standard and most commonly used MIR's tools and frameworks such as default values of MSAF \cite{MSAF} for the segmentation algorithms \cite{sf}, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} as evaluation ground truth and $mir_eval$ \cite{RaffelMir_eval:METRICS} for metric computation.
+The evaluation results have been obtained using the standard and most commonly used MIR's tools and frameworks, such as default values of MSAF \cite{MSAF} for the segmentation algorithms \cite{sf}, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} as evaluation ground truth and $mir_eval$ \cite{RaffelMir_eval:METRICS} for metric computation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -22,7 +22,7 @@ Tonnetz & -- & 0.312 & 0.312 & 0.300 \\
 CQT & -- & 0.311 & \textbf{0.339} & \textbf{0.312} \\
 \hline
 \end{tabularx}
-\caption[Comparison of precision, recall, and f-measure for different audio features]{Comparison of precision, recall, and f-measure for different features obtained using the SF algorithm \cite{sf} on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}
+\caption[Metric comparison for different audio features]{Comparison of precision, recall, and f-measure for different features obtained using the SF algorithm \cite{sf} on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}
 \label{tab:comparison}
 \end{table}
 
@@ -37,6 +37,8 @@ CQT & -- & 0.311 & \textbf{0.339} & \textbf{0.312} \\
 \thead{\centering\textbf{Authors [Ref], Year}} & \thead{\centering\textbf{Input}} & \thead{\centering\textbf{Method}} & \thead{\centering\textbf{F-measure}} \\
 \midrule
 \addlinespace
+Turnbull et al. \cite{Turnbull2007ABOOSTING}, 2007 & MFCCs, chromas, spectrogram & Boosted Decision Stump  & 0.378 \\
+\addlinespace
 Kaiser et al. \cite{27}, 2012 & SSM & Novelty measure  & 0.286 \\
 \addlinespace
 McFee \& Ellis \cite{20}, 2013 & MLS & Fisher’s Linear Discriminant  & 0.317 \\
@@ -49,25 +51,23 @@ Nieto \cite{30}, 2016 & Constant-Q Transform Spectrogram & Linear Discriminant A
 \addlinespace
 Cannam et al. \cite{29}, 2017 & Timbre-type histograms & HMM  & 0.212 \\
 \addlinespace
-Turnbull et al. \cite{Turnbull2007ABOOSTING}, 2007 & MFCCs, chromas, spectrogram & Boosted Decision Stump  & 0.378 \\
-\addlinespace
 Sargent et al. \cite{34}, 2011 & MFCCs, chromas & Viterbi  & 0.356 \\
 \addlinespace
 Ullrich et. al \cite{22}, 2014 & MLS & CNN  & 0.465 \\
 \addlinespace
-Grill \& Schlüter \cite{4}, 2015 & MLS, SSLMs & CNN  & \textbf{0.523} \\
+Grill \& Schlüter \cite{4}, 2015 & MLS, SSLMs & CNN  & 0.523 \\
 \addlinespace
-Grill \& Schlüter \cite{GrillMUSICANNOTATIONS}, 2015 & MLS, PCPs, SSLMs & CNN  & 0.508 \\
+Grill \& Schlüter \cite{Grill2015MusicAnnotations}, 2015 & MLS, PCPs, SSLMs & CNN  & 0.508 \\
 \addlinespace
 Hadria \& Peeterss \cite{35}, 2017 & MLS, SSLMs & CNN  & 0.291 \\
 \addlinespace
 \cite{deepfeaturesegment}, 2019 & XXXX & CNN  & \textbf{0.535} ± 0.15 \\
 \addlinespace
 \cite{sf}, 2021 & XXXX & CNN  & XXX \\
-\bottomrule
-Ours, 2023 & XXXX & CNN  & XXX \\
+\addlinespace
+Ours, 2023 & Raw waveforms & CNN  & 0.288 \\
 \bottomrule
 \end{tabularx}
-\caption[Baseline. State-of-the-art table.]{\small{Previous studies' boundary detection f-measure results using \textbf{unsupervised} methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. Original source \cite{Hernandez-Olivan2021MusicFeatures}}}
+\caption[Baseline. State-of-the-art table.]{\small{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This table has been extended from \cite{Hernandez-Olivan2021MusicFeatures}}}
 \label{tab:comparison_table}
 \end{table}
