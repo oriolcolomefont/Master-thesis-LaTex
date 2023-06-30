@@ -4,18 +4,20 @@
 
 The \textit{embeddiogram}, a deep audio feature representation, is derived by applying our pre-trained neural network to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
 
-Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal of length $N$. This process comprises loading the audio data, slicing the audio data into windowed segments, processing each window using our pre-trained model to produce a vector per window/time-frame, collecting and stacking these embeddings, and finally normalizing the resulting matrix or as we like to call it, the \textit{embeddiogram}. 
+Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal of length $N$. This process comprises loading the audio data, slicing the audio data into windowed segments, processing each window using our pre-trained model to produce a vector per window/time frame, collecting and stacking these embeddings, and finally, normalizing the resulting matrix. 
 
 \begin{enumerate}
 \item \textbf{Load the audio data}: The audio data is loaded into memory as a one-dimensional array of length $N$.
 
-\item \textbf{Slice the audio data}: The audio data is segmented into overlapping windows. Each window contains $w$ samples, and consecutive windows are separated by $h$. This gives a total of $H$ windows, defined as:
+\item \textbf{Slice the audio data}: The audio data is segmented into overlapping windows. Each window contains $w$ samples, and consecutive windows are separated by a hop size $h$. This gives a total of $H$ windows, defined as:
 \begin{equation}
 H = 1 + \left\lfloor \frac{N - w}{h} \right\rfloor
 \end{equation}
-In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account for the final, potentially smaller, window.
+In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account for the final, potentially smaller window.
 
 We have conducted experiments using a window duration of 4 seconds (\(w = 4 \times \text{{sr (Hz)}}\)). As a general rule of thumb, this duration corresponds to two 4/4 bars of a piece of music with a tempo where the quarter note equals 120 BPM.
+
+We find this to be a good starting compromise solution, allowing enough time span to capture musical content while not being so large that downsampling reduces the information to an unintelligible vector.
 
 \item \textbf{Process each window}: Each window of audio data is processed independently, passed through the pre-trained neural network, and transformed into an embedding vector. Formally, for each window $w_i$ of audio data, we have:
 \begin{equation}
@@ -45,7 +47,7 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
   \begin{minipage}[b]{1.0\linewidth}
     \centering
     \includegraphics[width=\linewidth]{figures/images/355novelty.png}
-    \caption[Novelty curve + peaks. Track 391 (SALAMI dataset).]{Novelty curve + peaks. Track 355 (SALAMI dataset) \cite{unsuperMSA}.}
+    \caption[Novelty curve + peaks. Track 391 (SALAMI dataset).]{Novelty curve and peak detection. Track 355 (SALAMI dataset).}
     \label{fig:novelty}
   \end{minipage}
 \end{figure}
@@ -55,20 +57,20 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/355recurrencematrix.png} % first figure itself
-        \caption[Track 355 (SALAMI dataset) Self-similarity matrix]{Self-similarity matrix computation of the embeddiogram. Track 355 (SALAMI dataset) \cite{unsuperMSA}.}
+        \caption[Track 355 (SALAMI dataset) Self-similarity matrix]{Self-similarity matrix computation of the embeddiogram. Track 355 (SALAMI dataset).}
         \label{fig:SSM}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/355lagmatrixgaussiansmoothing.png} % second figure itself
-        \caption[Track 355 (SALAMI dataset) SSLM computation of the embeddiogram]{Self-similarity lag matrix. Track 355 (SALAMI dataset) \cite{unsuperMSA}.}
+        \caption[Track 355 (SALAMI dataset) SSLM computation of the embeddiogram]{Self-similarity lag matrix. Track 355 (SALAMI dataset).}
         \label{fig:SSLM}
     \end{minipage}
     \vfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/355cumulativematrix.png} % third figure itself
-        \caption[Track 355 (SALAMI dataset). Q-matrix]{Cumulative matrix computation of the embeddiogram. Track 355 (SALAMI dataset) \cite{unsuperMSA}.}
+        \caption[Track 355 (SALAMI dataset). Q-matrix]{Cumulative matrix computation of the embeddiogram. Track 355 (SALAMI dataset) .}
         \label{fig:Q}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
@@ -81,15 +83,13 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-Furthermore, these embeddiograms are a foundation for current state-of-the-art methods, which are expected to receive as input standard audio features. Consequently, they can be processed and manipulated like conventional features \ref{fig:SSM} \ref{fig:SSLM} \ref{fig:Q} \ref{fig:TBSM} \ref{fig:novelty}. Employing such embeddings in a traditional music segmentation algorithm can achieve state-of-the-art performance \cite{deepfeaturesegment}.
+These deep audio features can be a foundation for current state-of-the-art methods, which are expected to receive as input standard traditional audio features. Consequently, they can be processed and manipulated like conventional features as described by \cite{unsuperMSA} and displayed in \ref{fig:SSM}, \ref{fig:SSLM}, \ref{fig:Q}, and \ref{fig:TBSM} \ref{fig:novelty}. Employing such embeddings in a traditional music segmentation algorithm can achieve state-of-the-art performance \cite{deepfeaturesegment}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Music boundary detection as downstream task}
 
-While the usefulness of deep audio embeddings can be evaluated in countless downstream tasks \cite{Li2023MERT:Training, Kim2020OneStrategies}, we have chosen music boundary detection, a subset of music structure analysis (MSA) for its popularity \cite{Smith2013ATask}, complexity, and product-compelling nature. This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}.  
-
-All the evaluation experiments have been wrapped around MSAF \cite{MSAF}, a popular framework for MSA.
+While the usefulness of deep audio embeddings can be evaluated in countless downstream tasks \cite{Li2023MERT:Training, Kim2020OneStrategies}, we have chosen music boundary detection (also known as track segmentation), a subset of music structure analysis (MSA) for its popularity \cite{Smith2013ATask}, complexity, and product-compelling nature. This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces non-solved challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}.  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 

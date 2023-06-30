@@ -13,7 +13,7 @@
 
 Loss function margin. A margin of 0.2 can be a starting point, but it might not be the best value for every task. It's recommended to experiment with different values and choose the one that provides the best performance on your validation set.
 
-Utilize the dB-scale Mel-spectrum magnitude of audio as input data; it is a popular choice for input representation in music-related tasks when applying CNNs, as has been demonstrated in various studies \cite{Kim2020OneStrategies}. While raw audio is the most meaningful audio representation, it's been reported that dB-scale Mel-spectrum frequency-domain summarization, grounded in psycho-acoustics, is computationally efficient and challenging to replicate solely through data-driven methods \cite{Kim2020OneStrategies}; therefore, a trade-off that looks worthy of being explored.
+Utilize the dB-scale Mel-spectrum magnitude and CQT of audio as input data; it is a popular choice for input representation in music-related tasks when applying CNNs, as has been demonstrated in various studies \cite{Kim2020OneStrategies}. While raw audio is the most meaningful audio representation, it's been reported that dB-scale Mel-spectrum frequency-domain summarization, grounded in psycho-acoustics, is computationally efficient and challenging to replicate solely through data-driven methods \cite{Kim2020OneStrategies}; therefore, a trade-off that looks worthy of being explored.
 
 Visual and listening evaluation: 2D or 3D latent space visualization as per \ref{fig:manifold}. Arranging the embedding space in a visual display to evaluate the clustering of this sophisticated musical content to see to what extent they consider sonic attributes. 
 
