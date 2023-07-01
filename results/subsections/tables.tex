@@ -1,7 +1,7 @@
 
-The evaluation results were obtained using standard and commonly used MIR tools and frameworks. These include the MSAF \cite{MSAF} implementation for segmentation algorithms, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} for evaluation ground truth, and $mir-eval$ \cite{RaffelMir_eval:METRICS} for metric computation.
+The evaluation results were obtained using standard and commonly used MIR tools, frameworks, and metrics. These include the MSAF \cite{MSAF} implementation for segmentation algorithms, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} for evaluation ground truth, and $mireval$ Python package \cite{RaffelMir_eval:METRICS} for metric computation.
 
-The results are displayed in \ref{ta:results}
+The GitHub repository containing all the code needed to compute the experiments can be found \href{https://github.com/oriolcolomefont/Master-Thesis.git}{HERE}.The results are displayed in \ref{ta:results}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -81,7 +81,7 @@ The results are displayed in \ref{ta:results}
 \newsavebox\pcpFoote
 \begin{lrbox}{\pcpFoote}
    $\begin{aligned}
-     ... & \quad ... & \quad ...
+     0.288 & \quad 0.331 & \quad 0.295
     \end{aligned} $
 \end{lrbox}
 
@@ -154,7 +154,7 @@ The results are displayed in \ref{ta:results}
     \multirow{1}{*}{MSD \cite{MSD}}& 
         \multirow{1}{*}{Embeddiogram} & \usebox{\embeddiobSF} & \usebox{\embeddiobFoote} & \usebox{\embeddiobCNMF} \\\bottomrule
     \end{tabular}
-    \caption[Metric comparison for different audio features and different segmentation algorithms]{Comparison of precision, recall, and f-measure for different features obtained using the SF\cite{sf}, Foote \cite{Foote2000AutomaticNovelty}, and CNMF \cite{NietoCONVEXIDENTIFICATION} algorithms on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}\label{ta:results}
+    \caption[Metric comparison: audio features and segmentation algorithms]{Comparison of precision, recall, and f-measure for different features obtained using the SF\cite{sf}, Foote \cite{Foote2000AutomaticNovelty}, and CNMF \cite{NietoCONVEXIDENTIFICATION} algorithms on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds}\label{ta:results}
   \end{threeparttable}
   \end{adjustbox}
 \end{table}
@@ -202,6 +202,6 @@ Hadria \& Peeterss \cite{35}, 2017 & MLS, SSLMs & CNN  & 0.291 \\
 Ours, 2023 & Raw waveforms & CNN  & 0.288 \\
 \bottomrule
 \end{tabularx}
-\caption[Baseline. State-of-the-art table.]{\small{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This table has been extended from \cite{Hernandez-Olivan2021MusicFeatures}}}
+\caption[Baseline. State-of-the-art table.]{\small{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This table has been extended from \cite{Hernandez-Olivan2021MusicFeatures}.}}
 \label{tab:comparison_table}
 \end{table}

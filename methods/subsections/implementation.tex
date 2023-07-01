@@ -35,7 +35,7 @@ With only 2.4 million trainable parameters, this fully convolutional model reduc
 \midrule
 Conv + ReLU & 1 & 128 \\
 \addlinespace
-\multicolumn{3}{c}{The following layers are repeated depending on the strides and hidden parameters:} \\
+\multicolumn{3}{c} \\
 \addlinespace
 Conv + BatchNorm + ReLU + MaxPool & 128 & 128 \\
 \addlinespace
@@ -57,7 +57,7 @@ Conv + BatchNorm + ReLU + MaxPool & 256 & 512 \\
 \addlinespace
 Conv + BatchNorm + ReLU + AvgPool & 512 & 512 \\
 \addlinespace
-Fully connected or representation layer & 512 & 128 \\
+Fully connected layer & 512 & 128 \\
 \bottomrule
 \end{tabularx}
 \caption{Layer specifications for SampleCNN model}
@@ -150,7 +150,7 @@ The whole purpose of this process is to disturb the content unfolding in the tim
 
 Schroff, F., Kalenichenko, D., and Philbin, J. from Google first proposed and applied triplet loss for the learning of facial recognition, catering to varied poses and angles of the same individual \cite{Schroff2015FaceNet:Clustering}.
 
-On the contrary to the also popular contrastive loss \cite{supercontrast}, the triplet loss function directs the learning process by minimizing the distance between the anchor and positive instances \textbf{and} maximizing the distance between the anchor and negative instances. Including a margin parameter in the loss function guarantees a minimum separation between positive and negative instances in the embedding space.
+On the contrary to the also popular contrastive loss \cite{supercontrast}, the triplet loss function directs the learning process by minimizing the distance between the anchor and positive instances and maximizing the distance between the anchor and negative instances. Including a margin parameter in the loss function guarantees a minimum separation between positive and negative instances in the embedding space.
 
 The triplet loss function $\mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n})$ aims to ensure that an anchor vector $\mathbf{a}_i$ is closer in the embedding space to a positive vector $\mathbf{p}_i$ (representing an example of the same class) than to a negative vector $\mathbf{n}_i$ (representing an example of a different class) by at least a margin $\alpha$. It is calculated by summing the losses overall $N$ triplets in the dataset, where the equation gives the loss for each triplet:
 
