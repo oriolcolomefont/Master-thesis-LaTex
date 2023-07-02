@@ -40,14 +40,14 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
   \begin{minipage}[b]{1.0\linewidth}
     \centering
     \includegraphics[width=\linewidth]{figures/images/355embeddiogramnormalized.png}
-    \caption[Embeddiogram. Track 355 (SALAMI dataset).]{Embeddiogram. Track 391 (SALAMI dataset).}
+    \caption[Embeddiogram. Track 355 (SALAMI dataset).]{Embeddiogram. Track 355 (SALAMI dataset).}
     \label{fig:embeddiogram}
   \end{minipage}
 
   \begin{minipage}[b]{1.0\linewidth}
     \centering
     \includegraphics[width=\linewidth]{figures/images/355novelty.png}
-    \caption[Novelty curve + peaks. Track 391 (SALAMI dataset).]{Novelty curve and peak detection. Track 355 (SALAMI dataset).}
+    \caption[Novelty curve + peaks. Track 355 (SALAMI dataset).]{Novelty curve and peak detection. Track 355 (SALAMI dataset).}
     \label{fig:novelty}
   \end{minipage}
 \end{figure}
@@ -83,7 +83,7 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-These deep audio features can be a foundation for current state-of-the-art methods, which are expected to receive as input standard traditional audio features. Consequently, they can be processed and manipulated like conventional features as described by \cite{unsuperMSA} and displayed in \ref{fig:SSM}, \ref{fig:SSLM}, \ref{fig:Q}, and \ref{fig:TBSM} \ref{fig:novelty}. Employing such embeddings in a traditional music segmentation algorithm can achieve state-of-the-art performance \cite{deepfeaturesegment}.
+These deep audio features can be a foundation for current state-of-the-art methods, which are expected to receive as input standard traditional audio features. Consequently, they can be processed and manipulated like conventional features as described by \cite{unsuperMSA} and displayed in \ref{fig:novelty}, \ref{fig:SSM}, \ref{fig:SSLM}, \ref{fig:Q}, and \ref{fig:TBSM}. Employing such embeddings in a traditional music segmentation algorithm can achieve state-of-the-art performance \cite{deepfeaturesegment}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -111,7 +111,7 @@ On the other hand, Recall measures the proportion of accurately detected boundar
 \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}}
 \end{equation}
 
-Lastly, the F-measure offers a harmonized view of precision and recall. A widely adopted boundary detection metric, it compares predicted and ground truth boundaries, outputting a score between 0 and 1. This score is calculated as the harmonic mean of Precision and Recall, effectively considering both under-segmentation and over-segmentation. Given the potential inaccuracies inherent in human annotations and prediction errors, the F-measure permits minor deviations between predicted and actual boundaries. Its tolerance threshold can be adjusted, allowing a predicted boundary to be deemed correct if it is within a predefined window of a ground truth boundary \cite{Turnbull2007ABOOSTING, NietoPerceptualMusic}.
+Lastly, the F-measure offers a harmonized view of precision and recall. A widely adopted boundary detection metric, it compares predicted and ground truth boundaries, outputting a score between 0 and 1. This score is calculated as the harmonic mean of Precision and Recall, effectively considering both under-segmentation and over-segmentation. Given the potential inaccuracies inherent in human annotations and prediction errors, the F-measure permits minor deviations between predicted and actual boundaries. Its tolerance threshold can be adjusted, allowing a predicted boundary to be deemed correct if it is within a predefined window of a ground truth boundary \cite{NietoPerceptualMusic, Turnbull2007ABOOSTING}.
 
 \begin{equation}
 \text{F-measure} = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
