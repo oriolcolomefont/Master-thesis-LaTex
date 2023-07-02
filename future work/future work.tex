@@ -1,21 +1,16 @@
 \chapter{Future Work}
 
+This research merely scratches the surface, and vast territories are yet uncharted. In future studies, the following areas will be explored to extend the current research further:
+
 \begin{itemize}
-  \item Transforms
-  \item Stems
-  \item Different takes
-  \item k-fold cross validation
-  \item Hyper-params: kernel size $0.005$ times the sample rate
-  \item Larger representation layer
-  \item Easy triplet mining \cite{XuanImprovedMining}
-  \item Different boundary detection algorithms \cite{sf} was used because it was the default in MSAF \cite{MSAF}
+  \item Investigate the effect of different transformations and augmentation pipelines. Incorporating track stems and different takes of the same piece as natural, human-made augmentations could yield interesting results.
+  \item Expand input data to include dB-scale Mel-spectrum magnitude and CQT of audio. This approach has been widely used in music-related tasks with CNNs \cite{Kim2020OneStrategies}. Though raw audio provides a rich representation, dB-scale Mel-spectrum offers a frequency-domain summarization that is not only grounded in psycho-acoustics but is also computationally efficient and hard to reproduce solely through data-driven methods \cite{Kim2020OneStrategies}. Therefore, this trade-off is worth exploring.
+  \item Implement k-fold cross-validation to improve the robustness of the model's performance.
+  \item Experiment with different hyperparameters. For instance, setting the kernel size to $0.005$ times the sample rate could match the Just Noticeable Difference (JND). As for the loss function margin, a starting point of 0.2 has proven effective, but different values should be explored to optimize performance on the validation set.
+  \item Increase the size of the representation layer to 512 or 1024 dimensions.
+  \item Apply easy triplet mining to improve the model's performance \cite{XuanImprovedMining}.
+  \item Implement visual and auditory evaluations: 2D or 3D visualization of the latent space \ref{fig:manifold}, coupled with a Graphical User Interface (GUI) that enables playback for evaluation, can help assess the extent to which the model considers sonic attributes. It would also facilitate the understanding of the clustering of complex musical content. 
 \end{itemize}
-
-Loss function margin. A margin of 0.2 can be a starting point, but it might not be the best value for every task. It's recommended to experiment with different values and choose the one that provides the best performance on your validation set.
-
-Utilize the dB-scale Mel-spectrum magnitude and CQT of audio as input data; it is a popular choice for input representation in music-related tasks when applying CNNs, as has been demonstrated in various studies \cite{Kim2020OneStrategies}. While raw audio is the most meaningful audio representation, it's been reported that dB-scale Mel-spectrum frequency-domain summarization, grounded in psycho-acoustics, is computationally efficient and challenging to replicate solely through data-driven methods \cite{Kim2020OneStrategies}; therefore, a trade-off that looks worthy of being explored.
-
-Visual and listening evaluation: 2D or 3D latent space visualization as per \ref{fig:manifold}. Arranging the embedding space in a visual display to evaluate the clustering of this sophisticated musical content to see to what extent they consider sonic attributes. 
 
 \input{figures/neural networks/manifold}
 
