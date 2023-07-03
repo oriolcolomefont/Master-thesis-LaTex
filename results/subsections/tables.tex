@@ -15,14 +15,14 @@ The GitHub repository containing all the code needed to run the experiments can 
 \newsavebox\embeddioaFoote
 \begin{lrbox}{\embeddioaFoote}
    $\begin{aligned}
-      & \quad  & \quad 
+    0.258  & \quad 0.297 & \quad 0.265
     \end{aligned} $
 \end{lrbox}
 
 \newsavebox\embeddioaCNMF
 \begin{lrbox}{\embeddioaCNMF}
    $\begin{aligned}
-      & \quad  & \quad 
+    0.233  & \quad 0.300  & \quad 0.249
     \end{aligned} $
 \end{lrbox}
 
@@ -125,9 +125,9 @@ The GitHub repository containing all the code needed to run the experiments can 
         & \multirow{1}{*}{Tonnetz} & \usebox{\tonnetzSF} & \usebox{\tonnetzFoote} & \usebox{\tonnetzCNMF} \\\cline{2-5} 
         & \multirow{1}{*}{CQT} & \usebox{\cqtSF} & \usebox{\cqtFoote} & \usebox{\cqtCNMF} \\\cline{1-5} 
     \multirow{1}{*}{GTZAN \cite{GTZAN}}& 
-        \multirow{1}{*}{\textbf{Embeddiogram}} & \usebox{\embeddioaSF} & \usebox{\embeddioaFoote} & \usebox{\embeddioaCNMF} \\\cline{1-5} 
+        \multirow{1}{*}{Embeddiogram} & \usebox{\embeddioaSF} & \usebox{\embeddioaFoote} & \usebox{\embeddioaCNMF} \\\cline{1-5} 
     \multirow{1}{*}{MSD \cite{MSD}}& 
-        \multirow{1}{*}{\textbf{Embeddiogram}} & \usebox{\embeddiobSF} & \usebox{\embeddiobFoote} & \usebox{\embeddiobCNMF} \\\bottomrule
+        \multirow{1}{*}{Embeddiogram} & \usebox{\embeddiobSF} & \usebox{\embeddiobFoote} & \usebox{\embeddiobCNMF} \\\bottomrule
     \end{tabular}
     \caption[Metric comparison: audio features and segmentation algorithms]{Comparison of precision, recall, and f-measure for different features using the Structural Feature (SF)\cite{sf}, Checkerboard Kernel (Foote) \cite{Foote2000AutomaticNovelty}, and Convex Non-negative Matrix Factorization (CNMF) \cite{NietoCONVEXIDENTIFICATION} algorithms on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds long.}\label{ta:results}
   \end{threeparttable}
