@@ -113,6 +113,8 @@ On the other hand, Recall measures the proportion of accurately detected boundar
 
 Lastly, the F-measure offers a harmonized view of precision and recall. A widely adopted boundary detection metric, it compares predicted and ground truth boundaries, outputting a score between 0 and 1. This score is calculated as the harmonic mean of Precision and Recall, effectively considering both under-segmentation and over-segmentation. Given the potential inaccuracies inherent in human annotations and prediction errors, the F-measure permits minor deviations between predicted and actual boundaries. Its tolerance threshold can be adjusted, allowing a predicted boundary to be deemed correct if it is within a predefined window of a ground truth boundary \cite{NietoPerceptualMusic, Turnbull2007ABOOSTING}.
 
+We computed the f-measure for each track and then calculated the average rather than aggregating all tracks into a single dataset and calculating the f-measure on this combined set.
+
 \begin{equation}
 \text{F-measure} = \frac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
 \end{equation}

@@ -4,13 +4,11 @@
 
 In this work, we introduced a method that leverages self-supervised deep neural networks to learn low-dimensional music latent representations with applications to music boundary detection. Building on existing approaches and architectures, we replaced traditional features with deep embeddings trained to represent high-level musical information to analyze its performance in music segmentation tasks.
 
-While not outperforming state-of-the-art existing baselines and in contrast to similar research findings such \cite{deepfeaturesegment, SalamonDeepSegmentation}, our musically-informed technique has significant potential for boundary detection tasks given its overall performance improvement alongside the training set enlargement. Most likely, so does for nearly all MIR downstream tasks that are not purely sonic-based.
-
-The questions of whether such general-purpose audio representation can mimic human hearing \cite{Li2023MERT:Training, Turian2022HEAR:Representations} or whether these do decode underlying high-level musical content effectively remain scientifically unanswered given the lack of evaluation in that regard. That is a "thorn in our side" that we will pursue.
+While our musically-informed technique does not yet outperform the existing state-of-the-art baselines \cite{deepfeaturesegment, SalamonDeepSegmentation}, it exhibits significant potential in boundary detection tasks, particularly when expanding the training set. The improvement we've observed between datasets is noteworthy, and when compared with two of the acoustic features, our results are highly competitive. We've also managed to circumvent the typical issues associated with dataset enlargements, such as the need for extensive supervision or human annotation, which gives our method an edge in terms of practicality and scalability effectively turning what is usually seen as an expensive hurdle into a much more manageable task.
 
 \section{Discussion}
 
-While whether our model decodes underlying high-level musical content effectively remains scientifically unanswered, the outstanding performance in precision metric
+Whether our model effectively decodes underlying high-level musical content remains open to scientific investigation. It's plausible that our technique possesses significant potential for nearly all content-based MIR downstream tasks, given its intention to be both sound-agnostic and content-sensitive. Queries persist about whether such a general-purpose audio representation can mimic human hearing \cite{Li2023MERT:Training, Turian2022HEAR:Representations}, or if it can accurately decode high-level musical content. Such questions remain unresolved due to the current lack of evaluative measures. This represents a 'thorn in our side' that we intend to address in future research.
 
 Too little representation layer?
 

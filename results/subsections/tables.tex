@@ -5,26 +5,25 @@ The GitHub repository containing all the code needed to run the experiments can 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newsavebox\embeddioaSF
-\begin{lrbox}{\embeddioaSF}
-   $\begin{aligned}
-     0.228 & \quad 0.171 & \quad 0.185
-    \end{aligned} $
-\end{lrbox}
+\begin{table}[h]
+\centering
+\small
+\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{4.5cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+\toprule
+\textbf{Training dataset [Ref]}  & \textbf{Precision} & \textbf{Recall} & \textbf{F-measure} \\
+\midrule
+\addlinespace
+GTZAN \cite{GTZAN} & 0.228 & 0.171 & 0.185 \\
+\addlinespace
+MSD \cite{MSD} &  \textbf{0.333} &  \textbf{0.280} & \textbf{0.288} \\
+\addlinespace
+\bottomrule
+\end{tabularx}
+\caption[Caption]{\small{Comparison of precision, recall, and f-measure for GTZAN-trained versus MSD-trained embeddiograms on SALAMI dataset computed using the Structural Feature (SF)\cite{sf} algorithm.}}
+\label{tab:comparison_table}
+\end{table}
 
-\newsavebox\embeddioaFoote
-\begin{lrbox}{\embeddioaFoote}
-   $\begin{aligned}
-    0.258  & \quad 0.297 & \quad 0.265
-    \end{aligned} $
-\end{lrbox}
-
-\newsavebox\embeddioaCNMF
-\begin{lrbox}{\embeddioaCNMF}
-   $\begin{aligned}
-    0.233  & \quad 0.300  & \quad 0.249
-    \end{aligned} $
-\end{lrbox}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newsavebox\embeddiobSF
 \begin{lrbox}{\embeddiobSF}
@@ -116,36 +115,30 @@ The GitHub repository containing all the code needed to run the experiments can 
   \centering
   \begin{adjustbox}{width=\textwidth}
   \begin{threeparttable}
-    \begin{tabular}{c|l|c|c|c} 
+    \begin{tabular}{c|c|c|c|c} 
 \toprule
-     \multicolumn{2}{c|}{\textbf{Training dataset} and \textbf{Feature}}  & \multicolumn{1}{c}{\textbf{SF}} & \multicolumn{1}{c}{\textbf{Foote}} & \multicolumn{1}{c}{\textbf{CNMF}} 
+     \textbf{Feature} & \textbf{SF} & \textbf{Foote} & \textbf{CNMF} 
      \\ \midrule 
-    \multirow{5}{*}{}&
-        \multirow{1}{*}{PCP} & \usebox{\pcpSF} & \usebox{\pcpFoote} & \usebox{\pcpCNMF} \\\cline{2-5}
-        & \multirow{1}{*}{Tonnetz} & \usebox{\tonnetzSF} & \usebox{\tonnetzFoote} & \usebox{\tonnetzCNMF} \\\cline{2-5} 
-        & \multirow{1}{*}{CQT} & \usebox{\cqtSF} & \usebox{\cqtFoote} & \usebox{\cqtCNMF} \\\cline{1-5} 
-    \multirow{1}{*}{GTZAN \cite{GTZAN}}& 
-        \multirow{1}{*}{Embeddiogram} & \usebox{\embeddioaSF} & \usebox{\embeddioaFoote} & \usebox{\embeddioaCNMF} \\\cline{1-5} 
-    \multirow{1}{*}{MSD \cite{MSD}}& 
-        \multirow{1}{*}{Embeddiogram} & \usebox{\embeddiobSF} & \usebox{\embeddiobFoote} & \usebox{\embeddiobCNMF} \\\bottomrule
+     PCP & \usebox{\pcpSF} & \usebox{\pcpFoote} & \usebox{\pcpCNMF} \\\hline
+     Tonnetz & \usebox{\tonnetzSF} & \usebox{\tonnetzFoote} & \usebox{\tonnetzCNMF} \\\hline
+     CQT & \usebox{\cqtSF} & \usebox{\cqtFoote} & \usebox{\cqtCNMF} \\\hline
+     Embeddiogram & \usebox{\embeddiobSF} & \usebox{\embeddiobFoote} & \usebox{\embeddiobCNMF} \\
+     \bottomrule
     \end{tabular}
-    \caption[Metric comparison: audio features and segmentation algorithms]{Comparison of precision, recall, and f-measure for different features using the Structural Feature (SF)\cite{sf}, Checkerboard Kernel (Foote) \cite{Foote2000AutomaticNovelty}, and Convex Non-negative Matrix Factorization (CNMF) \cite{NietoCONVEXIDENTIFICATION} algorithms on the SALAMI dataset. Sliding windowed segments across the audio signal input signal is 4 seconds long.}\label{ta:results}
+    \caption[Metric comparison: audio features and segmentation algorithms]{Comparison of precision (left column), recall (middle column), and f-measure (right column) metrics for different features using the Structural Feature (SF)\cite{sf}, Checkerboard-like Kernel (Foote) \cite{Foote2000AutomaticNovelty}, and Convex Non-negative Matrix Factorization (CNMF) \cite{NietoCONVEXIDENTIFICATION} algorithms on the SALAMI dataset. The sliding windowed segments across the input signal is 4 seconds long.}\label{ta:results}
   \end{threeparttable}
   \end{adjustbox}
 \end{table}
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[h]
 \centering
 \small
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.5cm}XXXXX}
+\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{4.5cm}XXXX}
 \toprule
-\thead{\centering\textbf{Authors [Ref], Year}} & \thead{\centering\textbf{Input}} & \thead{\centering\textbf{Method}} & \thead{\centering\textbf{F-measure}} \\
+\thead{\textbf{Authors [Ref], Year}} & \thead{\textbf{Input}} & \thead{\textbf{Method}} & \thead{\textbf{F-measure}} \\
 \midrule
-\addlinespace
 Turnbull et al. \cite{Turnbull2007ABOOSTING}, 2007 & MFCCs, chromas, spectrogram & Boosted Decision Stump  & 0.378 \\
 \addlinespace
 Kaiser et al. \cite{27}, 2012 & SSM & Novelty measure  & 0.286 \\
@@ -156,7 +149,7 @@ Nieto \& Bello \cite{28}, 2014 & MFCCs, chromas & Checkerboard-like kernel  & 0.
 \addlinespace
 Cannam et al. \cite{29}, 2015 & Timbre-type histograms & HMM  & 0.213 \\
 \addlinespace
-Nieto \cite{30}, 2016 & Constant-Q Transform Spectrogram & Linear Discriminant Analysis  & 0.299 \\
+Nieto \cite{30}, 2016 & CQT Spectrogram & Linear Discriminant Analysis  & 0.299 \\
 \addlinespace
 Cannam et al. \cite{29}, 2017 & Timbre-type histograms & HMM  & 0.212 \\
 \addlinespace
@@ -170,11 +163,11 @@ Grill \& Schlüter \cite{Grill2015MusicAnnotations}, 2015 & MLS, PCPs, SSLMs & C
 \addlinespace
 Hadria \& Peeterss \cite{35}, 2017 & MLS, SSLMs & CNN  & 0.291 \\
 \addlinespace
-\cite{deepfeaturesegment}, 2019 & CQT & CNN  & \textbf{0.535} ± 0.15 \\
+\cite{deepfeaturesegment}, 2019 & CQT & CNN  & \textbf{0.535} \\
 \addlinespace
 Ours, 2023 & Raw waveforms & CNN  & 0.288 \\
 \bottomrule
 \end{tabularx}
-\caption[Baseline. State-of-the-art table.]{\small{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This table has been extended from \cite{Hernandez-Olivan2021MusicFeatures}.}}
+\caption[Baseline. State-of-the-art table.]{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This table has been extended from \cite{Hernandez-Olivan2021MusicFeatures}.}
 \label{tab:comparison_table}
 \end{table}
