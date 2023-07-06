@@ -20,7 +20,7 @@ Introduced by Bromley and LeCun \cite{Bromley1993SignatureNetwork}, Siamese Netw
 
 The TSN extends the binary contrastive architecture by comparing three input instances instead of two. It strives to learn an embedding space where similar instances are closer and dissimilar ones are more distant. The inputs, consisting of an anchor, a positive instance (similar to the anchor), and a negative instance (dissimilar to the anchor), are processed by identical subnetworks sharing the same parameters.
 
-\subsubsection{Encoder architecture: SampleCNN}
+\subsubsection{Encoder: SampleCNN}
 
 The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for raw waveform audio data, treating each audio sample as an independent channel and applying 1-dimensional convolution along the temporal axis. Its implementation is an adaptation of \cite{CLMR2021} using \textit{PyTorch} \cite{Paszke2019PyTorch:Library} and \textit{PyTorch Lightning} \cite{PyTorchDocumentation}.
 
@@ -66,9 +66,6 @@ Fully connected layer & 512 & 128 \\
 \end{table}
 
 The original model has been subtly adjusted by introducing an average pooling operation to the final convolutional layer. This modification, dimensionality reduction, is strategic for handling various input data sizes. Condensing the feature maps to a fixed-size output ensures consistency for subsequent layers like fully connected ones, streamlining computations while maintaining crucial information. This results in a more robust, efficient learning process that offers translation invariance and better contextual understanding.
-
-%Colour CNN
-\input{figures/neural networks/colour CNN}
 
 \subsection{Optimizer and learning rate}
 
@@ -116,7 +113,7 @@ Random parameter updates within hardcoded ranges generate unique audio $P[n]$ ou
 
 \subsubsection{Negative sample generation}
 
-Circling back to our premises and assumptions, we posit that high-level musical content unfolds over time; therefore, we argue that the temporal structure of the negative images, in contrast to our anchor, should be disrupted. While maintaining similar sonic qualities, the content should be rendered unintelligible.
+Circling back to our premises and assumptions, we posit that high-level musical content unfolds over time; therefore, we argue that the temporal structure of the negative images, in contrast to our anchor, must be disrupted. While maintaining similar sonic qualities, the content should be rendered unintelligible.
 
 The computation for the negative signal $N[n]$ per every $A[n]$ goes as follows:
 
