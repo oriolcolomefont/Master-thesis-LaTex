@@ -4,10 +4,10 @@ Music \footnote{Throughout this thesis, "music" refers to the Western tradition,
 
 Prior research emphasizes the necessity of selecting suitable audio features to distinguish and label unique music segments for music segmentation tasks. The challenge lies in acquiring annotated data for these feature transformations, which can be time-consuming and expensive. In response, scholars have turned to unsupervised deep learning using readily available music audio \cite{deepfeaturesegment, Grill2015MusicAnnotations}. This method has substantially improved the generalization capacity of machine-listening models in downstream applications. Among others, segmentation algorithms have seen significant enhancements and delivered state-of-the-art results \cite{Hernandez-Olivan2021MusicFeatures, Li2023MERT:Training}.
 
-Beyond applications in music structure analysis, the evolution of neural networks has empowered the creation of condensed numerical representations encapsulating crucial musical traits, technically known as representation (or feature) learning. This evolution has simplified the computational process for various task-specific elements, including but not limited to:
+Beyond applications in music structure analysis, the evolution of neural networks has empowered the creation of latent representation encapsulating crucial musical traits, technically known as representation (or feature) learning. This evolution has simplified the computational process for various task-specific elements, including but not limited to:
 
 \begin{itemize}
-\item Creating an audio embedding method that excels across numerous applications without the necessity for fine-tuning \cite{Turian2022HEAR:Representations}.
+\item Creating an audio embedding that excels across numerous applications without the necessity for fine-tuning \cite{Turian2022HEAR:Representations}.
 \item Boosting the classification of environmental sounds \cite{CramerLOOKEMBEDDINGS}.
 \item Enhancing vocal-centric music tasks through cross-domain audio embeddings \cite{Kim2021LearningLoss}.
 \item Integrating task-specific and pre-trained features to optimize audio classification \cite{Hung2022Feature-informedClassification}.
@@ -19,7 +19,7 @@ Beyond applications in music structure analysis, the evolution of neural network
 \item Enabling automated music rearrangement \cite{Stoller2018IntuitiveTransitions, Plachouras2023MusicSegmentation}.
 \end{itemize}
 
-Furthermore, deep audio embeddings offer the benefit of transferability, establishing a foundation for multiple tasks. Compared to training a model from scratch, this approach saves computational resources and time \cite{transferMIR2013, CifkaDeepTransfer}.
+Furthermore, deep audio embeddings offer the benefit of transferability, establishing a foundation for multiple tasks. Compared to training a model from scratch, this approach saves computational resources and time \cite{transferMIR2013, CifkaDeepTransfer, Ding2023AudioClassification}.
 
 Given the proven effectiveness of deep audio embeddings in existing research and their potential for transfer learning, they hold considerable promise for MIR downstream tasks, including boundary detection. However, it is yet to be determined whether a general-purpose audio representation can successfully emulate human hearing \cite{Turian2022HEAR:Representations}, even though some techniques have demonstrated generalizability across many music-understanding tasks \cite{Li2023MERT:Training, Kim2020OneStrategies}.
 

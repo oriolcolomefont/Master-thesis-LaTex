@@ -132,12 +132,17 @@ MSD \cite{MSD} &  \textbf{0.333} &  \textbf{0.280} & \textbf{0.288} \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{table}[h]
+\begin{table}[ht]
+\begin{threeparttable}
 \centering
 \small
-\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{4.5cm}XXXX}
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash}p{4.5cm}
+  >{\centering\arraybackslash}X
+  >{\centering\arraybackslash}X
+  >{\centering\arraybackslash}X}
 \toprule
-\thead{\textbf{Authors [Ref], Year}} & \thead{\textbf{Input}} & \thead{\textbf{Method}} & \thead{\textbf{F-measure}} \\
+\thead{\textbf{Authors [Ref], Year}} & \thead{\textbf{Input}\tnote{1}} & \thead{\textbf{Method}} & \thead{\textbf{F-measure}} \\
 \midrule
 Turnbull et al. \cite{Turnbull2007ABOOSTING}, 2007 & MFCCs, chromas, spectrogram & Boosted Decision Stump  & 0.378 \\
 \addlinespace
@@ -163,11 +168,18 @@ Grill \& Schlüter \cite{Grill2015MusicAnnotations}, 2015 & MLS, PCPs, SSLMs & C
 \addlinespace
 Hadria \& Peeterss \cite{35}, 2017 & MLS, SSLMs & CNN  & 0.291 \\
 \addlinespace
-\cite{deepfeaturesegment}, 2019 & CQT & CNN  & \textbf{0.535} \\
+McCallum \cite{deepfeaturesegment}, 2019 & CQT & CNN  & \textbf{0.535} \\
 \addlinespace
 Ours, 2023 & Raw waveforms & CNN  & 0.288 \\
 \bottomrule
 \end{tabularx}
 \caption[Baseline. State-of-the-art table.]{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This table has been extended from \cite{Hernandez-Olivan2021MusicFeatures}.}
 \label{tab:comparison_table}
+\begin{tablenotes}\footnotesize
+\item[1] \textbf{Legend:} SSM: Self-Similarity Matrix, MLS: Mel Spectrogram, MFCC: Mel-Frequency Cepstral Coefficient, CQT: Constant Q Transform, PCP: Pitch Class Profile, SSLM: Self-Similarity Lag Matrix.
+\end{tablenotes}
+\end{threeparttable}
 \end{table}
+
+
+

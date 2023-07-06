@@ -6,7 +6,7 @@ According to Piaget's theory of cognitive development, children gain knowledge t
 
 In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
 
-Our implementation offers a slight modification to the \textit{contrastive learning of musical representations} (CLMR), a method that learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a branch of ML known as self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn autonomously from unlabeled data to create their own supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. SSL benefits include reduced dependence on labeled data, contributing to more robust and generalizable data representations.
+Our implementation offers a slight modification to the \textit{contrastive learning of musical representations} (CLMR) method, which learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones \cite{CLMR2021}. CLMR falls under a branch of ML known as self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn autonomously from unlabeled data to create their own supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. SSL benefits include reduced dependence on labeled data, contributing to more robust and generalizable data representations.
 
 As previously stated, the methodology of CLMR involves generating different augmentations of the same musical piece to serve as positive pairs while using other pieces as negative pairs. The training process encourages the model to produce similar representations for positive and dissimilar ones for negative pairs.
 
@@ -29,29 +29,32 @@ With only 2.4 million trainable parameters, this fully convolutional model reduc
 \begin{table}[ht]
 \centering
 \small
-\begin{tabularx}{\textwidth}{>{\hsize=1.6\hsize}X>{\hsize=0.6\hsize}X>{\hsize=0.6\hsize}X}
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash\hsize=1.6\hsize}X
+  >{\centering\arraybackslash\hsize=0.6\hsize}X
+  >{\centering\arraybackslash\hsize=0.6\hsize}X}
 \toprule
 \thead{\textbf{Layer Type}} & \thead{\textbf{In Channels}} & \thead{\textbf{Out Channels}} \\
 \midrule
 Conv + ReLU & 1 & 128 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 128 & 128 \\
+\multirow{9}{*}{Conv + BatchNorm + ReLU + MaxPool} & 128 & 128 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 128 & 128 \\
+ & 128 & 128 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 128 & 256 \\
+ & 128 & 256 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+ & 256 & 256 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+ & 256 & 256 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+ & 256 & 256 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+ & 256 & 256 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 256 & 256 \\
+ & 256 & 256 \\
 \addlinespace
-Conv + BatchNorm + ReLU + MaxPool & 256 & 512 \\
+ & 256 & 512 \\
 \addlinespace
 Conv + BatchNorm + ReLU + AvgPool & 512 & 512 \\
 \addlinespace
