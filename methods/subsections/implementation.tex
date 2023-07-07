@@ -16,7 +16,7 @@ Although SSL has proven effective in speech and audio, its application to music 
 
 This work suggests employing a Triplet Siamese Network (TSN), a model architecture known for its efficacy in music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. The aim is to minimize the loss function between a triplet of anchor, positive, and negative samples, utilizing online triplet mining for optimizing memory resources \cite{Sikaroudi2020OfflinePatches}. This SSL model aims to distinguish between similar and dissimilar samples effectively.
 
-Introduced by Bromley and LeCun \cite{Bromley1993SignatureNetwork}, Siamese Networks are deep learning architectures designed for tasks requiring comparison or similarity assessment between instances. The architecture comprises identical subnetworks that share the same parameters, improving memory usage and computational efficiency. Rather than learning specific features of individual classes, they focus on a similarity metric, making them ideal for imbalanced datasets. Each subnetwork processes an input independently, combining the outputs to yield a similarity score. Training with shared weights enables the model to learn invariant input representation, improving comparison efficiency. This is accomplished through a specialized loss function called triplet loss, which aims to minimize the distance between similar inputs and maximize it for dissimilar ones.
+Introduced by Bromley and LeCun \cite{Bromley1993SignatureNetwork}, Siamese Networks are deep learning architectures designed for tasks requiring comparison or similarity assessment between instances. The architecture comprises identical subnetworks that share the same parameters, improving memory usage and computational efficiency. Rather than learning specific features of individual classes, they focus on a similarity metric, making them ideal for imbalanced datasets. Each subnetwork processes an input independently, combining the outputs to yield a similarity score. Training with shared weights enables the model to learn invariant input representation, improving comparison efficiency. This is accomplished through a specialized loss function called triplet loss, which aims to minimize the distance between similar inputs and maximize it for dissimilar ones. The loss function will be explained later in Subsection~\ref{subsec:loss-function}.
 
 The TSN extends the binary contrastive architecture by comparing three input instances instead of two. It strives to learn an embedding space where similar instances are closer and dissimilar ones are more distant. The inputs, consisting of an anchor, a positive instance (similar to the anchor), and a negative instance (dissimilar to the anchor), are processed by identical subnetworks sharing the same parameters.
 
@@ -26,13 +26,24 @@ The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for
 
 With only 2.4 million trainable parameters, this fully convolutional model reduces computational requirements and learns features at different scales through its multi-resolution architecture \ref{tab:samplecnntable}.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}
+    \centering
+    \includegraphics{figures/images/applsci-08-00150-g001.png}
+    \caption[]{Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{table}[ht]
 \centering
 \small
 \begin{tabularx}{\textwidth}{
-  >{\centering\arraybackslash\hsize=1.6\hsize}X
-  >{\centering\arraybackslash\hsize=0.6\hsize}X
-  >{\centering\arraybackslash\hsize=0.6\hsize}X}
+  >{\centering\arraybackslash\hsize=0.5\hsize}X
+  >{\centering\arraybackslash\hsize=0.25\hsize}X
+  >{\centering\arraybackslash\hsize=0.25\hsize}X}
 \toprule
 \thead{\textbf{Layer Type}} & \thead{\textbf{In Channels}} & \thead{\textbf{Out Channels}} \\
 \midrule
@@ -65,6 +76,7 @@ Fully connected layer & 512 & 128 \\
 \label{tab:samplecnntable}
 \end{table}
 
+
 The original model has been subtly adjusted by introducing an average pooling operation to the final convolutional layer. This modification, dimensionality reduction, is strategic for handling various input data sizes. Condensing the feature maps to a fixed-size output ensures consistency for subsequent layers like fully connected ones, streamlining computations while maintaining crucial information. This results in a more robust, efficient learning process that offers translation invariance and better contextual understanding.
 
 \subsection{Optimizer and learning rate}
@@ -80,6 +92,8 @@ The choice of input data is guided by the task, computational resources, and the
 Previous research has utilized CNNs with various features such as Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}. However, features derived from raw audio may lack interpretability in some scenarios \cite{Schindler2020DeepTutorial}, and raw audio presents unique advantages despite being highly computationally demanding. It ensures the preservation of the original signal, potentially uncovering novel insights, and allows for direct feature extraction via advanced DL models \cite{learning, verydeep}. Nevertheless, it comes with challenges, such as high dimensionality requiring substantial computational resources. 
 
 Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although audio feature-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Mel-Scaled Log-magnitude Spectograms, for example, capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music content may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
+
+In conclusion, raw audio waveforms were our final choice for input for the anchor. Each input sequence was 15 seconds long, roughly equivalent to 8 bars of 4/4 music at 120 beats per minute. The audio was sampled at a frequency of 16 kHz, a decision influenced by the requirements of SampleCNN, computational resources, and our belief in the value of high-resolution data for revealing a comprehensive picture of the audio content. We are confident that this choice of input contains a significant amount of meaningful musical information. Although it may not encompass the complexity of a symphony, it is sufficient for the scope of our experiments.
 
 \subsubsection{Positive sample generation chain}
 
@@ -145,6 +159,7 @@ N[n] = C_{\sigma(1)} \oplus C_{\sigma(2)} \oplus \ldots \oplus C_{\sigma(n)}
 The whole purpose of this process is to disturb the content unfolding in the time domain so it becomes musically unintelligible while maintaining the production and sonic attributes.
 
 \subsection{Loss function}
+\label{subsec:loss-function}
 
 Schroff, F., Kalenichenko, D., and Philbin, J. from Google first proposed and applied triplet loss for the learning of facial recognition, catering to varied poses and angles of the same individual \cite{Schroff2015FaceNet:Clustering}.
 
