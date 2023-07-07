@@ -31,8 +31,15 @@ With only 2.4 million trainable parameters, this fully convolutional model reduc
 \begin{figure}
     \centering
     \includegraphics{figures/images/applsci-08-00150-g001.png}
-    \caption[]{Caption}
-    \label{fig:enter-label}
+    \caption[SampleCNN]{Caption}
+    \label{fig:samplecnn}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{figures/images/applsci-08-00150-g002.png}
+    \caption[SampleCNN]{Caption}
+    \label{fig:filters}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -214,5 +221,90 @@ First, we utilized 16-mixed precision training. This approach leverages the impr
 Secondly, to capitalize on the computational capabilities of multiple GPUs and hasten training times, we employed the Distributed Data-Parallel (DDP) strategy \cite{Li2020PyTorchTraining}. DDP operates on distinct mini-batches of data across GPUs and synchronizes the gradients after each backward pass, providing a more efficient scaling than other parallel strategies. 
 
 These strategies collectively enhance the computational efficiency while maintaining the robustness of the model training on lengthy raw audio data.
+
+\subsection{The \textit{embeddiogram}, a deep audio feature representation}
+
+The \textit{embeddiogram}, a deep audio feature representation, is derived by applying our pre-trained neural network to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
+
+Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal of length $N$. This process comprises loading the audio data, slicing the audio data into windowed segments, processing each window using our pre-trained model to produce a vector per window/time frame, collecting and stacking these embeddings, and finally, normalizing the resulting matrix. 
+
+\begin{enumerate}
+\item \textbf{Load the audio data}: The audio data is loaded into memory as a one-dimensional array of length $N$.
+
+\item \textbf{Slice the audio data}: The audio data is segmented into overlapping windows. Each window contains $w$ samples, and consecutive windows are separated by a hop size $h$. This gives a total of $H$ windows, defined as:
+\begin{equation}
+H = 1 + \left\lfloor \frac{N - w}{h} \right\rfloor
+\end{equation}
+In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account for the final, potentially smaller window.
+
+We have conducted experiments using a window duration of 4 seconds (\(w = 4 \times \text{{sampling rate}}\)). As a general rule of thumb, this duration corresponds to two 4/4 bars of a piece of music with a tempo where the quarter note equals 120 BPM.
+
+We find this a good starting compromise solution, allowing enough time to capture musical content while not being so large that downsampling reduces the information to an unintelligible vector.
+
+\item \textbf{Process each window}: Each window of audio data is processed independently, passed through the pre-trained neural network, and transformed into an embedding vector. Formally, for each window $w_i$ of audio data, we have:
+\begin{equation}
+\text{embedding}_i = \text{model}(w_i)
+\end{equation}
+
+\item \textbf{Collect the embeddings}: The embedding vectors are collected and stacked together. Each row represents a feature vector for a given time frame to form the \textit{embeddiogram}, denoted as $\text{e}$:
+\begin{equation}
+\text{e} = \begin{bmatrix} \text{embedding}_1 \\ \text{embedding}_2 \\ \vdots \\ \text{embedding}_H \end{bmatrix}
+\end{equation}
+
+\item \textbf{Normalize the \textit{embeddiogram \ref{fig:embeddiogram}}}: The \textit{embeddiogram} is normalized to have a minimum value of 0 and a maximum value of 1 per dimension. The normalization process is given by:
+\begin{equation}
+E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
+\end{equation}
+\end{enumerate}
+
+\begin{figure}[ht]
+  \centering
+  \begin{minipage}[b]{1.0\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/images/355embeddiogramnormalized.png}
+    \caption[Embeddiogram. Track 355 (SALAMI dataset).]{Embeddiogram. Track 355 (SALAMI dataset).}
+    \label{fig:embeddiogram}
+  \end{minipage}
+
+  \begin{minipage}[b]{1.0\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/images/355novelty.png}
+    \caption[Novelty curve + peaks. Track 355 (SALAMI dataset).]{Novelty curve and peak detection. Track 355 (SALAMI dataset).}
+    \label{fig:novelty}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/images/355recurrencematrix.png} % first figure itself
+        \caption[Track 355 (SALAMI dataset) Self-similarity matrix]{Self-similarity matrix computation of the embeddiogram. Track 355 (SALAMI dataset).}
+        \label{fig:SSM}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/images/355lagmatrixgaussiansmoothing.png} % second figure itself
+        \caption[Track 355 (SALAMI dataset) SSLM computation of the embeddiogram]{Self-similarity lag matrix. Track 355 (SALAMI dataset).}
+        \label{fig:SSLM}
+    \end{minipage}
+    \vfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/images/355cumulativematrix.png} % third figure itself
+        \caption[Track 355 (SALAMI dataset). Q-matrix]{Cumulative matrix computation of the embeddiogram. Track 355 (SALAMI dataset) .}
+        \label{fig:Q}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/images/355transitivebinarysimilaritymatrix.png} % fourth figure itself
+        \caption[Track 355 (SALAMI dataset). Transitive Binary Similarity Matrix]{Transitive Binary Matrix computation of the embeddiogram. Track 355 (SALAMI dataset).}
+        \label{fig:TBSM}
+    \end{minipage}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+These deep audio features can be a foundation for current state-of-the-art methods, which are expected to receive as input standard traditional audio features. Consequently, they can be processed and manipulated like conventional features as described by \cite{unsuperMSA} and displayed in \ref{fig:novelty}, \ref{fig:SSM}, \ref{fig:SSLM}, \ref{fig:Q}, and \ref{fig:TBSM}. Employing such embeddings in a traditional music segmentation algorithm can achieve state-of-the-art performance \cite{deepfeaturesegment}.
 
 \newpage

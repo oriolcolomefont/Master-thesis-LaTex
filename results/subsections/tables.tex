@@ -1,11 +1,16 @@
 
-As stated in the previous section, the evaluation results were obtained using standard and commonly used MIR tools, frameworks, and metrics. These include the MSAF \cite{MSAF} implementation for segmentation algorithms, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} for evaluation ground truth, and $mireval$ Python package \cite{RaffelMir_eval:METRICS} for metric computation.
+The evaluation results were obtained using standard and commonly used MIR tools, frameworks, and metrics. These include the MSAF \cite{MSAF} implementation for segmentation algorithms, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} for evaluation ground truth, and $mireval$ Python package \cite{RaffelMir_eval:METRICS} for metric computation.
 
-The GitHub repository containing all the code needed to run the experiments can be found \href{https://github.com/oriolcolomefont/Master-Thesis.git}{HERE}. The results are displayed in tables \ref{tab:comparison_table} and \ref{ta:results}.
+Table \ref{ta:results} provides a comparative analysis across four different features using three different segmentation algorithms. The results reveal that the performance of the algorithms varies depending on the type of feature. For instance, the CQT feature exhibits the highest precision (0.570), recall (0.339), and f-measure (0.353) when processed with the Foote algorithm. This table also proves that it is possible to achieve competitive perfor-
+mance to traditional handcrafted signal processing methods by learning only from unlabeled audio files.
+
+The visual representation of these results is also provided in Figure \ref{fig:boxplotmetrics} to better understand the distribution of the metrics for each feature.
+
+Table \ref{tab:comparison_table} and Figure \ref{fig:enter-label} offer a comparison of the current study's boundary detection F-measure results with those of previous studies using unsupervised methods. The most accurate result was reported in 2019 by McCallum \cite{deepfeaturesegment} who used a CNN on CQT and achieved an F-measure of 0.535. The current study's approach using raw waveforms as input and CNN as the method yielded an F-measure of 0.288.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \small
 \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{4.5cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
@@ -19,9 +24,17 @@ MSD \cite{MSD} &  \textbf{0.333} &  \textbf{0.280} & \textbf{0.288} \\
 \addlinespace
 \bottomrule
 \end{tabularx}
-\caption[GTZAN-trained versus MSD-trained embeddiograms]{\small{Comparison of precision, recall, and f-measure for GTZAN-trained versus MSD-trained embeddiograms on SALAMI dataset computed using the Structural Feature (SF)\cite{sf} algorithm.}}
+\caption[GTZAN-trained versus MSD-trained embeddiograms]{\small{Comparison of precision, recall, and F-measure for GTZAN-trained versus MSD-trained embeddiograms on SALAMI dataset computed using the Structural Feature (SF)\cite{sf} algorithm.}}
 \label{tab:comparison_table}
 \end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Table \ref{tab:comparison_table} compares the performance of the Structural Feature (SF) algorithm on the SALAMI dataset, utilizing two distinct sets of embeddiograms as input features. These embeddiograms were respectively generated with the neural network trained using the GTZAN and MSD datasets.
+
+The results show a clear advantage for the SF algorithm when it is trained on the MSD dataset, as compared to the GTZAN dataset. Specifically, the precision, recall, and f-measure are all higher for the MSD-trained algorithm.
+
+The precision, recall, and f-measure metrics in Table \ref{tab:comparison_table} evaluate the performance of the Structural Feature (SF) algorithm using GTZAN and MSD-trained embeddiograms. Precision indicates the proportion of correctly predicted boundaries. The MSD-trained algorithm outperforms the GTZAN-trained one, scoring 0.333 versus 0.228. Recall measures the algorithm's success in detecting all actual boundaries; again, the MSD-trained version shows better performance with a score of 0.280 against GTZAN's 0.171. F-measure, a metric that balances precision and recall, also favors the MSD-trained algorithm, with a score of 0.288 compared to 0.185 for the GTZAN-trained version.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -185,7 +198,7 @@ Ours, 2023 & Raw waveforms & CNN  & 0.288 \\
 \caption[Baseline. State-of-the-art table.]{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This table has been extended from \cite{Hernandez-Olivan2021MusicFeatures}.}
 \label{tab:comparison_table}
 \begin{tablenotes}\footnotesize
-\item[1] \textbf{Legend:} SSM: Self-Similarity Matrix, MLS: Mel Spectrogram, MFCC: Mel-Frequency Cepstral Coefficient, CQT: Constant Q Transform, PCP: Pitch Class Profile, SSLM: Self-Similarity Lag Matrix.
+\item[1] \textbf{Legend:} SSM: Self-Similarity Matrix, MLS: Mel Spectrogram, MFCC: Mel-Frequency Cepstral Coefficient, CQT: Constant Q-Transform, PCP: Pitch Class Profile, SSLM: Self-Similarity Lag Matrix.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
@@ -198,5 +211,7 @@ Ours, 2023 & Raw waveforms & CNN  & 0.288 \\
     \caption[Baseline. State-of-the-art graph.]{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This figure has been extended from \cite{Hernandez-Olivan2021MusicFeatures}.}
     \label{fig:enter-label}
 \end{figure}
+
+The GitHub repository containing all the code needed to run the experiments can be found \href{https://github.com/oriolcolomefont/Master-Thesis.git}{HERE}.
 
 
