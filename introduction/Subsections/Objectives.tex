@@ -2,8 +2,18 @@
 
 Can deep audio embeddings be learned from reordering, scrambling, and augmenting sequences of musical information to improve unsupervised music boundary detection?
 
-Our research aims to develop and learn a unified numerical understanding (or embedding \footnote{A learned representation or embedding is a numerical output - usually a fixed-size vector - produced by a machine-learning model. Good representations should be versatile across various tasks and require limited supervision \cite{Turian2022HEAR:Representations}.}) for a piece of music that integrates the high-level relationships between musical elements as they unfold over time.
+Our research aims to develop and learn a unified numerical understanding (or embedding \footnote{A learned representation or embedding is a numerical output - usually a fixed-size vector - produced by a machine-learning model. Good non-supervised representations should be versatile across various tasks and require limited supervision, therefore appears as an attractive methodology to be employed \cite{Turian2022HEAR:Representations}.}) for a piece of music that integrates the high-level relationships between musical elements as they unfold over time.
 
 The research employs MIR computational methodologies and musicological perspectives to explore musical compositions across various styles and genres.
 
 This approach aims to replicate human auditory capabilities by understanding and identifying abstract and semantic musical elements independent of their sonic qualities.
+
+\section{Contributions}
+
+Our study is centered around the following topics of investigation:
+
+\begin{itemize}
+    \item We demonstrate that the size of the audio file dataset used for learning embeddings influences the results of music segmentation. Larger datasets lead to improved results.
+    \item We show that achieving performance competitive with traditional handcrafted signal processing methods is possible by learning solely from unlabeled audio files.
+    \item While our musically-informed technique does not currently surpass existing state-of-the-art baselines, it shows significant promise in boundary detection tasks, significantly when the training set is expanded.
+\end{itemize}

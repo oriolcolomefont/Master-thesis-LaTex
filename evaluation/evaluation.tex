@@ -15,7 +15,7 @@ H = 1 + \left\lfloor \frac{N - w}{h} \right\rfloor
 \end{equation}
 In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account for the final, potentially smaller window.
 
-We have conducted experiments using a window duration of 4 seconds (\(w = 4 \times \text{{sr (Hz)}}\)). As a general rule of thumb, this duration corresponds to two 4/4 bars of a piece of music with a tempo where the quarter note equals 120 BPM.
+We have conducted experiments using a window duration of 4 seconds (\(w = 4 \times \text{{sampling rate}}\)). As a general rule of thumb, this duration corresponds to two 4/4 bars of a piece of music with a tempo where the quarter note equals 120 BPM.
 
 We find this to be a good starting compromise solution, allowing enough time span to capture musical content while not being so large that downsampling reduces the information to an unintelligible vector.
 

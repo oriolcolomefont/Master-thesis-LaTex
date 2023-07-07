@@ -3,8 +3,8 @@
 This research merely scratches the surface, and vast territories are yet uncharted. In future studies, the following areas will be explored to extend the current research further:
 
 \begin{itemize}
-  \item Investigate the effect of different transformations and augmentation pipelines. Incorporating track stems and different takes of the same piece as natural, human-made augmentations could yield interesting results.
-  \item Expand input data to include dB-scale Mel-spectrum magnitude and CQT of audio. This approach has been widely used in music-related tasks with CNNs \cite{Kim2020OneStrategies}. Though raw audio provides a rich representation, dB-scale Mel-spectrum offers a frequency-domain summarization that is not only grounded in psycho-acoustics but is also computationally efficient and hard to reproduce solely through data-driven methods \cite{Kim2020OneStrategies}. Therefore, this trade-off is worth exploring.
+  \item Investigate the effect of different transformations and augmentation pipelines. Incorporating track stems and different takes of the same piece as natural, human-made augmentations could yield exciting results.
+  \item Expand input data to include dB-scale Mel-spectrum magnitude and CQT of audio. This approach has been widely used in music-related tasks with CNNs \cite{Kim2020OneStrategies}. Though raw audio provides a rich representation, dB-scale Mel-spectrum offers a frequency-domain summarization that is not only grounded in psycho-acoustics but is also computationally efficient and hard to reproduce solely through data-driven methods. Therefore, this trade-off is worth exploring.
   \item Implement k-fold cross-validation to improve the robustness of the model's performance.
   \item Experiment with different hyperparameters. For instance, setting the kernel size to $0.005$ times the sample rate could match the Just Noticeable Difference (JND). As for the loss function margin, a starting point of 0.2 has proven effective, but different values should be explored to optimize performance on the validation set.
   \item Increase the size of the representation layer to 512 or 1024 dimensions.

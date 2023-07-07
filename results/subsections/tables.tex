@@ -1,7 +1,7 @@
 
 As stated in the previous section, the evaluation results were obtained using standard and commonly used MIR tools, frameworks, and metrics. These include the MSAF \cite{MSAF} implementation for segmentation algorithms, the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS} for evaluation ground truth, and $mireval$ Python package \cite{RaffelMir_eval:METRICS} for metric computation.
 
-The GitHub repository containing all the code needed to run the experiments can be found \href{https://github.com/oriolcolomefont/Master-Thesis.git}{HERE}.The results are displayed in the table \ref{ta:results}
+The GitHub repository containing all the code needed to run the experiments can be found \href{https://github.com/oriolcolomefont/Master-Thesis.git}{HERE}. The results are displayed in tables \ref{tab:comparison_table} and \ref{ta:results}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -130,6 +130,15 @@ MSD \cite{MSD} &  \textbf{0.333} &  \textbf{0.280} & \textbf{0.288} \\
   \end{adjustbox}
 \end{table}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/images/boxplot.png}
+    \caption[Metric comparison for different audio features.]{\small{Boxplot visual comparison of different features' average precision, recall, and f-measure. Sliding windowed segments across the audio signal input signal is 4 seconds.}}
+    \label{fig:boxplotmetrics}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[ht]
@@ -181,5 +190,13 @@ Ours, 2023 & Raw waveforms & CNN  & 0.288 \\
 \end{threeparttable}
 \end{table}
 
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/images/fmeasuregraphs.png}
+    \caption[Baseline. State-of-the-art graph.]{Previous studies' boundary detection f-measure results using unsupervised methods for a 0.5s time-window tolerance. Only the top-performing algorithm for each year on the SALAMI dataset is displayed. This figure has been extended from \cite{Hernandez-Olivan2021MusicFeatures}.}
+    \label{fig:enter-label}
+\end{figure}
 
 
