@@ -1,12 +1,18 @@
-\section{Related work}
+\section{Music boundary detection as a downstream task}
+
+While the usefulness of similar self-supervised learned embeddings can be evaluated in countless downstream tasks \cite{Li2023MERT:Training, Kim2020OneStrategies}, we have chosen music boundary detection. Also known as track segmentation and commonly tackled with spectral analysis, it is a subset of music structure analysis (MSA) suitable for its popularity \cite{Smith2013ATask}, complexity, and product-compelling nature. 
+
+This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces non-solved challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}.  
+
+\subsection{Related work}
 
 Related research investigates audio embeddings derived through unsupervised methods to enhance the performance of music segmentation algorithms \cite{deepfeaturesegment, SalamonDeepSegmentation}. Both studies leverage the power of deep learning and data-driven feature learning, presenting advancements over traditional manually-engineered methods.
 
 The study in \cite{deepfeaturesegment} presents a novel approach for music segmentation, utilizing audio embeddings learned via few-shot learning and a music auto-tagging model. This method, which replaces the traditionally handcrafted MFCC and CQT features, significantly improves multi-level music segmentation, achieving state-of-the-art results and outperforming existing baselines.
 
-On the other hand, \cite{SalamonDeepSegmentation} explores using unsupervised deep learning methods for creating meaningful music representations and applying them to tasks like music structure analysis. The research employs Convolutional Neural Networks (CNNs) trained on millions of tracks from a music streaming service. The study reveals that these embeddings, derived via unsupervised learning, are effective at capturing musical structures, particularly when integrated with traditional feature engineering methods.
+On the other hand, \cite{SalamonDeepSegmentation} explores using unsupervised deep learning methods for creating meaningful music representations and applying them to music structure analysis tasks. The research employs Convolutional Neural Networks (CNNs) trained on millions of tracks from a music streaming service. The study reveals that these embeddings, derived via unsupervised learning, are effective at capturing musical structures, particularly when integrated with traditional feature engineering methods.
 
-Both studies emphasize the significant potential of deep learning-based feature learning in enhancing music segmentation tasks, which have traditionally relied on manual feature engineering methods. Furthermore, they demonstrate how using deep learning techniques improves the performance of segmentation algorithms and enables a more nuanced and detailed analysis of music structure. 
+Both studies emphasize the significant potential of deep learning-based feature learning in enhancing music segmentation tasks, which have traditionally relied on manual feature engineering methods only. Furthermore, they demonstrate how using deep learning techniques improves the performance of segmentation algorithms and enables a more nuanced and detailed analysis of music structure. 
 
 The results prove that unsupervised deep-learning techniques which derive audio embeddings offer more robust and efficient alternatives to traditional manual feature-engineering methods in music segmentation.
 

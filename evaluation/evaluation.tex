@@ -1,14 +1,7 @@
-\chapter{Datasets and Evaluation}
-
-\section{Music boundary detection as downstream task}
-
-While the usefulness of similar self-supervised learned embeddings can be evaluated in countless downstream tasks \cite{Li2023MERT:Training, Kim2020OneStrategies}, we have chosen music boundary detection. Also known as track segmentation and commonly tackled with spectral analysis, it is a subset of music structure analysis (MSA) suitable for its popularity \cite{Smith2013ATask}, complexity, and product-compelling nature. 
-
-This interdisciplinary field aims to understand the structure of music \cite{Nieto2020Audio-BasedApplications}. Due to subjectivity, ambiguity, and data scarcity, audio-based MSA faces non-solved challenges like boundary placement ambiguity and similarity quantification \cite{NietoPerceptualMusic}.  
-
-%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Evaluation}
 
 \section{Datasets and metrics}
+\label{section:Datasets and metrics}
 
 The developed model has been trained on GTZAN \cite{GTZAN} and the Million Song Dataset (MSD) \cite{MSD} and evaluated on the SALAMI dataset \cite{Smith2011DESIGNANNOTATIONS}. 
 
@@ -17,7 +10,7 @@ The GTZAN Genre Collection is a widely-used dataset for music genre classificati
 
 This dataset comprises 1,000 audio tracks that are each 30 seconds long. These tracks are evenly distributed across ten genres: blues, classical, country, disco, hip hop, jazz, metal, pop, reggae, and rock, each containing precisely 100 songs. The audio files are stored as WAV files with a sample rate of 22050 Hz \cite{GTZAN}.
 
-\subsection{Million Song Dataset (MSD)}
+\subsection{Million Song Dataset}
 The Million Song Dataset (MSD) is a publicly available audio and metadata collection for a million contemporary popular music tracks.
 
 The MSD encourages research on large-scale recommendation systems, exploration of musicological properties, and general research on large datasets. It provides a massive scale and diversity of data, making it an excellent resource for complex, large-scale music-related machine-learning tasks \cite{MSD}.
@@ -36,11 +29,15 @@ While SALAMI does not directly distribute audio, it directs users to correspondi
 
 Three primary metrics have been utilized to assess the model performance: Precision, Recall, and F-measure. 
 
+\subsubsection{Precision}
+
 Precision quantifies the proportion of accurately identified boundaries relative to all estimated boundaries to indicate the algorithm's accuracy in boundary detection.
 
 \begin{equation}
 \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}}
 \end{equation}
+
+\subsubsection{Recall}
 
 On the other hand, recall measures the proportion of accurately detected boundaries against all reference boundaries, indicating the completeness or sensitivity of the algorithm.
 
@@ -48,7 +45,9 @@ On the other hand, recall measures the proportion of accurately detected boundar
 \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}}
 \end{equation}
 
-Lastly, the F-measure provides a harmonized measure of precision and recall. As a widely adopted metric for boundary detection, it compares predicted boundaries with ground truth ones, yielding a score between 0 and 1. This score, calculated as the harmonic mean of Precision and Recall, effectively accounts for both under-segmentation and over-segmentation. Given the inherent inaccuracies in human annotations and prediction errors, the F-measure allows for minor deviations between predicted and actual boundaries. The F-measure can adjust the tolerance threshold, permitting a predicted boundary to be considered correct if it falls within a predefined window of a ground truth boundary \cite{NietoPerceptualMusic, Turnbull2007ABOOSTING}. In this work, we opted for an F-measure tolerance of 0.5 seconds, a decision largely guided by established norms in existing literature and music information retrieval research. This 0.5-second tolerance strikes a balance between precision and flexibility, demanding accurate boundary predictions while accommodating slight variations inevitable due to the subjective nature of music segmentation.
+\subsubsection{F-measure}
+
+Lastly, the F-measure provides a harmonized measure of precision and recall. As a widely adopted metric for boundary detection, it compares predicted boundaries with ground truth ones, yielding a score between 0 and 1. This score, calculated as the harmonic mean of Precision and Recall, effectively accounts for both under-segmentation and over-segmentation. Given the inherent inaccuracies in human annotations and prediction errors, the F-measure allows for minor deviations between predicted and actual boundaries. The F-measure can adjust the tolerance threshold, permitting a predicted boundary to be considered correct if it falls within a predefined window of a ground truth boundary \cite{NietoPerceptualMusic, Turnbull2007ABOOSTING}. In this work, we opted for an F-measure tolerance of 0.5 seconds, a decision largely guided by established norms in existing literature and music information retrieval research. This 0.5-second tolerance balances precision and flexibility, demanding accurate boundary predictions while accommodating slight variations inevitable due to the subjective nature of music segmentation.
 
 We computed the F-measure for each track and then calculated the average rather than aggregating all tracks into a single dataset and calculating the F-measure on this combined set.
 

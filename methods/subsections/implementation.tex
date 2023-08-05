@@ -1,14 +1,12 @@
 \section{Implementation details}
 
-Our approach falls broadly under cognitive modeling, which seeks to simulate human cognitive processes and problem-solving through a computerized model. We advocate for exposure-based learning in music, encouraging active engagement with various musical styles, genres, techniques, and learning methods. This approach promotes comprehensive musical proficiency and efficient performance when encountering novel data in practical applications.
+Our approach falls broadly under cognitive modeling, which seeks to simulate human cognitive processes and problem-solving through a computerized model. We advocate for exposure-based learning in music, encouraging active engagement with as many musical styles, genres, techniques, and learning methods as possible. This approach promotes comprehensive musical proficiency and efficient performance when encountering novel and unseen data in practical applications.
 
-According to Piaget's theory of cognitive development, children gain knowledge through sensory experiences and gradually develop abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by incorporating new information through processes of assimilation and accommodation \cite{audioselfsupsurvey}.
+According to Piaget's theory of cognitive development, children gain knowledge through sensory experiences and gradually develop abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by incorporating new information through assimilation and accommodation \cite{audioselfsupsurvey}.
 
 In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
 
-Our implementation offers a slight modification to the \textit{contrastive learning of musical representations} (CLMR) method \cite{CLMR2021}, which learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones. CLMR falls under a branch of ML known as self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn autonomously from unlabeled data to create their own supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. SSL benefits include reduced dependence on labeled data, contributing to more robust and generalizable data representations.
-
-As previously stated, the methodology of CLMR involves generating different augmentations of the same musical piece to serve as positive pairs while using other pieces as negative pairs. The training process encourages the model to produce similar representations for positive and dissimilar ones for negative pairs.
+Our implementation slightly modifies the \textit{contrastive learning of musical representations} (CLMR) method \cite{CLMR2021}, which learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones. CLMR falls under a branch of ML known as self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn autonomously from unlabeled data to create their own supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. SSL benefits include reduced dependence on labeled data, contributing to more robust and generalizable data representations.
 
 Although SSL has proven effective in speech and audio, its application to music audio remains relatively unexplored. This is primarily due to the unique challenges of modeling musical knowledge, especially regarding music's tonal and pitched characteristics \cite{Li2023MERT:Training}.
 
@@ -16,13 +14,13 @@ Although SSL has proven effective in speech and audio, its application to music 
 
 This work suggests employing a Triplet Siamese Network (TSN), a model architecture known for its efficacy in music similarity retrieval tasks \cite{contentmusicsimtriplet2020}. The aim is to minimize the loss function between a triplet of anchor, positive, and negative samples, utilizing online triplet mining for optimizing memory resources \cite{Sikaroudi2020OfflinePatches}. This SSL model aims to distinguish between similar and dissimilar samples effectively.
 
-Introduced by Bromley and LeCun \cite{Bromley1993SignatureNetwork}, Siamese Networks are deep learning architectures designed for tasks requiring comparison or similarity assessment between instances. The architecture comprises identical subnetworks that share the same parameters, improving memory usage and computational efficiency. Rather than learning specific features of individual classes, they focus on a similarity metric, making them ideal for imbalanced datasets. Each subnetwork processes an input independently, combining the outputs to yield a similarity score. Training with shared weights enables the model to learn invariant input representation, improving comparison efficiency. This is accomplished through a specialized loss function called triplet loss, which aims to minimize the distance between similar inputs and maximize it for dissimilar ones. The loss function will be explained later in Subsection~\ref{subsec:loss-function}.
+Introduced by Bromley and LeCun \cite{Bromley1993SignatureNetwork}, Siamese Networks are DL architectures designed for tasks requiring comparison or similarity assessment between instances. The architecture comprises identical subnetworks that share the same parameters, improving memory usage and computational efficiency. Rather than learning specific features of individual classes, they focus on a similarity metric, making them ideal for imbalanced datasets. Each subnetwork processes an input independently, combining the outputs to yield a similarity score. Training with shared weights enables the model to learn invariant input representation, improving comparison efficiency. This is accomplished through a specialized loss function called triplet loss, which aims to minimize the distance between similar inputs and maximize it for dissimilar ones. The loss function will be explained later in Subsection~\ref{subsec:loss-function}.
 
-The TSN extends the binary contrastive architecture by comparing three input instances instead of two. It strives to learn an embedding space where similar instances are closer and dissimilar ones are more distant. The inputs, consisting of an anchor, a positive instance (similar to the anchor), and a negative instance (dissimilar to the anchor), are processed by identical subnetworks sharing the same parameters.
+The TSN extends the traditional binary contrastive architecture by comparing three input instances instead of two. It strives to learn an embedding space where similar instances are closer and dissimilar ones are more distant.
 
 \subsubsection{Encoder: SampleCNN}
 
-The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for raw waveform audio data, treating each audio sample as an independent channel and applying 1-dimensional convolution along the temporal axis. Its implementation is an adaptation of \cite{CLMR2021} using \textit{PyTorch} \cite{Paszke2019PyTorch:Library} and \textit{PyTorch Lightning} \cite{PyTorchDocumentation}.
+The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for raw waveform audio data, treating each audio sample as an independent channel and applying 1-dimensional convolution along the temporal axis. Our implementation is an adaptation of \cite{CLMR2021} using \textit{PyTorch} \cite{Paszke2019PyTorch:Library} and \textit{PyTorch Lightning} \cite{PyTorchDocumentation}.
 
 With only 2.4 million trainable parameters, this fully convolutional model reduces computational requirements and learns features at different scales through its multi-resolution architecture \ref{tab:samplecnntable}.
 
@@ -30,15 +28,8 @@ With only 2.4 million trainable parameters, this fully convolutional model reduc
 
 \begin{figure}
     \centering
-    \includegraphics{figures/images/applsci-08-00150-g001.png}
-    \caption[SampleCNN]{Caption}
-    \label{fig:samplecnn}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics{figures/images/applsci-08-00150-g002.png}
-    \caption[SampleCNN]{Caption}
+    \includegraphics{figures/images/applsci-08-00150-g003.png}
+    \caption[SampleCNN filters]{The spectrum of the estimated filters in the intermediate layers of SampleCNN is sorted by the frequency of the peak magnitude. The x-axis represents the index of the filter, and the y-axis represents the frequency range from 0 to 11 kHz. The model used for visualization is  39---SampleCNN with 59,049 samples as input. Visualization was performed using the gradient ascent method to obtain the accumulated gradient-based input waveform-like signal that maximizes the activation of a filter in the layers. To effectively find the filter characteristics, we set the input size to 729 samples, close to a typical frame size.}
     \label{fig:filters}
 \end{figure}
 
@@ -48,43 +39,28 @@ With only 2.4 million trainable parameters, this fully convolutional model reduc
 \centering
 \small
 \begin{tabularx}{\textwidth}{
-  >{\centering\arraybackslash\hsize=0.5\hsize}X
-  >{\centering\arraybackslash\hsize=0.25\hsize}X
-  >{\centering\arraybackslash\hsize=0.25\hsize}X}
+  >{\centering\arraybackslash\hsize=0.4\hsize}X
+  >{\centering\arraybackslash\hsize=0.2\hsize}X
+  >{\centering\arraybackslash\hsize=0.2\hsize}X
+  >{\centering\arraybackslash\hsize=0.2\hsize}X}
 \toprule
-\thead{\textbf{Layer Type}} & \thead{\textbf{In Channels}} & \thead{\textbf{Out Channels}} \\
+\thead{\textbf{Layer Type}} & \thead{\textbf{In Channels}} & \thead{\textbf{Out Channels}} & \thead{\textbf{Num. of layers}} \\
 \midrule
-Conv + ReLU & 1 & 128 \\
-\addlinespace
-\multirow{9}{*}{Conv + BatchNorm + ReLU + MaxPool} & 128 & 128 \\
-\addlinespace
- & 128 & 128 \\
-\addlinespace
- & 128 & 256 \\
-\addlinespace
- & 256 & 256 \\
-\addlinespace
- & 256 & 256 \\
-\addlinespace
- & 256 & 256 \\
-\addlinespace
- & 256 & 256 \\
-\addlinespace
- & 256 & 256 \\
-\addlinespace
- & 256 & 512 \\
-\addlinespace
-Conv + BatchNorm + ReLU + AvgPool & 512 & 512 \\
-\addlinespace
-Fully connected layer & 512 & 128 \\
+Conv + ReLU & 1 & 128 & 1 \\
+Conv + BatchNorm + ReLU + MaxPool & 128 & 128 & 2 \\
+ & 128 & 256 & 1 \\
+ & 256 & 256 & 6 \\
+ & 256 & 512 & 1 \\
+Conv + BatchNorm + ReLU + AvgPool & 512 & 512 & 1 \\
+Fully connected layer & 512 & 128 & 1 \\
 \bottomrule
 \end{tabularx}
-\caption{Layer specifications for the SampleCNN model}
+\caption[SampleCNN layer specifications]{Layer specifications for our SampleCNN model implementation; extended from \cite{CLMR2021}.}
 \label{tab:samplecnntable}
 \end{table}
 
 
-The original model has been subtly adjusted by introducing an average pooling operation to the final convolutional layer. This modification, dimensionality reduction, is strategic for handling various input data sizes. Condensing the feature maps to a fixed-size output ensures consistency for subsequent layers like fully connected ones, streamlining computations while maintaining crucial information. This results in a more robust, efficient learning process that offers translation invariance and better contextual understanding.
+The original model has been subtly adjusted by introducing an average pooling operation to the final convolutional layer. This modification is strategic for handling various input data sizes. Condensing the feature maps to a fixed-size output ensures consistency for subsequent layers like fully connected ones, streamlining computations while maintaining crucial information.
 
 \subsection{Optimizer and learning rate}
 
@@ -98,9 +74,9 @@ The choice of input data is guided by the task, computational resources, and the
 
 Previous research has utilized CNNs with various features such as Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}. However, features derived from raw audio may lack interpretability in some scenarios \cite{Schindler2020DeepTutorial}, and raw audio presents unique advantages despite being highly computationally demanding. It ensures the preservation of the original signal, potentially uncovering novel insights, and allows for direct feature extraction via advanced DL models \cite{learning, verydeep}. Nevertheless, it comes with challenges, such as high dimensionality requiring substantial computational resources. 
 
-Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although audio feature-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. Mel-Scaled Log-magnitude Spectograms, for example, capture frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music content may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
+Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although audio feature-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. MLS, for example, captures frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music content may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
 
-In conclusion, raw audio waveforms were our final choice for input for the anchor. Each input sequence was 15 seconds long, roughly equivalent to 8 bars of 4/4 music at 120 beats per minute. The audio was sampled at a frequency of 16 kHz, a decision influenced by the requirements of SampleCNN, computational resources, and our belief in the value of high-resolution data for revealing a comprehensive picture of the audio content. We are confident that this choice of input contains a significant amount of meaningful musical information. Although it may not encompass the complexity of a symphony, it is sufficient for the scope of our experiments.
+In conclusion, raw audio waveforms were our final choice for input for the anchor. Each input sequence was 15 seconds long, roughly equivalent to 8 bars of 4/4 music at 120 beats per minute. The audio was sampled at a frequency of 16 kHz, a decision influenced by computational resources. We are confident that this choice of input contains a significant amount of meaningful musical information. Although it may not encompass the complexity of a symphony, it is sufficient for the scope of our experiments.
 
 \subsubsection{Positive sample generation chain}
 
@@ -108,27 +84,21 @@ The positive image in every triplet of input data must preserve its intelligible
 
 While we have experimented with helpful audio augmentation tools such \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0, Kharitonov2020DataDomain}, the specific requirements of our experiments required the development of our own transformation chain using \textit{torchaudio}'s \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
-\textbf{Amplitude effects}: The signal's amplitude is modified by a constant factor using gain $g \in [-12, 0]$.
+\textbf{Amplitude effects}: The signal's amplitude is modified by a constant factor using gain $g \in [-12, 0]$. 
 
-\textbf{Time-domain effects}: The signal's playback speed and duration are altered through speed change and stretching, preserving the relative perceptual musical relationships between wave points. The respective factors are $\alpha \in [0.9, 1.1]$ for speed change and $\beta \in [0.9, 1.1]$ for stretch.
+\textbf{Time-domain effects}: The signal's playback speed and duration are altered through speed change and stretching, preserving the relative perceptual musical relationships between wave points. The respective factors are $\alpha \in [0.9, 1.1]$ for speed change and $\beta \in [0.9, 1.1]$ for stretch. 
 
-\textbf{Frequency-domain effects}: The frequency content is adjusted through pitch-shifting, modifying the pitch by $\Delta p \in [-1200, 1200]$ cents.
+\textbf{Frequency-domain effects}: The frequency content is adjusted through pitch-shifting, modifying the pitch by $\Delta p \in [-1200, 1200]$ cents. 
 
-\textbf{Nonlinear effects}: Nonlinear distortion is introduced via overdrive with a parameter $d \in [0, 30]$.
+\textbf{Nonlinear effects}: Nonlinear distortion is introduced via overdrive with a parameter $d \in [0, 30]$. 
 
-\textbf{Modulation effects}: Utilize a control signal or low-frequency oscillator. The chorus parameters are determined by a set of six different variables: $f_d, f_m, f_b, f_w, f_a, f_s$ where $f_d, f_m, f_w, f_a$ are floats in the range $[0.1, 1.0]$, $f_b$ is an integer in the range $[20, 55]$, $f_s$ is an integer in the range $[2, 5]$ and the type of control signal is chosen between "s" and "t". The tremolo's amplitude modulation frequency and depth are controlled by $t_s \in [0.1, 100]$ and $t_d \in [1, 101]$, respectively.
+\textbf{Modulation effects}: Utilize a control signal or low-frequency oscillator. Six variables determine the \href{https://github.com/oriolcolomefont/Master-Thesis/blob/main/dataset.py}{chorus parameters}. The tremolo's amplitude modulation frequency and depth are controlled by $t_s \in [0.1, 100]$ and $t_d \in [1, 101]$, respectively. 
 
-\textbf{Reverberation effects} simulate a physical space's acoustic reflections and reverberations by applying an impulse response $h_R[n]$.
+\textbf{Reverberation effects} simulate a physical space's acoustic reflections and reverberations by applying an impulse response.
 
-\textbf{Noise effects}: A noise signal $Noise[n]$ is added with a signal-to-noise ratio (SNR) in the range $[12, 100]$.
+\textbf{Noise effects}: A noise signal $Noise[n]$ is added with a signal-to-noise ratio (SNR) in the range $[12, 100]$. 
 
-The positive signal $P[n]$ is generated according to the expression given below, where the symbols denote specific effects as indicated:
-
-\begin{equation}\label{eq:positive_signal}
-P[n] = A[n] \ast h_{G}[n] \ast h_{C}[n] \ast h_{D}[n] \ast h_{P_t}[n] \ast h_{S}[n] \ast h_{T}[n] + N_{SNR}[n]
-\end{equation}
-
-The $\ast$ symbol represents convolution, and the various $h$ symbols indicate the impulse responses of specific effects. The noise signals $N_{SNR}[n]$ are included with a specific SNR.
+The positive signal $P[n]$ is generated by convoluting the various impulse responses of specific effects. The noise signals are included with a specific SNR on top of the effect chain.
 
 Random parameter updates within hardcoded ranges generate unique audio $P[n]$ out of $A[n]$ for each run-through. Adding random white noise and varying SNR creates countless noisy waveform variations. Although possible combinations can be estimated by multiplying discrete parameter values, the presence of continuous parameters and randomness in noise generation effectively results in infinite unique audio versions.
 
@@ -170,7 +140,7 @@ The whole purpose of this process is to disturb the content unfolding in the tim
 
 Schroff, F., Kalenichenko, D., and Philbin, J. from Google first proposed and applied triplet loss for the learning of facial recognition, catering to varied poses and angles of the same individual \cite{Schroff2015FaceNet:Clustering}.
 
-On the contrary to the also widespread contrastive loss \cite{supercontrast}, the triplet loss function directs the learning process by minimizing the distance between the anchor and positive instances and maximizing the distance between the anchor and negative instances. Including a margin parameter in the loss function guarantees a minimum separation between positive and negative instances in the embedding space.
+Contrary to the widespread contrastive loss \cite{supercontrast}, the triplet loss function directs the learning process by minimizing the distance between the anchor and positive instances and maximizing the distance between the anchor and negative instances. Including a margin parameter in the loss function guarantees a minimum separation between positive and negative instances in the embedding space.
 
 The triplet loss function $\mathcal{L}(\mathbf{a}, \mathbf{p}, \mathbf{n})$ aims to ensure that an anchor vector $\mathbf{a}_i$ is closer in the embedding space to a positive vector $\mathbf{p}_i$ (representing an example of the same class) than to a negative vector $\mathbf{n}_i$ (representing an example of a different class) by at least a margin $\alpha$. It is calculated by summing the losses overall $N$ triplets in the dataset, where the equation gives the loss for each triplet:
 
@@ -186,7 +156,7 @@ The $\max(0, x)$ operation ensures zero loss when the distances satisfy this con
 
 The margin is a task-dependent optimal value determined empirically based on model performance. If it's too small, the model might not differentiate classes effectively; if it's too large, it might focus on outliers.
 
-While some packages can be found in the MIR literature \cite{auraloss}, we wrote our own PyTorch \cite{Paszke2019PyTorch:Library} implementation for the sake of our experiments.
+While some packages can be found in the MIR online community \cite{auraloss}, we wrote our own PyTorch \cite{Paszke2019PyTorch:Library} implementation for our experiments.
 
 As previously stated, the goal of minimizing this loss function is to learn discriminative embeddings, where similar examples are grouped closely together. In contrast, dissimilar examples are placed farther apart in the embedding space.
 
@@ -194,7 +164,7 @@ As previously stated, the goal of minimizing this loss function is to learn disc
 
 Online triplet mining is beneficial for managing large datasets by dynamically selecting the most informative triplets during training, focusing on each mini-batch. This strategy makes the process memory-efficient by negating the need to store all possible triplet combinations. Still, it also enhances model performance through quicker convergence by focusing on challenging examples based on the current model state.
 
-This hard triplet mining selects triplets $(a, p, n)$ to maximize the Euclidean distance between the anchor and positive samples and the anchor and negative samples. These distances, $D_{\text{AP}}$ and $D_{\text{AN}}$, are computed respectively as:
+This hard triplet mining selects triplets $(a, p, n)$ to maximize the Euclidean distance between the anchor and positive samples and the anchor and negative samples. These distances, $D_{\text{AP}}$ and $D_{\text{AN}}$, are computed respectively:
 
 
 \begin{align}
@@ -208,11 +178,11 @@ In implementing the batch normalization step, it is necessary to standardize the
 L_{\text{max}} = \max_{i \in I} \left( \max \left( |A_i|, |P_i|, |N_i| \right) \right)
 \end{equation}
 
-$I$ represents the set of all items in the batch, $|A_i|$, $|P_i|$, and $|N_i|$ denote the lengths of the anchor, positive, and negative vectors for the $i$-th item, respectively. The $\max$ function is applied to find the longest of these three lengths for each item, and then the maximum of these maximum lengths is taken over all items in the batch. This gives the maximum length, $L_{\text{max}}$, of any vector in the batch.
+$I$ represent the set of all items in the batch, $|A_i|$, $|P_i|$, and $|N_i|$ denote the lengths of the anchor, positive, and negative vectors for the $i$-th item, respectively. The $\max$ function is applied to find the longest of these three lengths for each item, and then the maximum of these maximum lengths is taken over all items in the batch. This gives the maximum length, $L_{\text{max}}$, of any vector in the batch.
 
 \subsubsection{Hardware and training strategy}
 
-The deep learning models were trained on a high-performance cloud computing setup hosted on \href{https://cloud.google.com/}{Google Cloud Platform}. The machine was of type \texttt{n1-standard-32}, equipped with an Intel Skylake processor and four NVIDIA Tesla T4 GPUs. The multiple GPUs allowed for efficient parallel processing, significantly reducing the training time.
+The deep learning models were trained on a high-performance cloud computing setup hosted on \href{https://cloud.google.com/}{the Google Cloud Platform}. The machine was of type \texttt{n1-standard-32}, equipped with an Intel Skylake processor and four NVIDIA Tesla T4 GPUs. The multiple GPUs allowed for efficient parallel processing, significantly reducing the training time.
 
 To tackle the computational demands of training models on extensive raw audio data, we incorporated a couple of strategies to optimize efficiency and performance. 
 
@@ -224,18 +194,17 @@ These strategies collectively enhance the computational efficiency while maintai
 
 \subsection{The \textit{embeddiogram}, a deep audio feature representation}
 
-The \textit{embeddiogram}, a deep audio feature representation, is derived by applying our pre-trained neural network to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional embedding vectors collectively form a two-dimensional description of the audio signal's musical content.
+The \textit{embeddiogram}, a deep audio feature representation, is derived by applying our pre-trained neural network to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional vectors collectively form a two-dimensional description of the audio signal's musical content.
 
 Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal of length $N$. This process comprises loading the audio data, slicing the audio data into windowed segments, processing each window using our pre-trained model to produce a vector per window/time frame, collecting and stacking these embeddings, and finally, normalizing the resulting matrix. 
 
 \begin{enumerate}
 \item \textbf{Load the audio data}: The audio data is loaded into memory as a one-dimensional array of length $N$.
 
-\item \textbf{Slice the audio data}: The audio data is segmented into overlapping windows. Each window contains $w$ samples, and consecutive windows are separated by a hop size $h$. This gives a total of $H$ windows, defined as:
+\item \textbf{Slice the audio data}: The audio data is segmented into overlapping windows. Each window contains $w$ samples, and a hop size h separates consecutive windows. This gives a total of $H$ windows, defined as:
 \begin{equation}
 H = 1 + \left\lfloor \frac{N - w}{h} \right\rfloor
 \end{equation}
-In the case where $\left( N - w \right) \mod h > 0$, we have $H += 1$ to account for the final, potentially smaller window.
 
 We have conducted experiments using a window duration of 4 seconds (\(w = 4 \times \text{{sampling rate}}\)). As a general rule of thumb, this duration corresponds to two 4/4 bars of a piece of music with a tempo where the quarter note equals 120 BPM.
 
@@ -246,14 +215,14 @@ We find this a good starting compromise solution, allowing enough time to captur
 \text{embedding}_i = \text{model}(w_i)
 \end{equation}
 
-\item \textbf{Collect the embeddings}: The embedding vectors are collected and stacked together. Each row represents a feature vector for a given time frame to form the \textit{embeddiogram}, denoted as $\text{e}$:
+\item \textbf{Collect the embeddings}: The embedding vectors are collected and stacked together. Each row represents a feature vector for a given time frame to form the \textit{embeddiogram}, denoted as $\text{E}$:
 \begin{equation}
-\text{e} = \begin{bmatrix} \text{embedding}_1 \\ \text{embedding}_2 \\ \vdots \\ \text{embedding}_H \end{bmatrix}
+\text{E} = \begin{bmatrix} \text{embedding}_1 \\ \text{embedding}_2 \\ \vdots \\ \text{embedding}_H \end{bmatrix}
 \end{equation}
 
 \item \textbf{Normalize the \textit{embeddiogram \ref{fig:embeddiogram}}}: The \textit{embeddiogram} is normalized to have a minimum value of 0 and a maximum value of 1 per dimension. The normalization process is given by:
 \begin{equation}
-E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
+E'_{ij} = \frac{E_{ij} - \min(E)}{\max(E) - \min(E)}
 \end{equation}
 \end{enumerate}
 
@@ -279,26 +248,26 @@ E'_{ij} = \frac{e_{ij} - \min(E)}{\max(E) - \min(E)}
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/355recurrencematrix.png} % first figure itself
-        \caption[Track 355 (SALAMI dataset) Self-similarity matrix]{Self-similarity matrix computation of the embeddiogram. Track 355 (SALAMI dataset).}
+        \caption[Self-similarity matrix | Track 355 (SALAMI dataset)]{Self-similarity matrix computation of the embeddiogram. Track 355 (SALAMI dataset).}
         \label{fig:SSM}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/355lagmatrixgaussiansmoothing.png} % second figure itself
-        \caption[Track 355 (SALAMI dataset) SSLM computation of the embeddiogram]{Self-similarity lag matrix. Track 355 (SALAMI dataset).}
+        \caption[Self-similarity lag matrix | Track 355 (SALAMI dataset)]{Self-similarity lag matrix. Track 355 (SALAMI dataset).}
         \label{fig:SSLM}
     \end{minipage}
     \vfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/355cumulativematrix.png} % third figure itself
-        \caption[Track 355 (SALAMI dataset). Q-matrix]{Cumulative matrix computation of the embeddiogram. Track 355 (SALAMI dataset) .}
+        \caption[Q-matrix | Track 355 (SALAMI dataset)]{Cumulative matrix computation of the embeddiogram. Track 355 (SALAMI dataset) .}
         \label{fig:Q}
     \end{minipage}\hfill
     \begin{minipage}{0.45\textwidth}
         \centering
         \includegraphics[width=0.9\textwidth]{figures/images/355transitivebinarysimilaritymatrix.png} % fourth figure itself
-        \caption[Track 355 (SALAMI dataset). Transitive Binary Similarity Matrix]{Transitive Binary Matrix computation of the embeddiogram. Track 355 (SALAMI dataset).}
+        \caption[Transitive Binary Similarity Matrix | Track 355 (SALAMI dataset)]{Transitive Binary Matrix computation of the embeddiogram. Track 355 (SALAMI dataset).}
         \label{fig:TBSM}
     \end{minipage}
 \end{figure}
