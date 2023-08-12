@@ -10,11 +10,13 @@ We have also managed to circumvent the typical issues associated with dataset en
 
 \section{Discussion}
 
+One of the main reasons why \cite{deepfeaturesegment, SalamonDeepSegmentation} outperform our method might be their task-tailored designs specifically oriented towards music segmentation analysis (MSA). In contrast, our method aims to be broader and more abstract, which may present a downside when evaluating specific tasks.
+
 Whether our model effectively decodes underlying high-level musical content remains open to scientific investigation. It's plausible that our technique possesses significant potential for nearly all content-based MIR downstream tasks, given its intention to be both sound-agnostic and content-sensitive. Queries persist about whether such a general-purpose audio representation can mimic human hearing \cite{Li2023MERT:Training, Turian2022HEAR:Representations}, or if it can accurately decode high-level musical content. Such questions remain unresolved due to the current lack of evaluative measures. 
 
-We argue whether factors such as the size of the representation layer and the size of the model \cite{verydeep} might be insufficient. Furthermore, we posit that the loss function could decrease further with additional time to iterate repeatedly over the dataset.
+We argue whether factors such as the size of the representation layer and the size of the model \cite{verydeep} might be insufficient. Furthermore, we posit that the loss function could decrease further with additional time to iterate repeatedly over the stochastic and never-ending dataset.
 
-While our results may not yet rival state-of-the-art benchmarks, they affirm we're on the right path and reveal the potential of this research direction. Importantly, we've seen that progress doesn't have to be expensive—though time and potential copyright issues are considerations.
+While our results may not yet rival state-of-the-art benchmarks, they affirm we're on the right path and reveal the potential of this research direction. Importantly, we've seen that progress doesn't have to be expensive—though time and potential data copyright issues are considerations.
 
 \newpage
 

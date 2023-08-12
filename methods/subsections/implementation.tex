@@ -29,7 +29,7 @@ With only 2.4 million trainable parameters, this fully convolutional model reduc
 \begin{figure}
     \centering
     \includegraphics{figures/images/applsci-08-00150-g003.png}
-    \caption[SampleCNN filters]{The spectrum of the estimated filters in the intermediate layers of SampleCNN is sorted by the frequency of the peak magnitude. The x-axis represents the index of the filter, and the y-axis represents the frequency range from 0 to 11 kHz. The model used for visualization is  39---SampleCNN with 59,049 samples as input. Visualization was performed using the gradient ascent method to obtain the accumulated gradient-based input waveform-like signal that maximizes the activation of a filter in the layers. To effectively find the filter characteristics, we set the input size to 729 samples, close to a typical frame size.}
+    \caption[SampleCNN filters]{\small{The spectrum of the estimated filters in the intermediate layers of SampleCNN is sorted by the frequency of the peak magnitude. The x-axis represents the index of the filter, and the y-axis represents the frequency range from 0 to 11 kHz. The model used for visualization is  39---SampleCNN with 59,049 samples as input. Visualization was performed using the gradient ascent method to obtain the accumulated gradient-based input waveform-like signal that maximizes the activation of a filter in the layers. To effectively find the filter characteristics, we set the input size to 729 samples, close to a typical frame size.}}
     \label{fig:filters}
 \end{figure}
 
@@ -55,7 +55,7 @@ Conv + BatchNorm + ReLU + AvgPool & 512 & 512 & 1 \\
 Fully connected layer & 512 & 128 & 1 \\
 \bottomrule
 \end{tabularx}
-\caption[SampleCNN layer specifications]{Layer specifications for our SampleCNN model implementation; extended from \cite{CLMR2021}.}
+\caption[SampleCNN layer specifications]{\small{Layer specifications for our SampleCNN model implementation; extended from \cite{CLMR2021}.}}
 \label{tab:samplecnntable}
 \end{table}
 
