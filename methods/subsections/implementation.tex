@@ -1,12 +1,12 @@
 \section{Implementation details}
 
-Our approach falls broadly under cognitive modeling, which seeks to simulate human cognitive processes and problem-solving through a computerized model. We advocate for exposure-based learning in music, encouraging active engagement with as many musical styles, genres, techniques, and learning methods as possible. This approach promotes comprehensive musical proficiency and efficient performance when encountering novel and unseen data in practical applications.
+Our implementation falls broadly under cognitive modeling, which seeks to simulate human cognitive processes and problem-solving through a computerized model. We advocate for exposure-based learning in music, encouraging active engagement with as many musical styles, genres, techniques, and learning methods as possible. This approach promotes comprehensive musical proficiency and efficient performance when encountering novel and unseen data in practical applications.
 
 According to Piaget's theory of cognitive development, children gain knowledge through sensory experiences and gradually develop abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by incorporating new information through assimilation and accommodation \cite{audioselfsupsurvey}.
 
 In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
 
-Our implementation slightly modifies the \textit{contrastive learning of musical representations} (CLMR) method \cite{CLMR2021}, which learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones. CLMR falls under a branch of ML known as self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn autonomously from unlabeled data to create their own supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. SSL benefits include reduced dependence on labeled data, contributing to more robust and generalizable data representations.
+Our implementation slightly modifies the CLMR method \cite{CLMR2021}, which learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones. CLMR falls under a branch of ML known as self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn autonomously from unlabeled data to create their own supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. SSL benefits include reduced dependence on labeled data, contributing to more robust and generalizable data representations.
 
 Although SSL has proven effective in speech and audio, its application to music audio remains relatively unexplored. This is primarily due to the unique challenges of modeling musical knowledge, especially regarding music's tonal and pitched characteristics \cite{Li2023MERT:Training}.
 
@@ -92,7 +92,7 @@ While we have experimented with helpful audio augmentation tools such \cite{Spij
 
 \textbf{Nonlinear effects}: Nonlinear distortion is introduced via overdrive with a parameter $d \in [0, 30]$. 
 
-\textbf{Modulation effects}: Utilize a control signal or low-frequency oscillator. Six variables determine the \href{https://github.com/oriolcolomefont/Master-Thesis/blob/main/dataset.py}{chorus parameters}. The tremolo's amplitude modulation frequency and depth are controlled by $t_s \in [0.1, 100]$ and $t_d \in [1, 101]$, respectively. 
+\textbf{Modulation effects}: Utilize a control signal or low-frequency oscillator. Six variables determine the \href{https://github.com/oriolcolomefont/Uncovering-High-Level-Content-in-the-Time-Domain/blob/24057f4160a4ecb7ccef16146ad086ab5160aef8/dataset.py#L120C9-L128C10}{chorus parameters}. The tremolo's amplitude modulation frequency and depth are controlled by $t_s \in [0.1, 100]$ and $t_d \in [1, 101]$, respectively. 
 
 \textbf{Reverberation effects} simulate a physical space's acoustic reflections and reverberations by applying an impulse response.
 
@@ -166,11 +166,9 @@ Online triplet mining is beneficial for managing large datasets by dynamically s
 
 This hard triplet mining selects triplets $(a, p, n)$ to maximize the Euclidean distance between the anchor and positive samples and the anchor and negative samples. These distances, $D_{\text{AP}}$ and $D_{\text{AN}}$, are computed respectively:
 
-
 \begin{align}
 D_{\text{AP}} &= \sqrt{\sum_{i} (A_i - P_i)^2} & D_{\text{AN}} &= \sqrt{\sum_{i} (A_i - N_i)^2}
 \end{align}
-
 
 In implementing the batch normalization step, it is necessary to standardize the audio lengths across all elements in the minibatch. We opted to zero-pad all clips to the length of the longest clip, valuing data integrity and completeness over potential performance trade-offs. Thus, the length of the longest array in the batch, which sets the standard for all others, is as follows:
 
@@ -178,7 +176,7 @@ In implementing the batch normalization step, it is necessary to standardize the
 L_{\text{max}} = \max_{i \in I} \left( \max \left( |A_i|, |P_i|, |N_i| \right) \right)
 \end{equation}
 
-$I$ represent the set of all items in the batch, $|A_i|$, $|P_i|$, and $|N_i|$ denote the lengths of the anchor, positive, and negative vectors for the $i$-th item, respectively. The $\max$ function is applied to find the longest of these three lengths for each item, and then the maximum of these maximum lengths is taken over all items in the batch. This gives the maximum length, $L_{\text{max}}$, of any vector in the batch.
+$I$ represents the set of all items in the batch, $|A_i|$, $|P_i|$, and $|N_i|$ denote the lengths of the anchor, positive, and negative vectors for the $i$-th item, respectively. The $\max$ function is applied to find the longest of these three lengths for each item, and then the maximum of these maximum lengths is taken over all items in the batch. This gives the maximum length, $L_{\text{max}}$, of any vector in the batch.
 
 \subsubsection{Hardware and training strategy}
 
