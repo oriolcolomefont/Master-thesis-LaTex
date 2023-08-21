@@ -4,7 +4,9 @@ Music \footnote{Throughout this thesis, "music" refers to the Western tradition,
 
 Prior research emphasizes the necessity of selecting suitable audio features to distinguish and label unique music segments for music segmentation tasks. The challenge lies in acquiring annotated data for these feature transformations, which can be time-consuming and expensive. In response, scholars have turned to unsupervised deep learning using readily available audio data \cite{deepfeaturesegment, Grill2015MusicAnnotations}. This method has substantially improved the generalization capacity of machine-listening models in downstream applications. Among others, segmentation algorithms have seen significant enhancements and delivered state-of-the-art results \cite{Hernandez-Olivan2021MusicFeatures, Li2023MERT:Training}.
 
-Beyond applications in music structure analysis, the evolution of neural networks has empowered the creation of latent representations \ref{fig:manifold} encapsulating crucial musical traits, technically known as representation ---or feature--- learning. This evolution has simplified the computational process for various task-specific elements, including but not limited to:
+Beyond applications in music structure analysis, the evolution of neural networks has empowered the creation of latent representations encapsulating crucial musical traits, technically known as representation ---or feature--- learning. Such spaces can be imploded into low dimensional and digestible representations, as shown in Figure \ref{fig:manifold}.
+
+This evolution has simplified the computational process for various task-specific elements, including but not limited to:
 
 \begin{itemize}
 \item Creating an audio embedding that excels across numerous applications without the necessity for fine-tuning \cite{Turian2022HEAR:Representations}.

@@ -2,7 +2,7 @@
 
 \section{Conclusions}
 
-In this work, we introduced a method that leverages self-supervised deep neural networks to learn low-dimensional music latent representations with applications to music boundary detection. Building on existing approaches and architectures, we replaced traditional features with deep embeddings trained to represent high-level musical information to analyze its performance in music segmentation tasks.
+In this work, we introduced a method that leverages self-supervised deep neural networks to learn low-dimensional music latent representations with applications to music boundary detection tasks. Building on existing approaches and architectures, we replaced traditional features with deep embeddings trained to represent high-level musical information to analyze its performance in music segmentation tasks.
 
 While our musically-informed technique does not yet outperform the existing state-of-the-art baselines, it exhibits significant potential in boundary detection tasks, particularly when expanding the training set. The improvement we've observed between datasets is noteworthy, and when compared with two of the acoustic features, our results are highly competitive. 
 
@@ -10,7 +10,7 @@ We have also managed to circumvent the typical issues associated with dataset en
 
 \section{Discussion}
 
-One of the main reasons why \cite{deepfeaturesegment, SalamonDeepSegmentation} outperform our method might be their task-tailored designs specifically oriented towards music segmentation analysis (MSA). In contrast, our method aims to be broader and more abstract, which may present a downside when evaluating specific tasks.
+One of the main reasons why \cite{deepfeaturesegment, SalamonDeepSegmentation} might outperform our method might be their task-tailored and MSA-focused designs specifically oriented towards music segmentation. In contrast, our method aims to be broader and more abstract, which may present a downside when evaluating specific tasks.
 
 Whether our model effectively decodes underlying high-level musical content remains open to scientific investigation. It's plausible that our technique possesses significant potential for nearly all content-based MIR downstream tasks, given its intention to be both sound-agnostic and content-sensitive. Queries persist about whether such a general-purpose audio representation can mimic human hearing \cite{Li2023MERT:Training, Turian2022HEAR:Representations}, or if it can accurately decode high-level musical content. Such questions remain unresolved due to the current lack of evaluative measures. 
 

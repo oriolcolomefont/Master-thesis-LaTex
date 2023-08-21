@@ -4,9 +4,9 @@ Our implementation falls broadly under cognitive modeling, which seeks to simula
 
 According to Piaget's theory of cognitive development, children gain knowledge through sensory experiences and gradually develop abstract reasoning and schemas—basic cognitive structures \cite{Huitt2003PiagetsDevelopment}. These schemas evolve by incorporating new information through assimilation and accommodation \cite{audioselfsupsurvey}.
 
-In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data—thereby ensuring consistent output. Even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
+In pattern recognition, models are designed to exhibit robustness against known invariances—transformations of input data ---thereby ensuring consistent output. Even unknown invariances not explicitly considered in the model's design can be accommodated due to the model's inherent learning capacity.
 
-Our implementation slightly modifies the CLMR method \cite{CLMR2021}, which learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones. CLMR falls under a branch of ML known as self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn autonomously from unlabeled data to create their own supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. SSL benefits include reduced dependence on labeled data, contributing to more robust and generalizable data representations.
+Our implementation slightly modifies the Contrastive Learning of Music Representations (CLMR) method \cite{CLMR2021}, which learns valuable, discriminative music representations without explicit labels by contrasting positive augmentations of a musical piece against negative ones. CLMR falls under a branch of ML known as self-supervised learning (SSL) \cite{Balestriero2023ALearning}, where models learn autonomously from unlabeled data to create their own supervisory signals \cite{audioselfsupsurvey}. This method resembles how humans learn from observations and interactions, transforming unsupervised problems into supervised ones by auto-generating labels. SSL benefits include reduced dependence on labeled data, contributing to more robust and generalizable data representations.
 
 Although SSL has proven effective in speech and audio, its application to music audio remains relatively unexplored. This is primarily due to the unique challenges of modeling musical knowledge, especially regarding music's tonal and pitched characteristics \cite{Li2023MERT:Training}.
 
@@ -22,7 +22,7 @@ The TSN extends the traditional binary contrastive architecture by comparing thr
 
 The SampleCNN model \cite{Lee2018SampleCNN:Classification} is a CNN designed for raw waveform audio data, treating each audio sample as an independent channel and applying 1-dimensional convolution along the temporal axis. Our implementation is an adaptation of \cite{CLMR2021} using \textit{PyTorch} \cite{Paszke2019PyTorch:Library} and \textit{PyTorch Lightning} \cite{PyTorchDocumentation}.
 
-With only 2.4 million trainable parameters, this fully convolutional model reduces computational requirements and learns features at different scales through its multi-resolution architecture \ref{tab:samplecnntable}.
+With only 2.4 million trainable parameters, this fully convolutional model reduces computational requirements and learns features at different scales through its multi-resolution architecture. See layer specifications in Table \ref{tab:samplecnntable}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,23 +66,23 @@ The original model has been subtly adjusted by introducing an average pooling op
 
 We've employed the AdamW optimizer \cite{Loshchilov2017DecoupledRegularization}, an optimized variant of the widely-used Adam optimizer for training neural networks. AdamW adeptly balances the learning rate across network weights, providing an efficient strategy for weight decay management by isolating it from gradient updates. 
 
-The learning rate, set at 0.003, is a pivotal parameter dictating the step size at each iteration towards loss function minimization. It's a delicate balancing act— a high rate promises swift convergence with a risk of minimum overshoot, while a lower rate provides careful convergence but necessitates more iterations. Given that delicacy, we set it to a standard number broadly used in the literature.
+The learning rate, set at 0.003, is a pivotal parameter dictating the step size at each iteration towards loss function minimization. It's a delicate balancing act ---a high rate promises swift convergence with a risk of minimum overshoot, while a lower rate provides careful convergence but necessitates more iterations. Given that delicacy, we set it to a standard number broadly used in the literature.
 
 \subsection{Audio augmentation and transformation pipeline}
 
 The choice of input data is guided by the task, computational resources, and the need to balance data retention with computational efficiency.
 
-Previous research has utilized CNNs with various features such as Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}. However, features derived from raw audio may lack interpretability in some scenarios \cite{Schindler2020DeepTutorial}, and raw audio presents unique advantages despite being highly computationally demanding. It ensures the preservation of the original signal, potentially uncovering novel insights, and allows for direct feature extraction via advanced DL models \cite{learning, verydeep}. Nevertheless, it comes with challenges, such as high dimensionality requiring substantial computational resources. 
+Previous research has utilized CNNs with various features such as Mel-Scaled Log-magnitude Spectograms (MLS), Self-Similarity Matrices (SSM), and Self-Similarity Lag Matrices (SSLM) as inputs \cite{Hernandez-Olivan2021MusicFeatures}. However, features derived from raw audio may lack interpretability in some scenarios \cite{Schindler2020DeepTutorial}, and raw audio presents unique advantages despite being highly computationally demanding. It ensures the preservation of the original signal, potentially uncovering novel insights, and allows for direct feature extraction via advanced DL models \cite{learning, verydeep}. Nevertheless, it comes with challenges, such as high ---the highest--- dimensionality requiring substantial computational resources. 
 
-Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although audio feature-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. MLS, for example, captures frequency distribution over time. Yet, the complexity of human auditory perception—encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music content may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
+Time-domain processing naturally handles temporal patterns and sequences in data, thereby avoiding windowing artifacts. Although audio feature-based methods are effective for various audio-related machine learning tasks, their limitations lie in representing perceptual similarity. MLS, for example, captures frequency distribution over time. Yet, the complexity of human auditory perception, encompassing temporal patterns, phase relationships between frequencies, and higher-level musical structures means that musically similar sounds can have distinct spectrograms. This discrepancy implies that using spectrogram distance alone for measuring high-level music content may not always align with human perceptions \cite{Kim2020OneStrategies, Mesostructures2023}.
 
 In conclusion, raw audio waveforms were our final choice for input for the anchor. Each input sequence was 15 seconds long, roughly equivalent to 8 bars of 4/4 music at 120 beats per minute. The audio was sampled at a frequency of 16 kHz, a decision influenced by computational resources. We are confident that this choice of input contains a significant amount of meaningful musical information. Although it may not encompass the complexity of a symphony, it is sufficient for the scope of our experiments.
 
 \subsubsection{Positive sample generation chain}
 
-The positive image in every triplet of input data must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities and processing artifacts. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements remarkably close to the original track.
+The positive waveform in every triplet of input data must preserve its intelligible content when subjected to transformations, regardless of alterations in sonic qualities and processing artifacts. Maintaining the temporal structure and meaningfulness of the content allows it to present musical elements remarkably close to the original track.
 
-While we have experimented with helpful audio augmentation tools such \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0, Kharitonov2020DataDomain}, the specific requirements of our experiments required the development of our own transformation chain using \textit{torchaudio}'s \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
+While we have experimented with helpful audio augmentation tools such as \cite{Spijkervet2021Spijkervet/torchaudio-augmentations:V1.0, Kharitonov2020DataDomain}, the specific requirements of our experiments required the development of our own transformation chain using \textit{torchaudio}'s \cite{Yang2021TorchAudio:Processing} implementation of \textit{SoX} \cite{sox}: given an anchor audio signal $A[n]$, we generate a positive signal $P[n]$ by applying a series of amplitude, time-domain, frequency-domain, modulation, reverberation, and nonlinear effects with additive noise on top of it. 
 
 \textbf{Amplitude effects}: The signal's amplitude is modified by a constant factor using gain $g \in [-12, 0]$. 
 
@@ -98,9 +98,9 @@ While we have experimented with helpful audio augmentation tools such \cite{Spij
 
 \textbf{Noise effects}: A noise signal $Noise[n]$ is added with a signal-to-noise ratio (SNR) in the range $[12, 100]$. 
 
-The positive signal $P[n]$ is generated by convoluting the various impulse responses of specific effects. The noise signals are included with a specific SNR on top of the effect chain.
+The positive signal $P[n]$ is generated by convoluting the various impulse responses of specific effects. The noise signals are included with a set SNR ratio within the above range on top of the effect chain.
 
-Random parameter updates within hardcoded ranges generate unique audio $P[n]$ out of $A[n]$ for each run-through. Adding random white noise and varying SNR creates countless noisy waveform variations. Although possible combinations can be estimated by multiplying discrete parameter values, the presence of continuous parameters and randomness in noise generation effectively results in infinite unique audio versions.
+Random parameter updates within hardcoded ranges generate unique audio $P[n]$ images out of $A[n]$ anchor for each run-through. Adding random white noise and varying SNR creates countless noisy waveform variations. Although possible combinations can be estimated by multiplying discrete parameter values, the presence of continuous parameters and randomness in noise generation effectively results in infinite unique audio versions.
 
 \subsubsection{Negative sample generation}
 
@@ -156,7 +156,7 @@ The $\max(0, x)$ operation ensures zero loss when the distances satisfy this con
 
 The margin is a task-dependent optimal value determined empirically based on model performance. If it's too small, the model might not differentiate classes effectively; if it's too large, it might focus on outliers.
 
-While some packages can be found in the MIR online community \cite{auraloss}, we wrote our own PyTorch \cite{Paszke2019PyTorch:Library} implementation for our experiments.
+While some packages can be found in the MIR online community \cite{auraloss}, we wrote our own \textit{PyTorch} \cite{Paszke2019PyTorch:Library} implementation for the sake of our experiments.
 
 As previously stated, the goal of minimizing this loss function is to learn discriminative embeddings, where similar examples are grouped closely together. In contrast, dissimilar examples are placed farther apart in the embedding space.
 
@@ -192,7 +192,7 @@ These strategies collectively enhance the computational efficiency while maintai
 
 \subsection{The \textit{embeddiogram}, a deep audio feature representation}
 
-The \textit{embeddiogram}, a deep audio feature representation, is derived by applying our pre-trained neural network to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional vectors collectively form a two-dimensional description of the audio signal's musical content.
+The \textit{embeddiogram}, a deep audio feature representation, is derived by applying our pre-trained neural network to sliding windowed segments across the audio signal, generating a sequence of embedding vectors. These relatively low-dimensional vectors collectively form a two-dimensional description of the audio signal's musical content. A visual representation can be seen in Figure \ref{fig:embeddiogram}.
 
 Below is a detailed explanation of how we compute the \textit{embeddiogram} from a given audio signal of length $N$. This process comprises loading the audio data, slicing the audio data into windowed segments, processing each window using our pre-trained model to produce a vector per window/time frame, collecting and stacking these embeddings, and finally, normalizing the resulting matrix. 
 
@@ -218,7 +218,7 @@ We find this a good starting compromise solution, allowing enough time to captur
 \text{E} = \begin{bmatrix} \text{embedding}_1 \\ \text{embedding}_2 \\ \vdots \\ \text{embedding}_H \end{bmatrix}
 \end{equation}
 
-\item \textbf{Normalize the \textit{embeddiogram \ref{fig:embeddiogram}}}: The \textit{embeddiogram} is normalized to have a minimum value of 0 and a maximum value of 1 per dimension. The normalization process is given by:
+\item \textbf{Normalize the \textit{embeddiogram}}: The \textit{embeddiogram} is normalized to have a minimum value of 0 and a maximum value of 1 per dimension. The normalization process is given by:
 \begin{equation}
 E'_{ij} = \frac{E_{ij} - \min(E)}{\max(E) - \min(E)}
 \end{equation}
@@ -229,14 +229,14 @@ E'_{ij} = \frac{E_{ij} - \min(E)}{\max(E) - \min(E)}
   \begin{minipage}[b]{1.0\linewidth}
     \centering
     \includegraphics[width=\linewidth]{figures/images/355embeddiogramnormalized.png}
-    \caption[Embeddiogram. Track 355 (SALAMI dataset).]{Embeddiogram. Track 355 (SALAMI dataset).}
+    \caption[Embeddiogram | Track 355 (SALAMI dataset).]{Embeddiogram. Track 355 (SALAMI dataset).}
     \label{fig:embeddiogram}
   \end{minipage}
 
   \begin{minipage}[b]{1.0\linewidth}
     \centering
     \includegraphics[width=\linewidth]{figures/images/355novelty.png}
-    \caption[Novelty curve + peaks. Track 355 (SALAMI dataset).]{Novelty curve and peak detection. Track 355 (SALAMI dataset).}
+    \caption[Novelty curve and peaks | Track 355 (SALAMI dataset).]{Novelty curve and peak detection. Track 355 (SALAMI dataset).}
     \label{fig:novelty}
   \end{minipage}
 \end{figure}
@@ -272,6 +272,6 @@ E'_{ij} = \frac{E_{ij} - \min(E)}{\max(E) - \min(E)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-These deep audio features can be a foundation for current state-of-the-art methods, which are expected to receive as input standard traditional audio features. Consequently, they can be processed and manipulated like conventional features as described by \cite{unsuperMSA} and displayed in \ref{fig:novelty}, \ref{fig:SSM}, \ref{fig:SSLM}, \ref{fig:Q}, and \ref{fig:TBSM}. Employing such embeddings in a traditional music segmentation algorithm can achieve state-of-the-art performance \cite{deepfeaturesegment}.
+These deep audio features can be a foundation for current state-of-the-art methods, which are expected to receive as input standard traditional audio features. Consequently, they can be processed and manipulated like conventional features as described by \cite{unsuperMSA} and displayed in Figures \ref{fig:novelty}, \ref{fig:SSM}, \ref{fig:SSLM}, \ref{fig:Q}, and \ref{fig:TBSM}. Employing such embeddings in a traditional music segmentation algorithm can achieve state-of-the-art performance \cite{deepfeaturesegment}.
 
 \newpage

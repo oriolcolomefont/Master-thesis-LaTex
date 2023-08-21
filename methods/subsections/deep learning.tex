@@ -1,18 +1,18 @@
 \section{Deep Learning modeling}
 
-Deep learning (DL), a subset of machine learning, employs deep neural networks (DNNs) to decipher hierarchical data representations, allowing models with multiple processing layers to abstract data across numerous levels \cite{LeCun2015DeepLearning, Sarker2021DeepDirections}. DL models have significantly improved various domains due to their nonlinear modeling capabilities and scalability with large datasets.
+Deep learning (DL), a subset of machine learning (ML), employs deep neural networks (DNNs) to decipher hierarchical data representations, allowing models with multiple processing layers ---as shown in Figure \ref{fig: multilayer color perceptron}---to abstract data across numerous levels \cite{LeCun2015DeepLearning, Sarker2021DeepDirections}. DL models have significantly improved various domains due to their nonlinear modeling capabilities and scalability with large datasets.
 
-They leverage the central algorithm, backpropagation, which calculates gradients of the loss function related to network parameters through forward and backward pass processes, thereby optimizing model performance.
+They leverage the central algorithm, backpropagation, which calculates gradients of the loss function related to network parameters through forward and backward pass processes, thereby optimizing model performance. A high-level representation can be seen in Figure \ref{fig:error-backpropagation}.
 
 %Backpropagation
 \input{figures/neural networks/Back_propagation}
 
-These computational models somewhat rooted in biological neural systems, utilize layers of artificial neurons for tasks such as pattern recognition, classification, and regression. They evolve by adjusting connections between neurons during learning, a concept initiated in the mid-20th century but modernized with Frank Rosenblatt's single-layer perceptron in 1957, capable of learning linearly separable patterns \cite{perceptron}.
+These computational models, somewhat rooted in biological neural systems, utilize layers of artificial neurons for tasks such as pattern recognition, classification, and regression. They evolve by adjusting connections between neurons during learning, a concept initiated in the mid-20th century but modernized with Frank Rosenblatt's single-layer perceptron in 1957, capable of learning linearly separable patterns \cite{perceptron}.
 
 %Multi-layer_NN
 \input{figures/neural networks/Multi-layer_NN}
 
-Another crucial component in the operation of DNNs is the activation function. This function is applied at every layer, transforming the linear combination of the input with the layer weights into an output that is passed onto the next layer. It introduces non-linearity into the network, enabling it to learn complex patterns and relationships.
+Another crucial component in the operation of DNNs is the activation function. This function is applied at every layer, transforming the linear combination of the input with the layer weights into an output passed onto the next layer. It introduces non-linearity into the network, enabling it to learn complex patterns and relationships. See Figure \ref{fig:activation_function} for further visual understanding.
 
 %Activation equation
 \input{figures/neural networks/activation}
